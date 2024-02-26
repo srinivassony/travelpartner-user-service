@@ -141,7 +141,9 @@ exports.createUser = async (req, res) =>
                 message: emailBody,
             };
 
-            await smtp.sendEmail(userEmailParams);
+           let x=  await smtp.sendEmail(userEmailParams);
+
+           console.log(x)
 
         }
         catch (error)
