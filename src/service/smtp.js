@@ -16,8 +16,10 @@ let sendEmail = async (data) =>
             secure: (smtpConfig.secure === 'true' || smtpConfig.secure === true) ? true : false,
             requireTLS: (smtpConfig.requireTls === 'true' || smtpConfig.requireTls === true) ? true : false,
             tls: {
+                ciphers: 'SSLv3',
                 rejectUnauthorized: false
             },
+            secureConnection: 'false',
             auth: {
                 user: smtpConfig.email,
                 pass: smtpConfig.paswd
