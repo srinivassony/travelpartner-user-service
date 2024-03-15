@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Travel partner | Active email page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="#">
+    <%- include('links'); %>
+</head>
+<body>
+
+    <%- include('loader'); %>
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('topNav'); %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                        <%- include('sideNav'); %>
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+    
+                            <div class="main-body">
+                                <div class="page-wrapper">
+    
+                                    <div class="page-header">
+                                        <div class="row align-items-end">
+                                            <div class="col-lg-8">
+                                                <div class="page-header-title">
+                                                    <div class="d-inline">
+                                                        <h4>Activate your Travel-partner account!</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="page-header-breadcrumb">
+                                                    <ul class="breadcrumb-title">
+                                                        <li class="breadcrumb-item" style="float: left;">
+                                                            <a href="#"> <i class="feather icon-home"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="breadcrumb-item" style="float: left;"><a
+                                                                href="#">Active account</a> </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Activate your Travel-partner account!</h5>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="feather icon-maximize full-card"></i></li>
+                                                                <li><i class="feather icon-minus minimize-card"></i>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <p>
+                                                            Thanks for your interest. Please check your Email and activate your account. (Kindly check your Spam folder) Incase if you have not received confirmation mail ,Reach us at <a href="mailto:Travel-partner@gmail.com">Travel-partner@gmail.com</a> or call at 9885xxxx10 for further assistance.
+                                                        </p>
+                                                        <% if (errorMessage) { %>
+
+                                                            <div class="col-md-10" >
+                                                                <p  style="color: red;font-weight:bold;border:none;text-align:center;">
+                                                                    <%= errorMessage %>
+                                                                </p>
+
+                                                                <div class="card-block" >
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div id="wizard1">
+                                                                                <section>
+                                                                                    <form class="wizard-form"  action="/api/resend/invite/user" method="post" enctype="application/x-www-form-urlencoded">
+                                                                                        <h3> User account activate </h3>
+                                                                                        <fieldset>
+                                                                                            <div class="form-group row">
+                                                                                                <div class="col-sm-12">
+                                                                                                    <label for="email-2-1" class="block">Email*</label>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <input id="email-2-1" name="email" type="email" class=" form-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group row">
+                                                                                                <div class="col-sm-6">
+                                                                                                <button class="btn btn-primary btn-round" type="submit">Submit</button>
+                                                                                                </div>
+                                                                                            </div>
+        
+                                                                                        </fieldset>
+                                                                                    </form>
+                                                                                </section>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <% } else if(sucessMessage){ %>
+                                                        
+                                                                <p  style="color: green;font-weight:bold;border:none;">
+                                                                    <%= sucessMessage %>  <a href="/login"> click here to Sign In</a></p>
+                                                                </p>
+                                                        
+                                                                <%} else { %>
+                                                        
+                                                                    <p>
+                                                                        If you have not recevie the email. Please click here to <button class="btn btn-primary btn-round" type="submit" id="showFormButton">Resend the email</button>
+                                                                    </p>
+                                                                    <%}%>
+                                                       
+
+                                                        <div class="card-block" id="myFrom"  style="display: none;">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div id="wizard1">
+                                                                        <section>
+                                                                            <form class="wizard-form"  action="/api/resend/invite/user" method="post" enctype="application/x-www-form-urlencoded">
+                                                                                <h3> User account activate </h3>
+                                                                                <fieldset>
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-12">
+                                                                                            <label for="email-2-1" class="block">Email*</label>
+                                                                                        </div>
+                                                                                        <div class="col-sm-6">
+                                                                                            <input id="email-2-1" name="email" type="email" class=" form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-6">
+                                                                                        <button class="btn btn-primary btn-round" type="submit">Submit</button>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </fieldset>
+                                                                            </form>
+                                                                        </section>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="styleSelector">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('scripts'); %>
+
+<script>
+    $(document).ready(function(){
+        $("#showFormButton").click(function(){
+          $("#myFrom").toggle();
+        });
+      });
+</script>
+
+</body>
+
+</html>

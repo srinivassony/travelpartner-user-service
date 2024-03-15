@@ -1,0 +1,30 @@
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar main-menu">
+        <div class="pcoded-navigatio-lavel">Navigation</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <% if (isAuthenticated) { %>
+
+                <li class="pcoded-hasmenu">
+                    <a href="/dashboard">
+                        <span class="pcoded-micon"><i class="fa fa-home"></i></span>
+                        <span class="pcoded-mtext">Dashboard</span>
+                    </a>
+                </li>
+                <% } else {%>
+            <li class="pcoded-hasmenu">
+                <a href="/register">
+                    <span class="pcoded-micon"><i class="fa fa-sign-in"></i></span>
+                    <span class="pcoded-mtext">Sign Up</span>
+                </a>
+            </li>
+
+            <li class="pcoded-hasmenu">
+                <a href="/login">
+                    <span class="pcoded-micon"><i class="fa fa-sign-in"></i></span>
+                    <span class="pcoded-mtext">Sign In</span>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>
