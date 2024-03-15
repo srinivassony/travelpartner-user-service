@@ -374,3 +374,162 @@ exports.reSendInviteUser = async (req, res) =>
         return "";
     }
 }
+
+exports.resetPassword = async (req, res) =>
+{
+    try 
+    {
+        let email = req.body.email ? req.body.email : null;
+
+        if (!email)
+        {
+            req.flash('error', 'Email is requried.');
+
+            res.redirect('/reset-password');
+
+            return "";
+        }
+
+        let user = await db.getUserByEmailId(email);
+
+        if (!user)
+         {
+            req.flash('error', 'There is no user with such email.');
+
+            res.redirect('/reset-password');
+
+            return "";
+        }
+
+        try
+        {
+            var htmlData = {
+                name: user.userName ? user.userName : '',
+                id: user.id ? user.id : null,
+                email: user.email
+            };
+
+            let emailSubject = `Password reset for Saikoti`;
+            let emailBody = htmlTemplate.generateResetPassword(htmlData);
+
+            let userEmailParams = {
+                email: user.email,
+                subject: emailSubject,
+                message: emailBody,
+            };
+
+            let x = await smtp.sendEmail(userEmailParams);
+
+        }
+        catch (error)
+        {
+            req.flash('error', error.message);
+
+            res.redirect('/reset-password');
+
+            return "";
+        }
+
+        req.flash('success', 'Reset password email is sent to your email address');
+
+        res.redirect('/reset-password');
+
+        return "";
+    } 
+    catch (error) 
+    {
+        req.flash('error', error.message);
+
+        res.redirect('/reset-password');
+
+        return "";
+    }
+}
+
+exports.changePassword = async (req, res) =>
+{
+    try 
+    {
+        let email = req.body.email ? req.body.email : null;
+
+        let password = req.body.pass ? req.body.pass : null;
+
+        if (!email)
+        {
+            req.flash('error', 'Email is requried.');
+
+            res.redirect('/change-password');
+
+            return "";
+        }
+
+        if (!password)
+        {
+            req.flash('error', 'Password is requried.');
+
+            res.redirect('/change-password');
+
+            return "";
+        }
+
+        let user = await db.getUserByEmailId(email);
+
+        if (!user)
+         {
+            req.flash('error', 'There is no user with such email.');
+
+            res.redirect('/change-password');
+
+            return "";
+        }
+
+        if (user.isRegistered == 0 || user.isInvited == 0 || user.inviteOn == null) 
+        {
+            req.flash('error', 'User login failed. Try to activate your account');
+
+            res.redirect('/change-password');
+
+            return "";
+        }
+
+        let params = {
+            updatedAt : new Date(),
+            updatedBy: user.uuid
+        }
+
+        const saltRounds = 10; // Adjust the number of salt rounds as needed
+
+        try
+        {
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            params.password = hashedPassword;
+        } 
+        catch (error)
+        {
+            console.log('error',error)
+            req.flash('error', error.message);
+
+            res.redirect('/change-password');
+
+            return "";
+        }
+
+        console.log('params',params)
+
+        await db.updateUser(user.id, params);
+
+        req.flash('success', 'Password was changed successfuly.');
+
+        res.redirect('/login');
+
+        return "";
+    } 
+    catch (error) 
+    {
+        req.flash('error', error.message);
+
+        res.redirect('/change/password');
+
+        return "";
+    }
+}

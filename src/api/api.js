@@ -37,9 +37,21 @@ app.get('/', async (req, res) =>
 		message = null;
 	}
 
+	let message1 = req.flash('success');
+
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	res.render('pagesInfo/signin', {
 		isAuthenticated: false,
-		errorMessage: message
+		errorMessage: message,
+		sucessMessage: message1
 	});
 });
 
@@ -73,9 +85,21 @@ app.get('/login',  (req, res) =>
 		message = null;
 	}
 
+	let message1 = req.flash('success');
+
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	res.render('pagesInfo/signin',{
 		isAuthenticated: false,
-		errorMessage: message
+		errorMessage: message,
+		sucessMessage: message1
 	});
 });
 
@@ -130,6 +154,51 @@ app.get('/dashboard',  (req, res) =>
 	});
 });
 
+app.get('/reset-password',  (req, res) =>
+{
+	let message = req.flash('error');
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
+	res.render('pagesInfo/reset-password',{
+		isAuthenticated: false,
+		errorMessage: message,
+		sucessMessage: message1
+	});
+});
+
+app.get(`/change-password`,  async(req, res) =>
+{
+	let message = req.flash('error');
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	res.render('pagesInfo/change-password',{
+		isAuthenticated: false,
+		errorMessage: message
+	});
+});
+
 app.get('/logout', async function (req, res)
 {
 	req.session.destroy(function (err)
@@ -155,5 +224,13 @@ app.post('/api/resend/invite/user', userService.reSendInviteUser);
 
 app.get('/api/update/invite/user/:id', userService.InviteUser);
 
+app.post('/api/reset/password', userService.resetPassword);
+
+app.post('/api/change/password', userService.changePassword);
+
+app.all('*', (req, res, next) => 
+{
+    res.status(404).render('pagesInfo/404')
+});
 
 module.exports = app;
