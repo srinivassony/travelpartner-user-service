@@ -409,7 +409,7 @@ exports.resetPassword = async (req, res) =>
                 email: user.email
             };
 
-            let emailSubject = `Password reset for Saikoti`;
+            let emailSubject = `Password reset for Travel-partner`;
             let emailBody = htmlTemplate.generateResetPassword(htmlData);
 
             let userEmailParams = {
