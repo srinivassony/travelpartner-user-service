@@ -138,7 +138,6 @@ app.get('/dashboard',  (req, res) =>
 	var name = req.session.name;
 	var id = req.session.id;
 	var uuid = req.session.uuid;
-	var countInfo = req.session.count;
 
 	if (!req.session.isLoggedIn)
 	{
@@ -149,8 +148,7 @@ app.get('/dashboard',  (req, res) =>
 		isAuthenticated: req.session.isLoggedIn,
 		username: name,
 		id: id,
-		uuid: uuid,
-		countInfo: countInfo
+		uuid: uuid
 	});
 });
 
@@ -199,6 +197,46 @@ app.get(`/change-password`,  async(req, res) =>
 	});
 });
 
+app.get(`/user-profile`, async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let message = req.flash('error');
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
+	res.render('pagesInfo/user-profile', {
+		isAuthenticated: req.session.isLoggedIn,
+		username: name,
+		id: id,
+		uuid: uuid,
+		errorMessage: message,
+		sucessMessage: message1
+	});
+});
+
 app.get('/logout', async function (req, res)
 {
 	req.session.destroy(function (err)
@@ -227,6 +265,15 @@ app.get('/api/update/invite/user/:id', userService.InviteUser);
 app.post('/api/reset/password', userService.resetPassword);
 
 app.post('/api/change/password', userService.changePassword);
+
+app.post('/api/update/user', userService.updateUser);
+
+app.post('/api/user/id',async (req, res) =>
+{
+	let result =  res.json(await userService.getUserById(req.body));
+
+	return result;
+})
 
 app.all('*', (req, res, next) => 
 {
