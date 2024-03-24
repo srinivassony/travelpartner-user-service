@@ -1,3 +1,4 @@
+const config = require('../../config');
 const express = require('express');
 const cors = require('cors');
 let app = express();
@@ -5,14 +6,17 @@ const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 const bodyParser = require("body-parser");
+const multer = require('multer');
 
 let userService = require('../service/user');
+let imageService = require('../service/image');
 
 //middelwares
 app.use(flash());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true,  limit: '50mb' }));
 app.set('views', path.join(__dirname, '../../views'))
+app.set('uploads', path.join(__dirname, '../../uploads'))
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').renderFile);
 app.use(express.static(path.join(__dirname, '../../views')));
@@ -274,6 +278,24 @@ app.post('/api/user/id',async (req, res) =>
 
 	return result;
 })
+
+const documentUpload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) 
+        {
+            cb(null, config.upload_files);
+        },
+        filename: function (req, file, cb) 
+        {
+            cb(null, file.originalname);
+        }
+    })
+});
+
+app.post("/profile/pic/upload", documentUpload.single('file'), async (req, res) => 
+{
+	return res.json(await imageService.createProfilePicImage(req.file, req.body));
+});
 
 app.all('*', (req, res, next) => 
 {

@@ -13,6 +13,55 @@
     <meta name="author" content="#">
 
     <%- include('links'); %>
+    <style>
+          /* CSS for the upload icon */
+          .image-container {
+            position: relative;
+            display: inline-block;
+            display: block;
+          }
+        
+          /* CSS for the image */
+          .image-container img {
+            max-width: 100%;
+            height: auto;
+          }
+        
+          /* CSS for the upload icon */
+          .upload-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            font-size: 2em; /* Responsive font size */
+          }
+        
+          .image-container:hover .upload-icon {
+            opacity: 1;
+          }
+
+          .box {
+            width: 150px;
+            height: 150px;
+            overflow: hidden; /* Ensures the image doesn't overflow the box */
+            border: 2px solid rgba(46, 190, 226, 0.603);
+            border-radius: 5%;
+            overflow: hidden; /* Ensure the image doesn't overflow the box */
+    position: relative; /* Required for absolute positioning of image */
+          }
+          .box img {
+            width: 100%; /* Ensure the image fills the entire box horizontally */
+    height: 100%; /* Ensure the image fills the entire box vertically */
+    object-fit: cover; /* Ensure the image covers the entire box */
+    position: absolute; /* Position the image relative to the box */
+    top: 0; /* Align the image to the top */
+    left: 0; /* Align the image to the left */
+          }
+        
+    </style>
 </head>
 
 <body>
@@ -69,17 +118,24 @@
                                                                         src="../images/bg-img1.jpg" alt="bg-img">
                                                                     <div class="card-block user-info">
                                                                         <div class="col-md-12">
-                                                                            <div class="media-left">
-                                                                                <a href="#" class="profile-image">
-                                                                                    <img class="user-img img-radius"
-                                                                                        src="../images/user-img.jpg"
-                                                                                        alt="user-img">
-                                                                                </a>
+                                                                            <form>
+                                                                            <div class="media-left image-container">
+                                                                                <div class="box">
+                                            
+                                                                                    <a href="#" class="profile-image">
+                                                                                        <img class="user-img img-radius" id="myImage" src="#" alt="user-img">
+                                                                            
+                                                                                    </a>
+                                                                                    <label for="fileInput" class="upload-icon"><i class="fa fa-camera"></i></label>
+                                                                                    
+                                                                                    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+                                                                                    
+                                                                                </div>
                                                                             </div>
                                                                             <div class="media-body row">
                                                                                 <div class="col-lg-12">
                                                                                     <div class="user-title">
-                                                                                        <h2><%= username %></h2>
+                                                                                        <h2 id="userName"></h2>
                                                                                         <span class="text-white" ></span>
                                                                                     </div>
                                                                                 </div>
@@ -94,6 +150,7 @@ Message</button> -->
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -317,12 +374,12 @@ Message</button> -->
                                                                                                     <label class="col-sm-2 col-form-label">Gender
                                                                                                         </label>
                                                                                                     <div class="col-sm-10">
-                                                                                                        <div class="form-check form-check-inline radio radiofill radio-primary radio-inline">
+                                                                                                        <div class="form-check form-check-inline">
                                                                                                             <label class="form-check-label">
                                                                                                                 <input class="form-check-input" type="radio" name="gender" id="editGender" value="male"> Male
                                                                                                             </label>
                                                                                                         </div>
-                                                                                                        <div class="form-check form-check-inline radio radiofill radio-primary radio-inline">
+                                                                                                        <div class="form-check form-check-inline">
                                                                                                             <label class="form-check-label">
                                                                                                                 <input class="form-check-input" type="radio" name="gender" id="editGender" value="female"> Female
                                                                                                             </label>
@@ -380,84 +437,152 @@ Message</button> -->
 
 
         <%- include('scripts'); %>
+            <script>
+                function handleFileSelect(event)
+                {
+                    const file = event.target.files[0];
+                    console.log('file',file)
+                    if (!file)
+                    {
+                        alert('No file selected.');
+                        return;
+                    }
+                    else
+                    {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                          const imagePreview = document.getElementById('myImage');
+                          imagePreview.src = e.target.result;
+                          imagePreview.classList.add('selected'); // Add 'selected' class to the uploaded image
+                        };
+                    
+                        reader.readAsDataURL(file);
+                    }
+
+                    document.querySelector('.upload-icon').addEventListener('click', function() {
+                    document.getElementById('fileInput').click();
+                    });
+
+                    const userId = "<%= id %>";
+                    const uuid = "<%= uuid %>";
+                    console.log('userId',userId)
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('userId', userId);
+                    formData.append('uuid', uuid);
+
+                    fetch('/profile/pic/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response =>
+                        {
+                            if (response.ok)
+                            {
+                                return response.json();
+                            }
+                            throw new Error('Network response was not ok.');
+                        })
+                        .then(data =>
+                        {
+                            console.log(data); // Handle API response data here
+                            alert('File uploaded successfully.');
+
+                            if(data && data.status == 0)
+                            {
+                                alert('There was an error to upload the profile Picture');
+                            }
+                           
+                        })
+                        .catch(error =>
+                        {
+                            console.error('There was a problem with the fetch operation:', error);
+                            alert('Error uploading file. Please try again.');
+                        });
+                }
+               
+            </script>
 
         <script>
             const phoneInput = document.getElementById('editPhone');
-            
-            phoneInput.addEventListener('input', function() {
+
+            phoneInput.addEventListener('input', function ()
+            {
                 // Remove any non-digit characters
                 let phoneNumber = phoneInput.value.replace(/\D/g, '');
-                
+
                 // Limit to 10 digits
                 phoneNumber = phoneNumber.slice(0, 10);
-                
+
                 // Update the input value
                 phoneInput.value = phoneNumber;
             });
         </script>
-
+        
         <script>
-    
+
             function validateUpdateForm() 
             {
                 let name = document.forms["myUpdateForm"]["editName"].value;
                 let email = document.forms["myUpdateForm"]["editEmailInfo"].value;
                 let phone = document.forms["myUpdateForm"]["editPhone"].value;
-                
-    
+
+
                 let phoneValidation = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
                 let emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
+
                 if (!name) 
                 {
-                  document.getElementById('errorName').innerHTML="userName is required.";
-                  return false;
+                    document.getElementById('errorName').innerHTML = "userName is required.";
+                    return false;
                 }
-                else  if (name.toString().length < 2 ) 
+                else if (name.toString().length < 2) 
                 {
-                  document.getElementById('errorName').innerHTML="User name minimum character limit is 2";
-                  return false;
+                    document.getElementById('errorName').innerHTML = "User name minimum character limit is 2";
+                    return false;
                 }
-                else  if (name.toString().length > 30) 
+                else if (name.toString().length > 30) 
                 {
-                  document.getElementById('errorName').innerHTML="userName maximum character limit is 30.";
-                  return false;
+                    document.getElementById('errorName').innerHTML = "userName maximum character limit is 30.";
+                    return false;
                 }
-    
+
                 if (!email)
                 {
-                    document.getElementById('errorEmail').innerHTML="Email is required.";
+                    document.getElementById('errorEmail').innerHTML = "Email is required.";
                     return false;
                 }
                 else if (email && !(email.match(emailValidation)))
                 {
-                    document.getElementById('errorEmail').innerHTML="Invalid email address";
+                    document.getElementById('errorEmail').innerHTML = "Invalid email address";
                     return false;
                 }
                 else if (email && email.toString().length > 50)
                 {
-                    document.getElementById('errorEmail').innerHTML="Email maximum character limit is 50.";
+                    document.getElementById('errorEmail').innerHTML = "Email maximum character limit is 50.";
                     return false;
                 }
-    
+
                 if (phone && !(phone.match(phoneValidation)))
                 {
-                    document.getElementById('errorPhone').innerHTML="Invalid phone address";
+                    document.getElementById('errorPhone').innerHTML = "Invalid phone address";
                     return false;
                 }
-    
-                return true;
-              }
-              
-        </script>
 
+                return true;
+            }
+
+        </script>
+        
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function ()
+            {
                 // Prepare data to be sent in the request body
                 var requestData = {
                     id: "<%= id %>" // Example user ID, replace with your actual parameter
                 };
-    console.log('requestData',requestData)
+                console.log('requestData', requestData)
                 // Fetch user data from the backend when the page loads
                 fetch('/api/user/id', {
                     method: 'POST',
@@ -466,49 +591,76 @@ Message</button> -->
                     },
                     body: JSON.stringify(requestData)
                 })
-                .then(response => response.json())
-                .then(data => {
-                    // Populate input boxes with fetched data
-                    let user =  data && data.userDetails ? data.userDetails : null;
-                    console.log('user',user)
-                    document.getElementById('name').textContent = user.userName;
-                    document.getElementById('editName').value = user.userName;
-
-                    document.getElementById('emailInfo').textContent = user.email;
-                    document.getElementById('editEmailInfo').value = user.email;
-
-                    document.getElementById('phone').textContent = user.phone;
-                    document.getElementById('editPhone').value = user.phone;
-
-                    document.getElementById('dob').textContent = user.dob;
-                    document.getElementById('editDob').value = user.dob;
-
-                    document.getElementById('country').textContent = user.country;
-                    document.getElementById('editCountry').value = user.country;
-
-                    document.getElementById('state').textContent = user.state;
-                    document.getElementById('editState').value = user.state;
-
-                    document.getElementById('gender').textContent = user.gender;
-                    document.getElementById('editGender').value = user.gender; 
-
-                    if (user.gender === 'male') 
+                .then(response =>
+                {
+                    if (response.ok)
                     {
-                        document.getElementById('editGender').checked = true;
-                    } 
-                    else if (user.gender === 'female') 
-                    {
-                        document.getElementById('editGender').checked = true;
+                        return response.json();
                     }
-                 
+                    throw new Error('Network response was not ok.');
                 })
-                .catch(error => {
-                    console.error('Error fetching user data:', error);
-                });
-               
-            });
-          </script>
-    
-</body>
+                    .then(data =>
+                    {
+                        // Populate input boxes with fetched data
+                        let user = data && data.userDetails ? data.userDetails : null;
+                        let image = user && user.image ? user.image : null
+                        console.log('user', user)
+                        console.log('image', image)
 
-</html>
+                        document.getElementById('name').textContent = user.userName;
+                        document.getElementById('editName').value = user.userName;
+
+                        document.getElementById('emailInfo').textContent = user.email;
+                        document.getElementById('editEmailInfo').value = user.email;
+
+                        document.getElementById('phone').textContent = user.phone;
+                        document.getElementById('editPhone').value = user.phone;
+
+                        document.getElementById('dob').textContent = user.dob;
+                        document.getElementById('editDob').value = user.dob;
+
+                        document.getElementById('country').textContent = user.country;
+                        document.getElementById('editCountry').value = user.country;
+
+                        document.getElementById('state').textContent = user.state;
+                        document.getElementById('editState').value = user.state;
+
+                        document.getElementById('gender').textContent = user.gender;
+
+                        if (user.gender === 'male') 
+                        {
+                            document.getElementById('editGender').checked = true;
+                        }
+                        else if (user.gender === 'female') 
+                        {
+                            document.getElementById('editGender').checked = true;
+                        }
+
+                        if(image)
+                        {
+                            const uploadedImage = document.getElementById('myImage');
+                            uploadedImage.src = '../images/uploads/'+image.profilePicId+'/'+image.profilePicName;
+                            uploadedImage.style.display = 'block'; // Show the image element
+                        }
+                        else
+                        {
+                            const uploadedImage = document.getElementById('myImage');
+                            uploadedImage.src = `../images/human.png`;
+                            uploadedImage.style.display = 'block'; // Show the image element
+                        }
+
+                        let userName = document.getElementById('userName');
+                        userName.textContent = user.userName;
+
+                    })
+                    .catch(error =>
+                    {
+                        console.error('Error fetching user data:', error);
+                    });
+
+            });
+        </script>
+        
+        </body>
+        
+        </html>
