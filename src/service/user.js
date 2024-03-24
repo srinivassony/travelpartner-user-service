@@ -5,6 +5,7 @@ const Status = common.Status;
 const htmlTemplate = require('../utils/htmlTemplate');
 const smtp = require('../service/smtp');
 let emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+let phoneValidation = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 exports.createUser = async (req, res) =>
 {
@@ -409,7 +410,7 @@ exports.resetPassword = async (req, res) =>
                 email: user.email
             };
 
-            let emailSubject = `Password reset for Saikoti`;
+            let emailSubject = `Password reset for Travel-partner`;
             let emailBody = htmlTemplate.generateResetPassword(htmlData);
 
             let userEmailParams = {
@@ -529,6 +530,148 @@ exports.changePassword = async (req, res) =>
         req.flash('error', error.message);
 
         res.redirect('/change/password');
+
+        return "";
+    }
+}
+
+exports.getUserById = async (reqParams) =>
+{
+    try
+    {
+        let userId = reqParams.id ? reqParams.id : null;
+
+        if (!userId)
+        {
+            req.flash('error', 'user id is required.');
+
+            res.redirect('/user-profile');
+        }
+
+        let userDetails = await db.getUserDetailsById(userId);
+
+        return {
+            status: Status.SUCCESS,
+            userDetails: userDetails
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
+
+exports.updateUser = async (req, res) =>
+{
+    try
+    {
+        let userName = req.body.userName ? req.body.userName : null;
+        let email = req.body.emailInfo ? req.body.emailInfo.toLowerCase() : null;
+        let phone = req.body.phone ? req.body.phone : null;
+        let dob = req.body.dob ? req.body.dob : null;
+        let country = req.body.country ? req.body.country : null;
+        let state = req.body.state ? req.body.state : null;
+        let gender = req.body.gender ? req.body.gender : null;
+        let uuid = req.body.uuid ? req.body.uuid : null;
+        let id = req.body.userId ? req.body.userId : null;
+
+
+        if (!email)
+        {
+            req.flash('error', 'Email is required.');
+        
+            res.redirect('/user-profile');
+
+            return "";
+        }
+        else if (email && !(email.match(emailValidation)))
+        {
+            req.flash('error', 'Invalid email address');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
+        else if (email && email.toString().length > 50)
+        {
+            req.flash('error', 'Email maximum character limit is 50.');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
+
+        if (phone && !(phone.match(phoneValidation)))
+        {
+            req.flash('error', 'Invalid phone number');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
+
+        if (!userName)
+        {
+            req.flash('error', 'userName is required.');
+        
+            res.redirect('/user-profile');
+
+            return "";
+        }
+        if(userName.toString().length < 2 )
+        {
+            req.flash('error', 'userName minimum character limit is 2.');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
+        else if (userName && userName.toString().length > 30)
+        {
+            req.flash('error', 'userName maximum character limit is 30.');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
+
+        let params = {
+            userName: userName,
+            email: email,
+            phone: phone,
+            dob: dob,
+            country: country,
+            state: state,
+            gender: gender,
+            updatedAt: new Date(),
+            updatedBy: uuid
+        }
+
+        console.log('params',params)
+
+        let updateUser = await db.updateUser(id, params);
+
+        console.log('updateUser',updateUser)
+
+        if(!updateUser)
+        {
+            req.flash('error', 'User Profile not updated');
+        
+            res.redirect('/user-profile');
+        }
+
+        req.flash('success', 'User Profile updated successfully');
+        
+        res.redirect('/user-profile');
+    }
+    catch (error) 
+    {
+        req.flash('error', error.message);
+
+        res.redirect('/user-profile');
 
         return "";
     }
