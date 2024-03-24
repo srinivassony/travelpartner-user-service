@@ -17,7 +17,7 @@ let getUserLoginDetails = async (email) =>
 
 let getUserDetailsById = async(id) =>
 {
-  return await User.query().select().where('id', id).first();
+  return await User.query().select().where('id', id).withGraphFetched('[image]').first();
 }
 
 let updateUser = async (id, data) =>

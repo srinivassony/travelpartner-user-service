@@ -61,7 +61,9 @@ module.exports = {
         paswd: process.env.SMTP_PASS || environmentConfig.SMTP.PASWD,
         sender: process.env.EMAIL_SENDER || environmentConfig.SMTP.SENDER,
         bcc: process.env.EMAIL_BCC || environmentConfig.SMTP.BCC
-    }
+    },
+    root_dir: __dirname,
+    upload_files: environmentConfig.UPLOADS || __dirname + '/views/images/uploads/'
 }
 
 
