@@ -10,6 +10,8 @@ const multer = require('multer');
 
 let userService = require('../service/user');
 let imageService = require('../service/image');
+let galleryService = require('../service/gallery');
+
 
 //middelwares
 app.use(flash());
@@ -17,6 +19,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true,  limit: '50mb' }));
 app.set('views', path.join(__dirname, '../../views'))
 app.set('uploads', path.join(__dirname, '../../uploads'))
+app.set('gallery', path.join(__dirname, '../gallery'))
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').renderFile);
 app.use(express.static(path.join(__dirname, '../../views')));
@@ -296,6 +299,26 @@ app.post("/profile/pic/upload", documentUpload.single('file'), async (req, res) 
 {
 	return res.json(await imageService.createProfilePicImage(req.file, req.body));
 });
+
+const imagesUpload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) 
+        {
+            cb(null, config.gallery_files);
+        },
+        filename: function (req, file, cb) 
+        {
+            cb(null, file.originalname);
+        }
+    })
+});
+
+// app.post("/upload/images", imagesUpload.single('file_name'), async (req, res) => 
+// {
+// 	return res.json(await galleryService.createImage(req.file, req.body));
+// });
+
+app.post("/upload/images", imagesUpload.single('file_name'),galleryService.createImage); 
 
 app.all('*', (req, res, next) => 
 {
