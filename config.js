@@ -63,7 +63,9 @@ module.exports = {
         bcc: process.env.EMAIL_BCC || environmentConfig.SMTP.BCC
     },
     root_dir: __dirname,
-    upload_files: environmentConfig.UPLOADS || __dirname + '/views/images/uploads/'
+    upload_files: environmentConfig.UPLOADS || __dirname + '/views/images/uploads/',
+    gallery_files: environmentConfig.UPLOADS || __dirname + '/views/gallery/'
+
 }
 
 
