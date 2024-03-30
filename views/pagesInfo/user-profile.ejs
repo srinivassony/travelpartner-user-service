@@ -127,60 +127,83 @@
                 right: 15px;
                 top: 20px;
             }
-              #imageContainer {
+
+            #imageContainer {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-              }
-              /* Style for each image */
-              #imageContainer img {
-                width: 100px; /* Adjust the width as needed */
-                height: auto; /* Maintain aspect ratio */
-                margin: 10px; /* Add space between images */
-                cursor: pointer; /* Show pointer cursor */
-              }
-              .modal {
-                display: none; /* Hidden by default */
-                position: fixed; /* Position the modal */
-                z-index: 1000; /* Ensure modal is above other content */
+            }
+
+            /* Style for each image */
+            #imageContainer img {
+                width: 100px;
+                /* Adjust the width as needed */
+                height: auto;
+                /* Maintain aspect ratio */
+                margin: 10px;
+                /* Add space between images */
+                cursor: pointer;
+                /* Show pointer cursor */
+            }
+
+            /* Modal styles */
+            .modal {
+                display: none;
+                /* Hidden by default */
+                position: fixed;
+                /* Position the modal */
+                z-index: 1000;
+                /* Ensure modal is above other content */
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
-                overflow: auto; /* Enable scrolling if needed */
-                background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
-              }
-              
-              /* Modal content */
-              .modal-content {
-                margin: 10% auto; /* Center modal on screen */
-                max-width: 40%; /* Max width of modal */
+                overflow: auto;
+                /* Enable scrolling if needed */
+                background-color: rgba(0, 0, 0, 0.8);
+                /* Black background with opacity */
+            }
+
+            /* Modal content */
+            .modal-content {
+                margin: 10% auto;
+                /* Center modal on screen */
+                width: 40%;
+                /* Width of modal content */
+                height: 40%;
+                /* Height of modal content (40% of viewport height) */
                 position: relative;
                 text-align: center;
-                color: #fff; /* Text color */
-              }
-              
-              /* Close button */
-              .close {
+                color: #fff;
+                /* Text color */
+                overflow: hidden;
+                /* Hide overflow content */
+            }
+
+            /* Close button */
+            .close {
                 position: absolute;
                 top: 10px;
                 right: 20px;
                 font-size: 30px;
                 color: #fff;
                 cursor: pointer;
-              }
-              
-              /* Image inside modal */
-              .modal-content img {
-                max-width: 90%;
-                max-height: 80vh; /* Limit height to viewport height */
-                margin-bottom: 20px;
-              }
-              
-              /* Navigation buttons */
-              .nav-button {
-                background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-                color: #000; /* Text color */
+            }
+
+            /* Image inside modal */
+            .modal-content img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                /* Fit the image inside its container */
+            }
+
+            /* Navigation buttons */
+            .nav-button {
+                background-color: rgba(255, 255, 255, 0.5);
+                /* Semi-transparent white */
+                color: #000;
+                /* Text color */
                 border: none;
                 padding: 10px 20px;
                 margin: 10px;
@@ -188,17 +211,19 @@
                 border-radius: 5px;
                 position: absolute;
                 bottom: 10px;
-              }
-              
-              /* Style for Previous button */
-              #prevButton {
-                left: 20px; /* Position to the left */
-              }
-              
-              /* Style for Next button */
-              #nextButton {
-                right: 20px; /* Position to the right */
-              }
+            }
+
+            /* Style for Previous button */
+            #prevButton {
+                left: 20px;
+                /* Position to the left */
+            }
+
+            /* Style for Next button */
+            #nextButton {
+                right: 20px;
+                /* Position to the right */
+            }
         </style>
 </head>
 
@@ -687,27 +712,59 @@
                                                                         </div>
                                                                         <div class="card-block">
 
-                                                                            <div class="upload-card">
-                                                                                <div class="text-right">
-                                                                                    <button
-                                                                                        class="btn btn-primary mb-3 file-add">Add
-                                                                                        More File</button>
-                                                                                </div>
-                                                                                <div class="file-upload">
-                                                                                    <div class="file-select">
-                                                                                        <div class="imagePreview"></div>
-                                                                                        <button
-                                                                                            class="btn btn-secondary">Choose
-                                                                                            File</button>
-                                                                                        <div class="file-select-name">No
-                                                                                            File Chosen</div>
-                                                                                        <input type="file"
-                                                                                            accept="image/*"
-                                                                                            class="profileimg"
-                                                                                            onchange="uploadImages(event)"
-                                                                                            id="imageUpload">
+                                                                            <div class="j-wrapper j-wrapper-640">
+                                                                                <form action="/upload/images"
+                                                                                    method="post" class="j-pro"
+                                                                                    id="j-pro" enctype="multipart/form-data"
+                                                                                    >
+                                                                                    <div class="j-content">
+
+                                                                                        <div
+                                                                                            class="j-divider j-gap-bottom-25">
+                                                                                        </div>
+
+                                                                                        <div class="j-unit">
+                                                                                            <div
+                                                                                                class="j-input j-append-big-btn">
+                                                                                                <label
+                                                                                                    class="j-icon-left"
+                                                                                                    for="file_input">
+                                                                                                    <i
+                                                                                                        class="icofont icofont-download"></i>
+                                                                                                </label>
+                                                                                                <div
+                                                                                                    class="j-file-button">
+                                                                                                    Browse
+                                                                                                    <input type="file"
+                                                                                                        name="file_name"
+                                                                                                        onchange="document.getElementById('file_input').value = this.value;">
+                                                                                                </div>
+                                                                                                <input type="text"
+                                                                                                    id="file_input"
+                                                                                                    readonly
+                                                                                                    placeholder="no file selected">
+                                                                                                    <input type="hidden" name="userId" value="<%= id %>">
+                                                                                                    <input type="hidden" name="uuid" value="<%= uuid %>">
+                                                                                                <span
+                                                                                                    class="j-hint">Only:
+                                                                                                    jpg / png,
+                                                                                                    less 1Mb</span>
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="j-response"></div>
+
                                                                                     </div>
-                                                                                </div>
+
+                                                                                    <div class="j-footer">
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-primary" id="imageUpload">Send</button>
+                                                                                        <button type="reset"
+                                                                                            class="btn btn-default m-r-20">Reset</button>
+                                                                                    </div>
+
+                                                                                </form>
                                                                             </div>
 
                                                                         </div>
@@ -717,49 +774,58 @@
                                                                 </div>
 
                                                                 <!-- gallery Images -->
-<div class="tab-pane" id="gallery" role="tabpanel">
-    <div class="page-body gallery-page">
-        <div class="row">
+                                                                <div class="tab-pane" id="gallery" role="tabpanel">
+                                                                    <div class="page-body gallery-page">
+                                                                        <div class="row">
 
-            <div class="col-sm-12">
+                                                                            <div class="col-sm-12">
 
-                <div class="card">
-                    <div class="card-header">
-                        <h5>User Gallery</h5>
-                    </div>
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-12">
-                              
-                                    <div  id="imageContainer">
-                                 
-                                    </div>
-                                    <div id="imageModal" class="modal">
-                                        <div class="modal-content">
-                                            <span class="close">&times;</span>
-                                            <img id="modalImage" src="" alt="Modal Image">
-                                            <!-- Navigation buttons -->
-                                            <button class="nav-button" id="prevButton">Previous</button>
-                                            <button class="nav-button" id="nextButton">Next</button>
-                                        </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                                                                <div class="card">
+                                                                                    <div class="card-header">
+                                                                                        <h5>User Gallery</h5>
+                                                                                    </div>
+                                                                                    <div class="card-block">
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-12">
 
-            </div>
+                                                                                                <div
+                                                                                                    id="imageContainer">
+
+                                                                                                </div>
+                                                                                                <div id="imageModal"
+                                                                                                    class="modal">
+                                                                                                    <div
+                                                                                                        class="modal-content">
+                                                                                                        <span
+                                                                                                            class="close">&times;</span>
+                                                                                                        <img id="modalImage"
+                                                                                                            src=""
+                                                                                                            alt="Modal Image">
+                                                                                                        <!-- Navigation buttons -->
+                                                                                                        <button
+                                                                                                            class="nav-button"
+                                                                                                            id="prevButton">Previous</button>
+                                                                                                        <button
+                                                                                                            class="nav-button"
+                                                                                                            id="nextButton">Next</button>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
 
 
-        </div>
-    </div>
+                                                                            </div>
+                                                                        </div>
 
 
-</div>
-                                                                   
+                                                                    </div>
+
 
                                                                 </div>
-
 
                                                             </div>
                                                         </div>
@@ -832,11 +898,14 @@
                         .then(data =>
                         {
                             console.log(data); // Handle API response data here
-                            alert('File uploaded successfully.');
 
                             if (data && data.status == 0)
                             {
                                 alert('There was an error to upload the profile Picture');
+                            }
+                            else if (data && data.status == 1)
+                            {
+                                alert('File uploaded successfully.');
                             }
 
                         })
@@ -949,13 +1018,13 @@
                             // Populate input boxes with fetched data
                             let user = data && data.userDetails ? data.userDetails : null;
                             let image = user && user.image ? user.image : null;
-                            let galleryImages = user && user.gallerys? user.gallerys:[];
+                            let galleryImages = user && user.gallerys ? user.gallerys : [];
                             const modal = document.getElementById('imageModal');
                             const modalImage = document.getElementById('modalImage');
                             let currentImageIndex = 0;
                             let gallerys = [];
 
-                            console.log('galleryImages',galleryImages)
+                            console.log('galleryImages', galleryImages)
 
                             document.getElementById('name').textContent = user.userName;
                             document.getElementById('editName').value = user.userName;
@@ -1002,94 +1071,96 @@
                             let userName = document.getElementById('userName');
                             userName.textContent = user.userName;
 
-                            if(galleryImages && galleryImages.length > 0)
+                            if (galleryImages && galleryImages.length > 0)
                             {
                                 const container = document.getElementById('imageContainer');
-                                
+
                                 // Clear existing images in the container
                                 container.innerHTML = '';
-                                
-                                // Loop through the array and create img elements
-                                galleryImages.forEach((imageUrl,index) => {
 
-                                    gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName); 
+                                // Loop through the array and create img elements
+                                galleryImages.forEach((imageUrl, index) =>
+                                {
+
+                                    gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName);
 
                                 });
 
-                                gallerys.forEach((imageUrl,index) => {
+                                gallerys.forEach((imageUrl, index) =>
+                                {
                                     const img = document.createElement('img');
                                     img.src = imageUrl
-                                    img.className="img-fluid img-thumbnail";
+                                    img.className = "img-fluid img-thumbnail";
                                     img.alt = 'Image';
                                     img.addEventListener('click', () => openModal(index));
                                     container.appendChild(img);
-                                    
+
                                 });
 
 
 
-                                console.log('gallerys',gallerys)
+                                console.log('gallerys', gallerys)
                                 // Open the modal with the selected image
                                 function openModal(index) 
                                 {
                                     currentImageIndex = index;
                                     modalImage.src = gallerys[currentImageIndex];
                                     modal.style.display = 'block';
-                                
+
                                     // Close modal when close button or outside modal is clicked
                                     const closeBtn = document.querySelector('.close');
                                     closeBtn.onclick = closeModal;
-                                    window.onclick = function(event) 
+                                    window.onclick = function (event) 
                                     {
                                         if (event.target === modal) 
                                         {
                                             closeModal();
                                         }
                                     };
-                                
+
                                     // Update navigation buttons visibility
-                                 
+
                                     updateNavButtons();
                                 }
 
-                                    // Function to close the modal
-                                    function closeModal() 
+                                // Function to close the modal
+                                function closeModal() 
+                                {
+                                    modal.style.display = 'none';
+                                }
+                                // Function to update navigation buttons visibility
+                                function updateNavButtons() 
+                                {
+                                    const prevBtn = document.getElementById('prevButton');
+                                    const nextBtn = document.getElementById('nextButton');
+
+                                    prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+                                    nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
+                                }
+
+                                // Event listeners for navigation buttons
+                                document.getElementById('prevButton').addEventListener('click', () => 
+                                {
+                                    if (currentImageIndex > 0) 
                                     {
-                                        modal.style.display = 'none';
+                                        currentImageIndex--;
+                                        modalImage.src = gallerys[currentImageIndex];
+                                        updateNavButtons();
                                     }
-                                    // Function to update navigation buttons visibility
-                                    function updateNavButtons() 
+                                });
+
+                                document.getElementById('nextButton').addEventListener('click', () => 
+                                {
+                                    if (currentImageIndex < gallerys.length - 1) 
                                     {
-                                        const prevBtn = document.getElementById('prevButton');
-                                        const nextBtn = document.getElementById('nextButton');
-                                    
-                                        prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
-                                        nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
+                                        currentImageIndex++;
+                                        modalImage.src = gallerys[currentImageIndex];
+                                        updateNavButtons();
                                     }
-                                    
-                                    // Event listeners for navigation buttons
-                                    document.getElementById('prevButton').addEventListener('click', () => 
-                                    {
-                                        if (currentImageIndex > 0) 
-                                        {
-                                            currentImageIndex--;
-                                            modalImage.src = gallerys[currentImageIndex];
-                                            updateNavButtons();
-                                        }
-                                    });
-                                    
-                                    document.getElementById('nextButton').addEventListener('click', () => 
-                                    {
-                                        if (currentImageIndex < gallerys.length - 1) 
-                                        {
-                                            currentImageIndex++;
-                                            modalImage.src = gallerys[currentImageIndex];
-                                            updateNavButtons();
-                                        }
-                                    });
+                                });
 
                             }
-                               
+
                         })
                         .catch(error =>
                         {
@@ -1098,105 +1169,6 @@
 
                 });
             </script>
-
-            <script>
-                $(document).ready(function ()
-                {
-                    $(document).on('change', '.file-upload input[type="file"]', function ()
-                    {
-                        var filename = $(this).val();
-                        if (/^\s*$/.test(filename))
-                        {
-                            $(this).parents(".file-upload").find(".file-select-name").text("No file chosen...");
-                        } else
-                        {
-                            $(this).parents(".file-upload").find(".file-select-name").text(filename.substring(filename.lastIndexOf("\\") + 1, filename.length));
-                        }
-
-                        var uploadFile = $(this);
-                        var files = !!this.files ? this.files : [];
-                        if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
-
-                        if (/^image/.test(files[0].type))
-                        { // only image file
-                            var reader = new FileReader(); // instance of the FileReader
-                            reader.readAsDataURL(files[0]); // read the local file
-
-                            reader.onloadend = function ()
-                            { // set image data as background of div
-                                // alert(uploadFile.closest(".file-upload").find('.imagePreview').length);
-                                uploadFile.closest(".file-upload").find('.imagePreview').css("background-image", "url(" + this.result + ")");
-                            }
-                        }
-                    });
-                    $(document).on('click', '.file-remove', function (e)
-                    {
-                        e.preventDefault();
-                        $(this).closest('.file-upload').remove();
-                        return false;
-                    });
-
-                });
-
-            </script>
-
-            <script>
-                function uploadImages(event)
-                {
-                    const file = event.target.files[0];
-                    console.log('file', file)
-                    if (!file)
-                    {
-                        alert('No file selected.');
-                        return;
-                    }
-
-                    document.addEventListener('click', function ()
-                    {
-                        document.getElementById('imageUpload').click();
-                    });
-
-                    const userId = "<%= id %>";
-                    const uuid = "<%= uuid %>";
-                    console.log('userId', userId)
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('userId', userId);
-                    formData.append('uuid', uuid);
-
-                    fetch('/upload/images', {
-                        method: 'POST',
-                        body: formData
-                    })
-                        .then(response =>
-                        {
-                            if (response.ok)
-                            {
-                                return response.json();
-                            }
-                            throw new Error('Network response was not ok.');
-                        })
-                        .then(data =>
-                        {
-                            console.log(data); // Handle API response data here
-
-                            if (data && data.status == 0)
-                            {
-                                alert('There was an error to upload the profile Picture');
-                            }
-                            else if (data && data.status == 1)
-                            {
-                                alert('File uploaded successfully.');
-                            }
-                        })
-                        .catch(error =>
-                        {
-                            console.error('There was a problem with the fetch operation:', error);
-                            alert('Error uploading file. Please try again.');
-                        });
-                }
-            </script>
-
 </body>
 
 </html>

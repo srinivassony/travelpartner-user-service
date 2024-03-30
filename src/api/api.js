@@ -313,10 +313,12 @@ const imagesUpload = multer({
     })
 });
 
-app.post("/upload/images", imagesUpload.single('file'), async (req, res) => 
-{
-	return res.json(await galleryService.createImage(req.file, req.body));
-});
+// app.post("/upload/images", imagesUpload.single('file_name'), async (req, res) => 
+// {
+// 	return res.json(await galleryService.createImage(req.file, req.body));
+// });
+
+app.post("/upload/images", imagesUpload.single('file_name'),galleryService.createImage); 
 
 app.all('*', (req, res, next) => 
 {
