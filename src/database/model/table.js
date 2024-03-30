@@ -2,7 +2,8 @@ const config = require('../../../config');
 
 const tables = {
     user: 'tp_user',
-    image: 'tp_image'
+    image: 'tp_image',
+    gallery: 'tp_gallery'
 };
 
 const rdsPrefix = config.rdsSql.owner;

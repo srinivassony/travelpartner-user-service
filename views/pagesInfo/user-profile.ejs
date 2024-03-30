@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Adminty - Premium Admin Template by Colorlib </title>
+    <title>User profile - Travel-partner</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -13,55 +13,193 @@
     <meta name="author" content="#">
 
     <%- include('links'); %>
-    <style>
-          /* CSS for the upload icon */
-          .image-container {
-            position: relative;
-            display: inline-block;
-            display: block;
-          }
-        
-          /* CSS for the image */
-          .image-container img {
-            max-width: 100%;
-            height: auto;
-          }
-        
-          /* CSS for the upload icon */
-          .upload-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-            font-size: 2em; /* Responsive font size */
-          }
-        
-          .image-container:hover .upload-icon {
-            opacity: 1;
-          }
+        <style>
+            /* CSS for the upload icon */
+            .image-container {
+                position: relative;
+                display: inline-block;
+                display: block;
+            }
 
-          .box {
-            width: 150px;
-            height: 150px;
-            overflow: hidden; /* Ensures the image doesn't overflow the box */
-            border: 2px solid rgba(46, 190, 226, 0.603);
-            border-radius: 5%;
-            overflow: hidden; /* Ensure the image doesn't overflow the box */
-    position: relative; /* Required for absolute positioning of image */
-          }
-          .box img {
-            width: 100%; /* Ensure the image fills the entire box horizontally */
-    height: 100%; /* Ensure the image fills the entire box vertically */
-    object-fit: cover; /* Ensure the image covers the entire box */
-    position: absolute; /* Position the image relative to the box */
-    top: 0; /* Align the image to the top */
-    left: 0; /* Align the image to the left */
-          }
-        
-    </style>
+            /* CSS for the image */
+            .image-container img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* CSS for the upload icon */
+            .upload-icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                cursor: pointer;
+                font-size: 2em;
+                /* Responsive font size */
+            }
+
+            .image-container:hover .upload-icon {
+                opacity: 1;
+            }
+
+            .box {
+                width: 150px;
+                height: 150px;
+                overflow: hidden;
+                /* Ensures the image doesn't overflow the box */
+                border: 2px solid rgba(46, 190, 226, 0.603);
+                border-radius: 5%;
+                overflow: hidden;
+                /* Ensure the image doesn't overflow the box */
+                position: relative;
+                /* Required for absolute positioning of image */
+            }
+
+            .box img {
+                width: 100%;
+                /* Ensure the image fills the entire box horizontally */
+                height: 100%;
+                /* Ensure the image fills the entire box vertically */
+                object-fit: cover;
+                /* Ensure the image covers the entire box */
+                position: absolute;
+                /* Position the image relative to the box */
+                top: 0;
+                /* Align the image to the top */
+                left: 0;
+                /* Align the image to the left */
+            }
+
+            .upload-card {
+                width: 600px;
+                padding: 30px;
+                margin: 0 auto;
+                background-color: #f5f5f5;
+            }
+
+            .imagePreview {
+                width: 38px;
+                height: 38px;
+                border-radius: 4px;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                margin-right: 15px;
+            }
+
+            .file-upload {
+                display: flex;
+                align-items: center;
+                padding: 15px;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+                margin-bottom: 15px;
+                position: relative;
+                border-radius: 4px;
+                background-color: #fff;
+            }
+
+            .file-select {
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+            }
+
+
+            .file-select-name {
+                margin-left: 15px;
+            }
+
+            .file-select input[type=file] {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .file-remove {
+                margin-left: 15px;
+                position: absolute;
+                right: 15px;
+                top: 20px;
+            }
+              #imageContainer {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+              }
+              /* Style for each image */
+              #imageContainer img {
+                width: 100px; /* Adjust the width as needed */
+                height: auto; /* Maintain aspect ratio */
+                margin: 10px; /* Add space between images */
+                cursor: pointer; /* Show pointer cursor */
+              }
+              .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Position the modal */
+                z-index: 1000; /* Ensure modal is above other content */
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto; /* Enable scrolling if needed */
+                background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+              }
+              
+              /* Modal content */
+              .modal-content {
+                margin: 10% auto; /* Center modal on screen */
+                max-width: 40%; /* Max width of modal */
+                position: relative;
+                text-align: center;
+                color: #fff; /* Text color */
+              }
+              
+              /* Close button */
+              .close {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+                color: #fff;
+                cursor: pointer;
+              }
+              
+              /* Image inside modal */
+              .modal-content img {
+                max-width: 90%;
+                max-height: 80vh; /* Limit height to viewport height */
+                margin-bottom: 20px;
+              }
+              
+              /* Navigation buttons */
+              .nav-button {
+                background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+                color: #000; /* Text color */
+                border: none;
+                padding: 10px 20px;
+                margin: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+                position: absolute;
+                bottom: 10px;
+              }
+              
+              /* Style for Previous button */
+              #prevButton {
+                left: 20px; /* Position to the left */
+              }
+              
+              /* Style for Next button */
+              #nextButton {
+                right: 20px; /* Position to the right */
+              }
+        </style>
 </head>
 
 <body>
@@ -83,11 +221,27 @@
 
                                                 <div class="page-header">
                                                     <div class="row align-items-end">
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-4">
                                                             <div class="page-header-title">
                                                                 <div class="d-inline">
                                                                     <h4>User Profile</h4>
                                                                     <span>User profile details</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="page-header-title">
+                                                                <div class="d-inline">
+                                                                    <% if (errorMessage) { %>
+                                                                        <span style="color: red;font-weight:bold;">
+                                                                            <%= errorMessage %>
+                                                                        </span>
+                                                                        <%} else if(sucessMessage){ %>
+                                                                            <span
+                                                                                style="color: green;font-weight:bold;">
+                                                                                <%= sucessMessage %>
+                                                                            </span>
+                                                                            <%}%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -119,37 +273,47 @@
                                                                     <div class="card-block user-info">
                                                                         <div class="col-md-12">
                                                                             <form>
-                                                                            <div class="media-left image-container">
-                                                                                <div class="box">
-                                            
-                                                                                    <a href="#" class="profile-image">
-                                                                                        <img class="user-img img-radius" id="myImage" src="#" alt="user-img">
-                                                                            
-                                                                                    </a>
-                                                                                    <label for="fileInput" class="upload-icon"><i class="fa fa-camera"></i></label>
-                                                                                    
-                                                                                    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
-                                                                                    
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="media-body row">
-                                                                                <div class="col-lg-12">
-                                                                                    <div class="user-title">
-                                                                                        <h2 id="userName"></h2>
-                                                                                        <span class="text-white" ></span>
+                                                                                <div class="media-left image-container">
+                                                                                    <div class="box">
+
+                                                                                        <a href="#"
+                                                                                            class="profile-image">
+                                                                                            <img class="user-img img-radius"
+                                                                                                id="myImage" src="#"
+                                                                                                alt="user-img">
+
+                                                                                        </a>
+                                                                                        <label for="fileInput"
+                                                                                            class="upload-icon"><i
+                                                                                                class="fa fa-camera"></i></label>
+
+                                                                                        <input type="file"
+                                                                                            id="fileInput"
+                                                                                            accept="image/*"
+                                                                                            style="display: none;"
+                                                                                            onchange="handleFileSelect(event)">
+
                                                                                     </div>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <div class="pull-right cover-btn">
-                                                                                        <button type="button"
-                                                                                            class="btn btn-primary m-r-10 m-b-5"><i
-                                                                                                class="icofont icofont-plus"></i>
-                                                                                            Follow</button>
-                                                                                        <!-- <button type="button" class="btn btn-primary"><i class="icofont icofont-ui-messaging"></i>
-Message</button> -->
+                                                                                <div class="media-body row">
+                                                                                    <div class="col-lg-12">
+                                                                                        <div class="user-title">
+                                                                                            <h2 id="userName"></h2>
+                                                                                            <span
+                                                                                                class="text-white"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <div
+                                                                                            class="pull-right cover-btn">
+                                                                                            <button type="button"
+                                                                                                class="btn btn-primary m-r-10 m-b-5"><i
+                                                                                                    class="icofont icofont-plus"></i>
+                                                                                                Follow</button>
+
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
                                                                             </form>
                                                                         </div>
                                                                     </div>
@@ -170,28 +334,26 @@ Message</button> -->
                                                                             Info</a>
                                                                         <div class="slide"></div>
                                                                     </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" data-toggle="tab"
+                                                                            href="#uploadImage" role="tab">Upload
+                                                                            Images</a>
+                                                                        <div class="slide"></div>
+                                                                    </li>
 
-                                                                    <% if (errorMessage) { %>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" data-toggle="tab"
+                                                                            href="#gallery" role="tab">User gallery</a>
+                                                                        <div class="slide"></div>
+                                                                    </li>
 
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link"
-                                                                                href="#"  style = "color: red;font-weight:bold;"> <%= errorMessage %></a>
-                                                                            <div class="slide"></div>
-                                                                        </li>
-                            
-                                                                    <%} else if(sucessMessage){ %>
-                                        
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link"
-                                                                                href="#"  style = "color: green;font-weight:bold;"> <%= sucessMessage %></a>
-                                                                            <div class="slide"></div>
-                                                                        </li>
-                                                                        <%}%>
                                                                 </ul>
                                                             </div>
 
 
                                                             <div class="tab-content">
+
+                                                                <!-- user-profile -->
 
                                                                 <div class="tab-pane active" id="personal"
                                                                     role="tabpanel">
@@ -199,7 +361,7 @@ Message</button> -->
                                                                     <div class="card">
                                                                         <div class="card-header">
                                                                             <h5 class="card-header-text">About Me</h5>
-                                                                           
+
                                                                             <button id="edit-btn" type="button"
                                                                                 class="btn btn-sm btn-primary waves-effect waves-light f-right">
                                                                                 <i class="icofont icofont-edit"></i>
@@ -224,27 +386,30 @@ Message</button> -->
                                                                                                                         Full
                                                                                                                         Name
                                                                                                                     </th>
-                                                                                                                    <td id="name">
+                                                                                                                    <td
+                                                                                                                        id="name">
 
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                    
+
                                                                                                                 <tr>
                                                                                                                     <th
                                                                                                                         scope="row">
                                                                                                                         Birth
                                                                                                                         Date
                                                                                                                     </th>
-                                                                                                                    <td id="dob">
+                                                                                                                    <td
+                                                                                                                        id="dob">
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                
+
                                                                                                                 <tr>
                                                                                                                     <th
                                                                                                                         scope="row">
                                                                                                                         Country
                                                                                                                     </th>
-                                                                                                                    <td id="country">
+                                                                                                                    <td
+                                                                                                                        id="country">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
@@ -252,7 +417,9 @@ Message</button> -->
                                                                                                                         scope="row">
                                                                                                                         Gender
                                                                                                                     </th>
-                                                                                                                    <td id="gender"></td>
+                                                                                                                    <td
+                                                                                                                        id="gender">
+                                                                                                                    </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
                                                                                                         </table>
@@ -271,7 +438,8 @@ Message</button> -->
                                                                                                                         scope="row">
                                                                                                                         Email
                                                                                                                     </th>
-                                                                                                                    <td id="emailInfo">
+                                                                                                                    <td
+                                                                                                                        id="emailInfo">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
@@ -280,26 +448,29 @@ Message</button> -->
                                                                                                                         Mobile
                                                                                                                         Number
                                                                                                                     </th>
-                                                                                                                    <td id="phone">
+                                                                                                                    <td
+                                                                                                                        id="phone">
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                                                             
+
                                                                                                                 <tr>
                                                                                                                     <th
                                                                                                                         scope="row">
                                                                                                                         State
                                                                                                                     </th>
-                                                                                                                    <td id="state">
+                                                                                                                    <td
+                                                                                                                        id="state">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <th
                                                                                                                         scope="row">
-                                                                                                                        
+
                                                                                                                     </th>
-                                                                                                                    <td ></td>
+                                                                                                                    <td>
+                                                                                                                    </td>
                                                                                                                 </tr>
-                                                                                                               
+
                                                                                                             </tbody>
                                                                                                         </table>
                                                                                                     </div>
@@ -319,90 +490,179 @@ Message</button> -->
                                                                                 <div class="row">
                                                                                     <div class="col-lg-12">
                                                                                         <div class="general-info">
-                                                                                            
-                                                                                            <form action="/api/update/user" method="post"  enctype="application/x-www-form-urlencoded" name="myUpdateForm" onsubmit="return validateUpdateForm()">
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Full Name
-                                                                                                        </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" name="userName" id="editName">
-                                                                                                        <span id="errorName" style="color: red;"></span>
+
+                                                                                            <form
+                                                                                                action="/api/update/user"
+                                                                                                method="post"
+                                                                                                enctype="application/x-www-form-urlencoded"
+                                                                                                name="myUpdateForm"
+                                                                                                onsubmit="return validateUpdateForm()">
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">Full
+                                                                                                        Name
+                                                                                                    </label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            name="userName"
+                                                                                                            id="editName">
+                                                                                                        <span
+                                                                                                            id="errorName"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Email</label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="email" class="form-control" id="editEmailInfo" name="emailInfo">
-                                                                                                        <span id="errorEmail" style="color: red;"></span>
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">Email</label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="email"
+                                                                                                            class="form-control"
+                                                                                                            id="editEmailInfo"
+                                                                                                            name="emailInfo">
+                                                                                                        <span
+                                                                                                            id="errorEmail"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Mobile Number
-                                                                                                        </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editPhone" name="phone"
-                                                                                                            >
-                                                                                                        <span id="errorPhone" style="color: red;"></span>
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">Mobile
+                                                                                                        Number
+                                                                                                    </label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            id="editPhone"
+                                                                                                            name="phone">
+                                                                                                        <span
+                                                                                                            id="errorPhone"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">dob</label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="date" class="form-control" id="editDob" name="dob" >
-                                                                                                        <span id="errorDob" style="color: red;"></span>
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">dob</label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="date"
+                                                                                                            class="form-control"
+                                                                                                            id="editDob"
+                                                                                                            name="dob">
+                                                                                                        <span
+                                                                                                            id="errorDob"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Country
-                                                                                                        </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editCountry" name="country"
-                                                                                                            >
-                                                                                                        <span id="errorCountry" style="color: red;"></span>
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">Country
+                                                                                                    </label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            id="editCountry"
+                                                                                                            name="country">
+                                                                                                        <span
+                                                                                                            id="errorCountry"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">State
-                                                                                                        </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editState" name="state"
-                                                                                                            >
-                                                                                                        <span id="errorState" style="color: red;"></span>
+                                                                                                <div
+                                                                                                    class="form-group row">
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">State
+                                                                                                    </label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            id="editState"
+                                                                                                            name="state">
+                                                                                                        <span
+                                                                                                            id="errorState"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="row">
-                                                                                                    <label class="col-sm-2 col-form-label">Gender
-                                                                                                        </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <div class="form-check form-check-inline">
-                                                                                                            <label class="form-check-label">
-                                                                                                                <input class="form-check-input" type="radio" name="gender" id="editGender" value="male"> Male
+                                                                                                    <label
+                                                                                                        class="col-sm-2 col-form-label">Gender
+                                                                                                    </label>
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <div
+                                                                                                            class="form-check form-check-inline">
+                                                                                                            <label
+                                                                                                                class="form-check-label">
+                                                                                                                <input
+                                                                                                                    class="form-check-input"
+                                                                                                                    type="radio"
+                                                                                                                    name="gender"
+                                                                                                                    id="editGender"
+                                                                                                                    value="male">
+                                                                                                                Male
                                                                                                             </label>
                                                                                                         </div>
-                                                                                                        <div class="form-check form-check-inline">
-                                                                                                            <label class="form-check-label">
-                                                                                                                <input class="form-check-input" type="radio" name="gender" id="editGender" value="female"> Female
+                                                                                                        <div
+                                                                                                            class="form-check form-check-inline">
+                                                                                                            <label
+                                                                                                                class="form-check-label">
+                                                                                                                <input
+                                                                                                                    class="form-check-input"
+                                                                                                                    type="radio"
+                                                                                                                    name="gender"
+                                                                                                                    id="editGender"
+                                                                                                                    value="female">
+                                                                                                                Female
                                                                                                             </label>
                                                                                                         </div>
-                                                                                                        <span id="errorGender" style="color: red;"></span>
+                                                                                                        <span
+                                                                                                            id="errorGender"
+                                                                                                            style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                               
-                                                                                                <div class="form-group row">
-                                                                                                
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="hidden" class="form-control" id="uuid" name="userId" value="<%= id %>">
-                                                                                                
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            
-                                                                                            <div class="text-center">
-                                                                                                <button type="submit"
-                                                                                                    class="btn btn-primary waves-effect waves-light m-r-20">Save</button>
-                                                                                                    <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
-                                                                                            </div>
 
-                                                                                        </form>
+                                                                                                <div
+                                                                                                    class="form-group row">
+
+                                                                                                    <div
+                                                                                                        class="col-sm-10">
+                                                                                                        <input
+                                                                                                            type="hidden"
+                                                                                                            class="form-control"
+                                                                                                            id="uuid"
+                                                                                                            name="userId"
+                                                                                                            value="<%= id %>">
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div
+                                                                                                    class="text-center">
+                                                                                                    <button
+                                                                                                        type="submit"
+                                                                                                        class="btn btn-primary waves-effect waves-light m-r-20">Save</button>
+                                                                                                    <a href="#!"
+                                                                                                        id="edit-cancel"
+                                                                                                        class="btn btn-default waves-effect">Cancel</a>
+                                                                                                </div>
+
+                                                                                            </form>
                                                                                         </div>
 
                                                                                     </div>
@@ -414,11 +674,94 @@ Message</button> -->
                                                                         </div>
 
                                                                     </div>
+                                                                </div>
+
+                                                                <!-- upload file -->
+
+                                                                <div class="tab-pane" id="uploadImage" role="tabpanel">
+
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <h5 class="card-header-text">Upload Image
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div class="card-block">
+
+                                                                            <div class="upload-card">
+                                                                                <div class="text-right">
+                                                                                    <button
+                                                                                        class="btn btn-primary mb-3 file-add">Add
+                                                                                        More File</button>
+                                                                                </div>
+                                                                                <div class="file-upload">
+                                                                                    <div class="file-select">
+                                                                                        <div class="imagePreview"></div>
+                                                                                        <button
+                                                                                            class="btn btn-secondary">Choose
+                                                                                            File</button>
+                                                                                        <div class="file-select-name">No
+                                                                                            File Chosen</div>
+                                                                                        <input type="file"
+                                                                                            accept="image/*"
+                                                                                            class="profileimg"
+                                                                                            onchange="uploadImages(event)"
+                                                                                            id="imageUpload">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+
 
                                                                 </div>
 
-                                                            </div>
+                                                                <!-- gallery Images -->
+<div class="tab-pane" id="gallery" role="tabpanel">
+    <div class="page-body gallery-page">
+        <div class="row">
 
+            <div class="col-sm-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>User Gallery</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-12">
+                              
+                                    <div  id="imageContainer">
+                                 
+                                    </div>
+                                    <div id="imageModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <img id="modalImage" src="" alt="Modal Image">
+                                            <!-- Navigation buttons -->
+                                            <button class="nav-button" id="prevButton">Previous</button>
+                                            <button class="nav-button" id="nextButton">Next</button>
+                                        </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+                                                                   
+
+                                                                </div>
+
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -441,7 +784,7 @@ Message</button> -->
                 function handleFileSelect(event)
                 {
                     const file = event.target.files[0];
-                    console.log('file',file)
+                    console.log('file', file)
                     if (!file)
                     {
                         alert('No file selected.');
@@ -451,22 +794,24 @@ Message</button> -->
                     {
                         const reader = new FileReader();
 
-                        reader.onload = function(e) {
-                          const imagePreview = document.getElementById('myImage');
-                          imagePreview.src = e.target.result;
-                          imagePreview.classList.add('selected'); // Add 'selected' class to the uploaded image
+                        reader.onload = function (e)
+                        {
+                            const imagePreview = document.getElementById('myImage');
+                            imagePreview.src = e.target.result;
+                            imagePreview.classList.add('selected'); // Add 'selected' class to the uploaded image
                         };
-                    
+
                         reader.readAsDataURL(file);
                     }
 
-                    document.querySelector('.upload-icon').addEventListener('click', function() {
-                    document.getElementById('fileInput').click();
+                    document.querySelector('.upload-icon').addEventListener('click', function ()
+                    {
+                        document.getElementById('fileInput').click();
                     });
 
                     const userId = "<%= id %>";
                     const uuid = "<%= uuid %>";
-                    console.log('userId',userId)
+                    console.log('userId', userId)
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('userId', userId);
@@ -489,11 +834,11 @@ Message</button> -->
                             console.log(data); // Handle API response data here
                             alert('File uploaded successfully.');
 
-                            if(data && data.status == 0)
+                            if (data && data.status == 0)
                             {
                                 alert('There was an error to upload the profile Picture');
                             }
-                           
+
                         })
                         .catch(error =>
                         {
@@ -501,166 +846,357 @@ Message</button> -->
                             alert('Error uploading file. Please try again.');
                         });
                 }
-               
+
             </script>
 
-        <script>
-            const phoneInput = document.getElementById('editPhone');
+            <script>
+                const phoneInput = document.getElementById('editPhone');
 
-            phoneInput.addEventListener('input', function ()
-            {
-                // Remove any non-digit characters
-                let phoneNumber = phoneInput.value.replace(/\D/g, '');
-
-                // Limit to 10 digits
-                phoneNumber = phoneNumber.slice(0, 10);
-
-                // Update the input value
-                phoneInput.value = phoneNumber;
-            });
-        </script>
-        
-        <script>
-
-            function validateUpdateForm() 
-            {
-                let name = document.forms["myUpdateForm"]["editName"].value;
-                let email = document.forms["myUpdateForm"]["editEmailInfo"].value;
-                let phone = document.forms["myUpdateForm"]["editPhone"].value;
-
-
-                let phoneValidation = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-                let emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-                if (!name) 
+                phoneInput.addEventListener('input', function ()
                 {
-                    document.getElementById('errorName').innerHTML = "userName is required.";
-                    return false;
-                }
-                else if (name.toString().length < 2) 
-                {
-                    document.getElementById('errorName').innerHTML = "User name minimum character limit is 2";
-                    return false;
-                }
-                else if (name.toString().length > 30) 
-                {
-                    document.getElementById('errorName').innerHTML = "userName maximum character limit is 30.";
-                    return false;
-                }
+                    // Remove any non-digit characters
+                    let phoneNumber = phoneInput.value.replace(/\D/g, '');
 
-                if (!email)
-                {
-                    document.getElementById('errorEmail').innerHTML = "Email is required.";
-                    return false;
-                }
-                else if (email && !(email.match(emailValidation)))
-                {
-                    document.getElementById('errorEmail').innerHTML = "Invalid email address";
-                    return false;
-                }
-                else if (email && email.toString().length > 50)
-                {
-                    document.getElementById('errorEmail').innerHTML = "Email maximum character limit is 50.";
-                    return false;
-                }
+                    // Limit to 10 digits
+                    phoneNumber = phoneNumber.slice(0, 10);
 
-                if (phone && !(phone.match(phoneValidation)))
-                {
-                    document.getElementById('errorPhone').innerHTML = "Invalid phone address";
-                    return false;
-                }
+                    // Update the input value
+                    phoneInput.value = phoneNumber;
+                });
+            </script>
 
-                return true;
-            }
+            <script>
 
-        </script>
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", function ()
-            {
-                // Prepare data to be sent in the request body
-                var requestData = {
-                    id: "<%= id %>" // Example user ID, replace with your actual parameter
-                };
-                console.log('requestData', requestData)
-                // Fetch user data from the backend when the page loads
-                fetch('/api/user/id', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                })
-                .then(response =>
+                function validateUpdateForm() 
                 {
-                    if (response.ok)
+                    let name = document.forms["myUpdateForm"]["editName"].value;
+                    let email = document.forms["myUpdateForm"]["editEmailInfo"].value;
+                    let phone = document.forms["myUpdateForm"]["editPhone"].value;
+
+
+                    let phoneValidation = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    let emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                    if (!name) 
                     {
-                        return response.json();
+                        document.getElementById('errorName').innerHTML = "userName is required.";
+                        return false;
                     }
-                    throw new Error('Network response was not ok.');
-                })
-                    .then(data =>
+                    else if (name.toString().length < 2) 
                     {
-                        // Populate input boxes with fetched data
-                        let user = data && data.userDetails ? data.userDetails : null;
-                        let image = user && user.image ? user.image : null
-                        console.log('user', user)
-                        console.log('image', image)
+                        document.getElementById('errorName').innerHTML = "User name minimum character limit is 2";
+                        return false;
+                    }
+                    else if (name.toString().length > 30) 
+                    {
+                        document.getElementById('errorName').innerHTML = "userName maximum character limit is 30.";
+                        return false;
+                    }
 
-                        document.getElementById('name').textContent = user.userName;
-                        document.getElementById('editName').value = user.userName;
+                    if (!email)
+                    {
+                        document.getElementById('errorEmail').innerHTML = "Email is required.";
+                        return false;
+                    }
+                    else if (email && !(email.match(emailValidation)))
+                    {
+                        document.getElementById('errorEmail').innerHTML = "Invalid email address";
+                        return false;
+                    }
+                    else if (email && email.toString().length > 50)
+                    {
+                        document.getElementById('errorEmail').innerHTML = "Email maximum character limit is 50.";
+                        return false;
+                    }
 
-                        document.getElementById('emailInfo').textContent = user.email;
-                        document.getElementById('editEmailInfo').value = user.email;
+                    if (phone && !(phone.match(phoneValidation)))
+                    {
+                        document.getElementById('errorPhone').innerHTML = "Invalid phone address";
+                        return false;
+                    }
 
-                        document.getElementById('phone').textContent = user.phone;
-                        document.getElementById('editPhone').value = user.phone;
+                    return true;
+                }
 
-                        document.getElementById('dob').textContent = user.dob;
-                        document.getElementById('editDob').value = user.dob;
+            </script>
 
-                        document.getElementById('country').textContent = user.country;
-                        document.getElementById('editCountry').value = user.country;
-
-                        document.getElementById('state').textContent = user.state;
-                        document.getElementById('editState').value = user.state;
-
-                        document.getElementById('gender').textContent = user.gender;
-
-                        if (user.gender === 'male') 
-                        {
-                            document.getElementById('editGender').checked = true;
-                        }
-                        else if (user.gender === 'female') 
-                        {
-                            document.getElementById('editGender').checked = true;
-                        }
-
-                        if(image)
-                        {
-                            const uploadedImage = document.getElementById('myImage');
-                            uploadedImage.src = '../images/uploads/'+image.profilePicId+'/'+image.profilePicName;
-                            uploadedImage.style.display = 'block'; // Show the image element
-                        }
-                        else
-                        {
-                            const uploadedImage = document.getElementById('myImage');
-                            uploadedImage.src = `../images/human.png`;
-                            uploadedImage.style.display = 'block'; // Show the image element
-                        }
-
-                        let userName = document.getElementById('userName');
-                        userName.textContent = user.userName;
-
+            <script>
+                document.addEventListener("DOMContentLoaded", function ()
+                {
+                    // Prepare data to be sent in the request body
+                    var requestData = {
+                        id: "<%= id %>" // Example user ID, replace with your actual parameter
+                    };
+                    console.log('requestData', requestData)
+                    // Fetch user data from the backend when the page loads
+                    fetch('/api/user/id', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestData)
                     })
-                    .catch(error =>
+                        .then(response =>
+                        {
+                            if (response.ok)
+                            {
+                                return response.json();
+                            }
+                            throw new Error('Network response was not ok.');
+                        })
+                        .then(data =>
+                        {
+                            // Populate input boxes with fetched data
+                            let user = data && data.userDetails ? data.userDetails : null;
+                            let image = user && user.image ? user.image : null;
+                            let galleryImages = user && user.gallerys? user.gallerys:[];
+                            const modal = document.getElementById('imageModal');
+                            const modalImage = document.getElementById('modalImage');
+                            let currentImageIndex = 0;
+                            let gallerys = [];
+
+                            console.log('galleryImages',galleryImages)
+
+                            document.getElementById('name').textContent = user.userName;
+                            document.getElementById('editName').value = user.userName;
+
+                            document.getElementById('emailInfo').textContent = user.email;
+                            document.getElementById('editEmailInfo').value = user.email;
+
+                            document.getElementById('phone').textContent = user.phone;
+                            document.getElementById('editPhone').value = user.phone;
+
+                            document.getElementById('dob').textContent = user.dob;
+                            document.getElementById('editDob').value = user.dob;
+
+                            document.getElementById('country').textContent = user.country;
+                            document.getElementById('editCountry').value = user.country;
+
+                            document.getElementById('state').textContent = user.state;
+                            document.getElementById('editState').value = user.state;
+
+                            document.getElementById('gender').textContent = user.gender;
+
+                            if (user.gender === 'male') 
+                            {
+                                document.getElementById('editGender').checked = true;
+                            }
+                            else if (user.gender === 'female') 
+                            {
+                                document.getElementById('editGender').checked = true;
+                            }
+
+                            if (image)
+                            {
+                                const uploadedImage = document.getElementById('myImage');
+                                uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
+                                uploadedImage.style.display = 'block'; // Show the image element
+                            }
+                            else
+                            {
+                                const uploadedImage = document.getElementById('myImage');
+                                uploadedImage.src = `../images/human.png`;
+                                uploadedImage.style.display = 'block'; // Show the image element
+                            }
+
+                            let userName = document.getElementById('userName');
+                            userName.textContent = user.userName;
+
+                            if(galleryImages && galleryImages.length > 0)
+                            {
+                                const container = document.getElementById('imageContainer');
+                                
+                                // Clear existing images in the container
+                                container.innerHTML = '';
+                                
+                                // Loop through the array and create img elements
+                                galleryImages.forEach((imageUrl,index) => {
+
+                                    gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName); 
+
+                                });
+
+                                gallerys.forEach((imageUrl,index) => {
+                                    const img = document.createElement('img');
+                                    img.src = imageUrl
+                                    img.className="img-fluid img-thumbnail";
+                                    img.alt = 'Image';
+                                    img.addEventListener('click', () => openModal(index));
+                                    container.appendChild(img);
+                                    
+                                });
+
+
+
+                                console.log('gallerys',gallerys)
+                                // Open the modal with the selected image
+                                function openModal(index) 
+                                {
+                                    currentImageIndex = index;
+                                    modalImage.src = gallerys[currentImageIndex];
+                                    modal.style.display = 'block';
+                                
+                                    // Close modal when close button or outside modal is clicked
+                                    const closeBtn = document.querySelector('.close');
+                                    closeBtn.onclick = closeModal;
+                                    window.onclick = function(event) 
+                                    {
+                                        if (event.target === modal) 
+                                        {
+                                            closeModal();
+                                        }
+                                    };
+                                
+                                    // Update navigation buttons visibility
+                                 
+                                    updateNavButtons();
+                                }
+
+                                    // Function to close the modal
+                                    function closeModal() 
+                                    {
+                                        modal.style.display = 'none';
+                                    }
+                                    // Function to update navigation buttons visibility
+                                    function updateNavButtons() 
+                                    {
+                                        const prevBtn = document.getElementById('prevButton');
+                                        const nextBtn = document.getElementById('nextButton');
+                                    
+                                        prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+                                        nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
+                                    }
+                                    
+                                    // Event listeners for navigation buttons
+                                    document.getElementById('prevButton').addEventListener('click', () => 
+                                    {
+                                        if (currentImageIndex > 0) 
+                                        {
+                                            currentImageIndex--;
+                                            modalImage.src = gallerys[currentImageIndex];
+                                            updateNavButtons();
+                                        }
+                                    });
+                                    
+                                    document.getElementById('nextButton').addEventListener('click', () => 
+                                    {
+                                        if (currentImageIndex < gallerys.length - 1) 
+                                        {
+                                            currentImageIndex++;
+                                            modalImage.src = gallerys[currentImageIndex];
+                                            updateNavButtons();
+                                        }
+                                    });
+
+                            }
+                               
+                        })
+                        .catch(error =>
+                        {
+                            console.error('Error fetching user data:', error);
+                        });
+
+                });
+            </script>
+
+            <script>
+                $(document).ready(function ()
+                {
+                    $(document).on('change', '.file-upload input[type="file"]', function ()
                     {
-                        console.error('Error fetching user data:', error);
+                        var filename = $(this).val();
+                        if (/^\s*$/.test(filename))
+                        {
+                            $(this).parents(".file-upload").find(".file-select-name").text("No file chosen...");
+                        } else
+                        {
+                            $(this).parents(".file-upload").find(".file-select-name").text(filename.substring(filename.lastIndexOf("\\") + 1, filename.length));
+                        }
+
+                        var uploadFile = $(this);
+                        var files = !!this.files ? this.files : [];
+                        if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+                        if (/^image/.test(files[0].type))
+                        { // only image file
+                            var reader = new FileReader(); // instance of the FileReader
+                            reader.readAsDataURL(files[0]); // read the local file
+
+                            reader.onloadend = function ()
+                            { // set image data as background of div
+                                // alert(uploadFile.closest(".file-upload").find('.imagePreview').length);
+                                uploadFile.closest(".file-upload").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                            }
+                        }
+                    });
+                    $(document).on('click', '.file-remove', function (e)
+                    {
+                        e.preventDefault();
+                        $(this).closest('.file-upload').remove();
+                        return false;
                     });
 
-            });
-        </script>
-        
-        </body>
-        
-        </html>
+                });
+
+            </script>
+
+            <script>
+                function uploadImages(event)
+                {
+                    const file = event.target.files[0];
+                    console.log('file', file)
+                    if (!file)
+                    {
+                        alert('No file selected.');
+                        return;
+                    }
+
+                    document.addEventListener('click', function ()
+                    {
+                        document.getElementById('imageUpload').click();
+                    });
+
+                    const userId = "<%= id %>";
+                    const uuid = "<%= uuid %>";
+                    console.log('userId', userId)
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('userId', userId);
+                    formData.append('uuid', uuid);
+
+                    fetch('/upload/images', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response =>
+                        {
+                            if (response.ok)
+                            {
+                                return response.json();
+                            }
+                            throw new Error('Network response was not ok.');
+                        })
+                        .then(data =>
+                        {
+                            console.log(data); // Handle API response data here
+
+                            if (data && data.status == 0)
+                            {
+                                alert('There was an error to upload the profile Picture');
+                            }
+                            else if (data && data.status == 1)
+                            {
+                                alert('File uploaded successfully.');
+                            }
+                        })
+                        .catch(error =>
+                        {
+                            console.error('There was a problem with the fetch operation:', error);
+                            alert('Error uploading file. Please try again.');
+                        });
+                }
+            </script>
+
+</body>
+
+</html>

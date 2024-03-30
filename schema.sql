@@ -41,3 +41,18 @@ CREATE TABLE "tp_image"
 	PRIMARY KEY ("id"),
     CONSTRAINT "user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
+
+-- gallery table
+CREATE TABLE "tp_gallery" 
+   (	
+    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	 "imageId" VARCHAR2(36 BYTE),
+     "fileName" CLOB,
+     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+	"createdAt" TIMESTAMP (8), 
+	"updatedAt" TIMESTAMP (8), 
+	"createdBy" VARCHAR2(36 BYTE), 
+	"updatedBy" VARCHAR2(36 BYTE), 
+	PRIMARY KEY ("id"),
+    CONSTRAINT "user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+) ;

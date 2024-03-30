@@ -12,6 +12,8 @@ class User extends guid(Model)
     static get relationMappings()
     {
         const Image = require('./image');
+        const Gallery = require('./gallery');
+
 
         return {
             image: {
@@ -19,6 +21,14 @@ class User extends guid(Model)
                 modelClass: Image,
                 join: {
                     from: `${tables.image}.userId`,
+                    to: `${tables.user}.id`
+                }
+            },
+            gallerys: {
+                relation: Model.HasManyRelation,
+                modelClass: Gallery,
+                join: {
+                    from: `${tables.gallery}.userId`,
                     to: `${tables.user}.id`
                 }
             }
