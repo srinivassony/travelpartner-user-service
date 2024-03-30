@@ -737,18 +737,23 @@
                                                                                                     Browse
                                                                                                     <input type="file"
                                                                                                         name="file_name"
-                                                                                                        onchange="document.getElementById('file_input').value = this.value;">
+                                                                                                        id="fileUpload"
+                                                                                                        onchange="validateFile()">
                                                                                                 </div>
                                                                                                 <input type="text"
                                                                                                     id="file_input"
                                                                                                     readonly
-                                                                                                    placeholder="no file selected">
+                                                                                                    placeholder="no file selected" >
                                                                                                     <input type="hidden" name="userId" value="<%= id %>">
                                                                                                     <input type="hidden" name="uuid" value="<%= uuid %>">
                                                                                                 <span
                                                                                                     class="j-hint">Only:
                                                                                                     jpg / png,
                                                                                                     less 1Mb</span>
+
+                                                                                                    <span
+                                                                                                    class="j-hint" id="fileError" style="color: red;font-weight:bold;"></span>
+
                                                                                             </div>
                                                                                         </div>
 
@@ -759,7 +764,7 @@
 
                                                                                     <div class="j-footer">
                                                                                         <button type="submit"
-                                                                                            class="btn btn-primary" id="imageUpload">Send</button>
+                                                                                            class="btn btn-primary" id="submitButton" disabled>Send</button>
                                                                                         <button type="reset"
                                                                                             class="btn btn-default m-r-20">Reset</button>
                                                                                     </div>
@@ -1168,6 +1173,37 @@
                         });
 
                 });
+            </script>
+
+            <script>
+                function validateFile()
+                {
+                    const fileInput = document.getElementById('fileUpload');
+                    const fileError = document.getElementById('fileError');
+                    document.getElementById('file_input').value = fileInput.value;
+                    const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+                    const maxFileSizeMB = 1; // Maximum file size in megabytes
+
+                    const file = fileInput.files[0];
+                    const fileSizeMB = file.size / (1024 * 1024); // Calculate file size in megabytes
+
+                    if (!file || !allowedExtensions.exec(file.name))
+                    {
+                        fileError.textContent = 'Please select a valid PNG or JPG file.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else if (fileSizeMB > maxFileSizeMB)
+                    {
+                        fileError.textContent = 'File size should not exceed 1MB.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else
+                    {
+                        fileError.textContent = '';
+                        document.getElementById('submitButton').disabled = false;
+                        return true;
+                    }
+                }
             </script>
 </body>
 
