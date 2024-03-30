@@ -5,10 +5,12 @@ const Status = common.Status;
 const fs = require("fs");
 const path = require("path");
 
-exports.createImage = async (file, reqParams) =>
+exports.createImage = async (req, res) =>
 {
     try
     {
+        let file = req.file;
+        let reqParams = req.body;
         console.log('file', file)
         console.log('reqParams', reqParams)
 
@@ -42,17 +44,15 @@ exports.createImage = async (file, reqParams) =>
 
         console.log('profilePic-1', profilePic)
 
-        return {
-            status: Status.SUCCESS,
-            profilePic: profilePic
-        }
+        req.flash('success', 'User photos uploaded!');
+        
+        res.redirect('/user-profile');
 
     }
     catch (error) 
     {
-        return {
-            status: Status.FAIL,
-            message: error.message
-        }
+        req.flash('error', error.message);
+
+        res.redirect('/user-profile');
     }
 }
