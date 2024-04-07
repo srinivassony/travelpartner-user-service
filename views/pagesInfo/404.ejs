@@ -21,7 +21,11 @@
 <li class="layer" data-depth="0.10"><img src="../images/monster-eyes-01.png"></li>
 </ul>
 <h1>The page you were looking for doesn't exist.We think the page may have moved.</h1>
-<a href="/" class="btn">Back to home</a>
+<% if (isAuthenticated) { %>
+<a href="/dashboard" class="btn">Back to home</a>
+<% } else {%>
+	<a href="/" class="btn">Back to home</a>
+	<% } %>
 </div>
 
 <script src="../js/404.js"></script>
