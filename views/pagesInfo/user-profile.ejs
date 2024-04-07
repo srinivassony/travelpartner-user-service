@@ -136,7 +136,7 @@
 
             /* Style for each image */
             #imageContainer img {
-                width: 100px;
+                width: 270px;
                 /* Adjust the width as needed */
                 height: auto;
                 /* Maintain aspect ratio */
@@ -168,9 +168,8 @@
             .modal-content {
                 margin: 10% auto;
                 /* Center modal on screen */
-                width: 40%;
-                /* Width of modal content */
-                height: 40%;
+                width: 600px; /* Adjust the width and height according to your container */
+                height: 500px;    
                 /* Height of modal content (40% of viewport height) */
                 position: relative;
                 text-align: center;
@@ -192,10 +191,8 @@
 
             /* Image inside modal */
             .modal-content img {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
-                /* Fit the image inside its container */
+                width: 100%;
+                height: 100%;
             }
 
             /* Navigation buttons */
@@ -534,7 +531,7 @@
                                                                                                             type="text"
                                                                                                             class="form-control"
                                                                                                             name="userName"
-                                                                                                            id="editName">
+                                                                                                            id="editName" readonly>
                                                                                                         <span
                                                                                                             id="errorName"
                                                                                                             style="color: red;"></span>
@@ -550,7 +547,7 @@
                                                                                                             type="email"
                                                                                                             class="form-control"
                                                                                                             id="editEmailInfo"
-                                                                                                            name="emailInfo">
+                                                                                                            name="emailInfo" readonly>
                                                                                                         <span
                                                                                                             id="errorEmail"
                                                                                                             style="color: red;"></span>
@@ -737,18 +734,23 @@
                                                                                                     Browse
                                                                                                     <input type="file"
                                                                                                         name="file_name"
-                                                                                                        onchange="document.getElementById('file_input').value = this.value;">
+                                                                                                        id="fileUpload"
+                                                                                                        onchange="validateFile()">
                                                                                                 </div>
                                                                                                 <input type="text"
                                                                                                     id="file_input"
                                                                                                     readonly
-                                                                                                    placeholder="no file selected">
+                                                                                                    placeholder="no file selected" >
                                                                                                     <input type="hidden" name="userId" value="<%= id %>">
                                                                                                     <input type="hidden" name="uuid" value="<%= uuid %>">
                                                                                                 <span
                                                                                                     class="j-hint">Only:
                                                                                                     jpg / png,
                                                                                                     less 1Mb</span>
+
+                                                                                                    <span
+                                                                                                    class="j-hint" id="fileError" style="color: red;font-weight:bold;"></span>
+
                                                                                             </div>
                                                                                         </div>
 
@@ -759,7 +761,7 @@
 
                                                                                     <div class="j-footer">
                                                                                         <button type="submit"
-                                                                                            class="btn btn-primary" id="imageUpload">Send</button>
+                                                                                            class="btn btn-primary" id="submitButton" disabled>Send</button>
                                                                                         <button type="reset"
                                                                                             class="btn btn-default m-r-20">Reset</button>
                                                                                     </div>
@@ -1168,6 +1170,37 @@
                         });
 
                 });
+            </script>
+
+            <script>
+                function validateFile()
+                {
+                    const fileInput = document.getElementById('fileUpload');
+                    const fileError = document.getElementById('fileError');
+                    document.getElementById('file_input').value = fileInput.value;
+                    const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+                    const maxFileSizeMB = 1; // Maximum file size in megabytes
+
+                    const file = fileInput.files[0];
+                    const fileSizeMB = file.size / (1024 * 1024); // Calculate file size in megabytes
+
+                    if (!file || !allowedExtensions.exec(file.name))
+                    {
+                        fileError.textContent = 'Please select a valid PNG or JPG file.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else if (fileSizeMB > maxFileSizeMB)
+                    {
+                        fileError.textContent = 'File size should not exceed 1MB.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else
+                    {
+                        fileError.textContent = '';
+                        document.getElementById('submitButton').disabled = false;
+                        return true;
+                    }
+                }
             </script>
 </body>
 
