@@ -143,7 +143,7 @@ app.get('/active-account',  (req, res) =>
 app.get('/dashboard',  (req, res) =>
 {
 	var name = req.session.name;
-	var id = req.session.id;
+	var id = req.session.userId;
 	var uuid = req.session.uuid;
 
 	if (!req.session.isLoggedIn)
@@ -244,6 +244,25 @@ app.get(`/user-profile`, async (req, res) =>
 	});
 });
 
+app.get('/find-partner',  (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	res.render('pagesInfo/find-partner', {
+		isAuthenticated: req.session.isLoggedIn,
+		username: name,
+		id: id,
+		uuid: uuid
+	});
+});
+
 app.get('/logout', async function (req, res)
 {
 	req.session.destroy(function (err)
@@ -322,7 +341,9 @@ app.post("/upload/images", imagesUpload.single('file_name'),galleryService.creat
 
 app.all('*', (req, res, next) => 
 {
-    res.status(404).render('pagesInfo/404')
+    res.status(404).render('pagesInfo/404',{
+		isAuthenticated: req.session.isLoggedIn
+	});
 });
 
 module.exports = app;
