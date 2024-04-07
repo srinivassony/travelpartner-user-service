@@ -24,8 +24,8 @@
                 <li class="user-profile header-notification">
                     <div class="dropdown-primary dropdown">
                         <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../images/avatar-4.jpg" class="img-radius"
-                                alt="User-Profile-Image">
+                            <img  class="img-radius"
+                                alt="User-Profile-Image" id="smallImage" src="#">
                             <span><%= username %></span>
                             <i class="feather icon-chevron-down"></i>
                         </div>
@@ -49,3 +49,54 @@
         </div>
     </div>
 </nav>
+<% if (isAuthenticated) { %>
+<script>
+    document.addEventListener("DOMContentLoaded", function ()
+    {
+        // Prepare data to be sent in the request body
+        var requestData = {
+            id: "<%= id %>" // Example user ID, replace with your actual parameter
+        };
+        console.log('requestData', requestData)
+        // Fetch user data from the backend when the page loads
+        fetch('/api/user/id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data =>
+            {
+                // Populate input boxes with fetched data
+                let user = data && data.userDetails ? data.userDetails : null;
+                let image = user && user.image ? user.image : null;
+
+                if (image)
+                {
+                    const uploadedImage = document.getElementById('smallImage');
+                    uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
+                }
+                else
+                {
+                    const uploadedImage = document.getElementById('smallImage');
+                    uploadedImage.src = `../images/human.png`;
+                }
+
+            })
+            .catch(error =>
+            {
+                console.error('Error fetching user data:', error);
+            });
+
+    });
+</script>
+<% } %>
