@@ -19,7 +19,11 @@ CREATE TABLE "tp_user"
 	"uuid" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 	"isInvited" NUMBER(1,0), 
 	"inviteOn" DATE, 
-	"inviteLink" VARCHAR2(100 BYTE),  
+	"inviteLink" VARCHAR2(100 BYTE),
+	"login" NUMBER(1,0) DEFAULT 0, 
+	"loginUpdatedAt" TIMESTAMP (8), 
+	"logout" NUMBER(1,0) DEFAULT 0, 
+	"logoutUpdatedAt" TIMESTAMP (8),  
 	PRIMARY KEY ("id")
 ) ;
 
