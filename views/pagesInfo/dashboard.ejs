@@ -7,6 +7,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="#">
     <%- include('links'); %>
+    <style>
+            /* CSS for the upload icon */
+            .image-container {
+                position: relative;
+                display: inline-block;
+                display: block;
+            }
+
+            /* CSS for the image */
+            .image-container img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .box {
+                width: 60px;
+                height: 60px;
+                overflow: hidden;
+                /* Ensures the image doesn't overflow the box */
+                border: 2px solid rgba(46, 190, 226, 0.603);
+                border-radius: 50%;
+                overflow: hidden;
+                /* Ensure the image doesn't overflow the box */
+                position: relative;
+                /* Required for absolute positioning of image */
+                padding: 0px;
+                margin: 0 10px;
+            }
+
+            .box img {
+                width: 100%;
+                /* Ensure the image fills the entire box horizontally */
+                height: 100%;
+                /* Ensure the image fills the entire box vertically */
+                object-fit: cover;
+                /* Ensure the image covers the entire box */
+                position: absolute;
+                /* Position the image relative to the box */
+                top: 0;
+                /* Align the image to the top */
+                left: 0;
+                /* Align the image to the left */
+            }
+
+            .user-title {
+                position: relative;
+                bottom: 12px;
+            }
+
+            .green-dot {
+                width: 10px; /* adjust size as needed */
+                height: 10px; /* adjust size as needed */
+                background-color: green;
+                border-radius: 50%; /* to make it circular */
+                display: inline-block;
+              }
+
+              .red-dot {
+                width: 10px; /* adjust size as needed */
+                height: 10px; /* adjust size as needed */
+                background-color: rgb(155, 2, 2);
+                border-radius: 50%; /* to make it circular */
+                display: inline-block;
+              }
+
+    </style>
 </head>
 <body>
 
@@ -71,6 +137,108 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="page-body">
+
+                                        <% if(userDetails && userDetails.length > 0) {
+                                             userDetails.forEach(function(user) { %>
+                                        <div class="row simple-cards users-card">
+                                            <div class="col-md-12 col-xl-4">
+                                                <div class="card user-card">
+                                                    <div class="card-header-img">
+                                                        <% if(user && user.image) { %>
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="image-container">
+                                                                        <div class="box">
+                                                                            <img class="img-fluid img-radius"
+                                                                            src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="user-title">
+                                                                        <h4>
+                                                                            <%= user.userName %>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <% if(user && user.login == 1) { %>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="green-dot"></div>
+                                                                    </div> 
+                                                                <% } else {%>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="red-dot"></div>
+                                                                    </div>
+                                                                <% }%>
+                                                            </div>
+                                                            <% } else {%>
+                                                                <div class="row">
+                                                                    <div class="col-lg-2">
+                                                                        <div class="image-container">
+                                                                            <div class="box">
+                                                                                <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="user-title">
+                                                                            <h4>
+                                                                                <%= user.userName %>
+                                                                            </h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <% if(user && user.login == 1) { %>
+                                                                        <div class="col-lg-1">
+                                                                            <div class="green-dot"></div>
+                                                                        </div> 
+                                                                    <% } else {%>
+                                                                        <div class="col-lg-1">
+                                                                            <div class="red-dot"></div>
+                                                                        </div>
+                                                                    <% }%>
+                                                                </div>
+                                                            <% }%>
+                                                        
+                                                        <h5><a href="mailto:<%= user.email %>"
+                                                                ><%= user.email %></a>
+                                                        </h5>
+                                                    </div>
+                                                    <div style="margin-top: 10px;">
+                                                        <button type="button"
+                                                            class="btn btn-primary waves-effect waves-light m-r-15"><i
+                                                                class="icofont icofont-plus m-r-5"></i>Follow</button>
+                                                        <button type="button"
+                                                            class="btn btn-success waves-effect waves-light"><a href="/userprofile/<%= user.id %>" style="color:white;"><i
+                                                                class="icofont icofont-user m-r-5"></i>Profile</a></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                        <% }); } else { %>
+
+                                            <div class="page-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>There is no users to see!</h5>
+                                                                <div class="card-header-right">
+                                                                    <ul class="list-unstyled card-option">
+                                                                        <li><i class="feather icon-maximize full-card"></i></li>
+                                                                        <li><i class="feather icon-minus minimize-card"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }%>
                                     </div>
                                 </div>
                             </div>

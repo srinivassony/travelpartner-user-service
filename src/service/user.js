@@ -251,6 +251,14 @@ exports.userLogin = async (req, res) =>
             return "";
         }
 
+        let params = {
+            login: 1,
+            logout: 0,
+            loginUpdatedAt: new Date()
+        }
+
+        await db.updateUser(user.id, params);
+
         req.session.isLoggedIn = true;
         req.session.name = user.userName;
         req.session.userId = user.id;
@@ -674,5 +682,25 @@ exports.updateUser = async (req, res) =>
         res.redirect('/user-profile');
 
         return "";
+    }
+}
+
+exports.getUserDetails = async (id) =>
+{
+    try
+    {
+        let userDetails = await db.getUserDetails(id);
+
+        return {
+            status: Status.SUCCESS,
+            userDetails: userDetails
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }
