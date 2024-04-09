@@ -19,7 +19,11 @@ CREATE TABLE "tp_user"
 	"uuid" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 	"isInvited" NUMBER(1,0), 
 	"inviteOn" DATE, 
-	"inviteLink" VARCHAR2(100 BYTE),  
+	"inviteLink" VARCHAR2(100 BYTE),
+	"login" NUMBER(1,0) DEFAULT 0, 
+	"loginUpdatedAt" TIMESTAMP (8), 
+	"logout" NUMBER(1,0) DEFAULT 0, 
+	"logoutUpdatedAt" TIMESTAMP (8),  
 	PRIMARY KEY ("id")
 ) ;
 
@@ -53,5 +57,5 @@ CREATE TABLE "tp_gallery"
 	"createdBy" VARCHAR2(36 BYTE), 
 	"updatedBy" VARCHAR2(36 BYTE), 
 	PRIMARY KEY ("id"),
-    CONSTRAINT "user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+    CONSTRAINT "user_ID" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
