@@ -57,5 +57,5 @@ CREATE TABLE "tp_gallery"
 	"createdBy" VARCHAR2(36 BYTE), 
 	"updatedBy" VARCHAR2(36 BYTE), 
 	PRIMARY KEY ("id"),
-    CONSTRAINT "user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+    CONSTRAINT "user_ID" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
