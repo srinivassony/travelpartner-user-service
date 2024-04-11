@@ -59,3 +59,19 @@ CREATE TABLE "tp_gallery"
 	PRIMARY KEY ("id"),
     CONSTRAINT "user_ID" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
+
+-- find a partner
+CREATE TABLE "tp_findAPartner" 
+   (	
+    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	 "location" VARCHAR2(100 BYTE) not null,
+     "tripDate" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+     "description" CLOB NOT NULL ENABLE,
+     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+	"createdAt" TIMESTAMP (8), 
+	"updatedAt" TIMESTAMP (8), 
+	"createdBy" VARCHAR2(36 BYTE), 
+	"updatedBy" VARCHAR2(36 BYTE), 
+	PRIMARY KEY ("id"),
+    CONSTRAINT "find_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+) ;

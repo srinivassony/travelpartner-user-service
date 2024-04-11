@@ -38,11 +38,11 @@
                                                 <div class="page-header-breadcrumb">
                                                     <ul class="breadcrumb-title">
                                                         <li class="breadcrumb-item" style="float: left;">
-                                                            <a href="/"> <i class="feather icon-home"></i>
+                                                            <a href="/dashboard"> <i class="feather icon-home"></i>
                                                             </a>
                                                         </li>
                                                         <li class="breadcrumb-item" style="float: left;"><a
-                                                                href="/dashboard">Dashboard</a> </li>
+                                                                href="/find-partner">Find a partner</a> </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -51,27 +51,121 @@
     
                                     <div class="page-body">
                                         <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="feather icon-maximize full-card"></i></li>
-                                                                <li><i class="feather icon-minus minimize-card"></i>
-                                                                </li>
-                                                            </ul>
+                                            <div class="col-lg-12">
+                                    
+                                                <div class="tab-header card">
+                                                    <ul class="nav nav-tabs md-tabs tab-timeline" role="tablist" id="mytab">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" data-toggle="tab" href="#sharePost" role="tab">Share a post
+                                                                </a>
+                                                            <div class="slide"></div>
+                                                        </li>
+                                    
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" data-toggle="tab" href="#findPartner" role="tab">Find a buddy</a>
+                                                            <div class="slide"></div>
+                                                        </li>
+                                    
+                                                    </ul>
+                                                </div>
+                                    
+                                    
+                                                <div class="tab-content">
+                                                    <!-- share a post -->
+                                                    <div class="tab-pane active" id="sharePost" role="tabpanel">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5 class="card-header-text">Share a post to your friends</h5>
+                                                
+                                                            </div>
+                                                            <div class="card-block">
+                                                
+                                                                <div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12">
+                                                                            <div class="general-info">
+                                                    
+                                                                                <form action="/api/find/partner" method="post" enctype="application/x-www-form-urlencoded"
+                                                                                    name="myUpdateForm" onsubmit="return validateFindPartnerForm()">
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-sm-2 col-form-label">Full
+                                                                                            Trip Location
+                                                                                        </label>
+                                                                                        <div class="col-sm-10">
+                                                                                            <input type="text" class="form-control" name="location" id="location" readonly>
+                                                                                            <span id="errorLocation" style="color: red;"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-sm-2 col-form-label">Trip Date</label>
+                                                                                        <div class="col-sm-10">
+                                                                                            <input type="date" class="form-control" id="tripDate" name="tripDate"
+                                                                                                readonly>
+                                                                                            <span id="errorTripDate" style="color: red;"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-sm-2 col-form-label">Trip
+                                                                                            description
+                                                                                        </label>
+                                                                                        <div class="col-sm-10">
+                                                                                            <input type="text" class="form-control" id="description" name="description">
+                                                                                            <span id="errorDescription" style="color: red;"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-10">
+                                                                                            <input type="hidden" class="form-control"  name="userId"
+                                                                                                value="<%= id %>">
+                                                                                        </div>
+                                                                                    </div>
+                                                    
+                                                                                    <div class="text-center">
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-primary waves-effect waves-light m-r-20">Save</button>
+                                                                                        <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
+                                                                                    </div>
+                                                    
+                                                                                </form>
+                                                                            </div>
+                                                    
+                                                                        </div>
+                                                    
+                                                                    </div>
+                                                    
+                                                                </div>
+                                                
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-block">
-                                                        <p>
-                                                            Travel-partner is Your Community-Powered Marketplace for Authentic Experiences. Here you can connect with like minded travelers, create your travel groups, book experiences and share your travel stories. We have connected more then 50K+ travelers with each other, every month 2000+ travelers are joining our community meet-ups, icebreaking sessions, experiences and trips. That’s not all, with Travel Buddy you take advice from locals, we have 3000+ verified locals who can help you on your travel journey. We are building Bharat’s fastest growing network of travellers & aspires to be their Partner in Every Stage of their Journey.
-                                                        </p>
+
+                                                    <!-- find a partner -->
+                                                    <div class="tab-pane" id="findPartner" role="tabpanel">
+                                                        <div class="page-body gallery-page">
+                                                            <div class="row">
+                                                
+                                                                <div class="col-sm-12">
+                                                
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <h5>Find a partnerto travel</h5>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                           
+                                                                        </div>
+                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <div id="styleSelector">
@@ -84,6 +178,41 @@
     </div>
 
 <%- include('scripts'); %>
+
+<script>
+
+    function validateUpdateForm() 
+    {
+        let name = document.forms["myUpdateForm"]["location"].value;
+        let email = document.forms["myUpdateForm"]["editEmailInfo"].value;
+        let phone = document.forms["myUpdateForm"]["editPhone"].value;
+
+
+        let phoneValidation = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        let emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!name) 
+        {
+            document.getElementById('errorName').innerHTML = "userName is required.";
+            return false;
+        }
+        else if (name.toString().length < 2) 
+        {
+            document.getElementById('errorName').innerHTML = "User name minimum character limit is 2";
+            return false;
+        }
+        else if (name.toString().length > 30) 
+        {
+            document.getElementById('errorName').innerHTML = "userName maximum character limit is 30.";
+            return false;
+        }
+
+       
+
+        return true;
+    }
+
+</script>
 
 </body>
 
