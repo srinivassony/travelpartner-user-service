@@ -30,11 +30,19 @@ let getUserByEmailId = async(email) =>
   return await User.query().select().where('email', email).first();
 }
 
+let getUserDetails = async(id) =>
+{
+  return await User.query().select().where({ isRegistered: 1, isInvited: 1 }).whereNot({
+    id: id
+  }).withGraphFetched('[image,gallerys]');
+}
+
 module.exports ={
   getExsitingUserDetails : getExsitingUserDetails,
   createUser: createUser,
   getUserLoginDetails: getUserLoginDetails,
   getUserDetailsById: getUserDetailsById,
   updateUser: updateUser,
-  getUserByEmailId: getUserByEmailId
+  getUserByEmailId: getUserByEmailId,
+  getUserDetails: getUserDetails
 }
