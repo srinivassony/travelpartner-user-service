@@ -111,14 +111,18 @@ CREATE TABLE "tp_notification"
 ) ;
 
 -- view notification
-create or replace force editionable view "tp_view_fetch_notification" as
-select 
+
+  CREATE OR REPLACE  view "tp_view_fetch_notification" AS 
+  select 
 us."id",
 us."userName",
 img."profilePicId",
 img."profilePicName",
 notif."id" "notificationId",
-notif."subject"
+notif."subject",
+notif."notificationFrom",
+notif."notificationTo",
+notif."createdAt"
 from "tp_user" us
 left join "tp_image" img on img."userId" = us."id"
 left join "tp_notification" notif on notif."userId" = us."id" and notif."isRead" = 0
