@@ -1,5 +1,7 @@
 const User = require("../../database/model/user");
 
+const NotificationView = require("../../database/model/notificationView");
+
 let getExsitingUserDetails = async (email, phone) =>
 {
   return await User.query().select().where('email', email).first();
@@ -34,7 +36,12 @@ let getUserDetails = async(id) =>
 {
   return await User.query().select().where({ isRegistered: 1, isInvited: 1 }).whereNot({
     id: id
-  }).withGraphFetched('[image,gallerys]');
+  }).withGraphFetched('[image,gallerys,followUsers]');
+}
+
+let getNotificationDetails = async(userId) =>
+{
+  return await NotificationView.query().select().where('notificationTo', userId);
 }
 
 module.exports ={
@@ -44,5 +51,6 @@ module.exports ={
   getUserDetailsById: getUserDetailsById,
   updateUser: updateUser,
   getUserByEmailId: getUserByEmailId,
-  getUserDetails: getUserDetails
+  getUserDetails: getUserDetails,
+  getNotificationDetails: getNotificationDetails
 }

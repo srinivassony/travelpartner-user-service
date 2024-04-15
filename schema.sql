@@ -75,3 +75,51 @@ CREATE TABLE "tp_findAPartner"
 	PRIMARY KEY ("id"),
     CONSTRAINT "find_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
+
+-- follow users
+CREATE TABLE "tp_follow_users" 
+   (	
+    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	 "followerId" VARCHAR2(100 BYTE) not null ENABLE,
+     "followingId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+    "requested" NUMBER(1,0) DEFAULT 0,
+    "isFollow" NUMBER(1,0) DEFAULT 0,
+	"createdAt" TIMESTAMP (8), 
+	"updatedAt" TIMESTAMP (8), 
+	"createdBy" VARCHAR2(36 BYTE), 
+	"updatedBy" VARCHAR2(36 BYTE), 
+	PRIMARY KEY ("id"),
+    CONSTRAINT "follow_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+) ;
+
+-- notification
+CREATE TABLE "tp_notification" 
+   (	
+    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	 "subject" clob not null ENABLE,
+     "notificationFrom" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+    "notificationTo" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+    "isRead" NUMBER(1,0) DEFAULT 0,
+     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
+	"createdAt" TIMESTAMP (8), 
+	"updatedAt" TIMESTAMP (8), 
+	"createdBy" VARCHAR2(36 BYTE), 
+	"updatedBy" VARCHAR2(36 BYTE), 
+	PRIMARY KEY ("id"),
+    CONSTRAINT "notification_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
+) ;
+
+-- view notification
+create or replace force editionable view "tp_view_fetch_notification" as
+select 
+us."id",
+us."userName",
+img."profilePicId",
+img."profilePicName",
+notif."id" "notificationId",
+notif."subject"
+from "tp_user" us
+left join "tp_image" img on img."userId" = us."id"
+left join "tp_notification" notif on notif."userId" = us."id" and notif."isRead" = 0
+where us."isRegistered" = 1;

@@ -4,7 +4,10 @@ const tables = {
     user: 'tp_user',
     image: 'tp_image',
     gallery: 'tp_gallery',
-    findPartner:'tp_findAPartner'
+    findPartner: 'tp_findAPartner',
+    followUsers: 'tp_follow_users',
+    notification : 'tp_notification',
+    fetch_view_notifiction: 'tp_view_fetch_notification'
 };
 
 const rdsPrefix = config.rdsSql.owner;

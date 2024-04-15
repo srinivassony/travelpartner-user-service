@@ -12,6 +12,7 @@ let userService = require('../service/user');
 let imageService = require('../service/image');
 let galleryService = require('../service/gallery');
 let userDb = require('../database/db/user');
+let followUsersService = require('../service/follow-users');
 
 //middelwares
 app.use(flash());
@@ -146,6 +147,27 @@ app.get('/dashboard', async (req, res) =>
 	var id = req.session.userId;
 	var uuid = req.session.uuid;
 
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let message1 = req.flash('success');
+
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	if (!req.session.isLoggedIn)
 	{
 		return res.redirect('/');
@@ -153,8 +175,12 @@ app.get('/dashboard', async (req, res) =>
 
 	let userData = await userService.getUserDetails(id);
 
+	console.log(JSON.stringify(userData))
+
 	res.render('pagesInfo/dashboard', {
 		isAuthenticated: req.session.isLoggedIn,
+		errorMessage: message,
+		sucessMessage: message1,
 		username: name,
 		id: id,
 		uuid: uuid,
@@ -367,6 +393,16 @@ const imagesUpload = multer({
 });
 
 app.post("/upload/images", imagesUpload.single('file_name'),galleryService.createImage); 
+
+app.post("/follow/users/", async (req, res) => 
+{
+	return res.json(await followUsersService.createFollow(req.body));
+});
+
+app.post("/update/unfollow/users/", async (req, res) => 
+{
+	return res.json(await followUsersService.requestedForUnfollowUsers(req.body));
+});
 
 app.all('*', (req, res, next) => 
 {
