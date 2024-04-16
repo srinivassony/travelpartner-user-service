@@ -175,7 +175,7 @@ app.get('/dashboard', async (req, res) =>
 
 	let userData = await userService.getUserDetails(id);
 
-	console.log(JSON.stringify(userData))
+	console.log('userData',JSON.stringify(userData))
 
 	res.render('pagesInfo/dashboard', {
 		isAuthenticated: req.session.isLoggedIn,

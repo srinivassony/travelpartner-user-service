@@ -2,6 +2,8 @@ const User = require("../../database/model/user");
 
 const NotificationView = require("../../database/model/notificationView");
 
+const Notification = require("../../database/model/notification");
+
 let getExsitingUserDetails = async (email, phone) =>
 {
   return await User.query().select().where('email', email).first();
@@ -44,6 +46,11 @@ let getNotificationDetails = async(userId) =>
   return await NotificationView.query().select().where('notificationTo', userId);
 }
 
+let deleteNotification = async(id) =>
+{
+  return await Notification.query().delete().where('notificationFrom', id);
+}
+
 module.exports ={
   getExsitingUserDetails : getExsitingUserDetails,
   createUser: createUser,
@@ -52,5 +59,6 @@ module.exports ={
   updateUser: updateUser,
   getUserByEmailId: getUserByEmailId,
   getUserDetails: getUserDetails,
-  getNotificationDetails: getNotificationDetails
+  getNotificationDetails: getNotificationDetails,
+  deleteNotification: deleteNotification
 }

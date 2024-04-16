@@ -45,9 +45,29 @@ let getFollowDetails = async (followingId, followerId) =>
 )
 };
 
-let updateRequestedForUnfollowUsers = async (ids, data) =>
+let updateRequestedForUnfollowUsers = async (ids, data, NotificationParams) =>
 {
-    return await FollowUser.query().update(data).whereIn('id', ids);
+    const transaction = await FollowUser.startTransaction();
+
+    try 
+    {
+
+        let followUsers = await FollowUser.query().update(data).whereIn('id', ids);
+
+        let notifications =  await Notification.query().insert(NotificationParams);
+
+        await transaction.commit();
+
+        return {
+            followUsers : followUsers,
+            notifications :notifications
+        };
+    } 
+    catch (error) 
+    {
+        await transaction.rollback();
+        return {error: error}
+    } 
 }
 
 module.exports ={

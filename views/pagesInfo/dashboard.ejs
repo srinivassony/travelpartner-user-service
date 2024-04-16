@@ -140,14 +140,13 @@
                                     </div>
 
                                     <div class="page-body">
-
                                         <% if(userDetails && userDetails.length > 0) {
-                                             userDetails.forEach(function(user) { %>
+                                            userDetails.forEach(function(user) { %>
+                                        
                                         <div class="row simple-cards users-card">
                                             <div class="col-md-12 col-xl-4">
                                                 <div class="card user-card">
                                                     <div class="card-header-img">
-                                                        
                                                             <div class="row">
                                                                 <div class="col-lg-2">
                                                                     <% if(user && user.image) { %>
@@ -191,6 +190,7 @@
                                                         <% if(user.followUsers &&  user.followUsers.length > 0) {
                                                             user.followUsers.forEach(function(followUser) {  %>
 
+        
                                                                 <% if(followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1) { %>
                                                                     <button type="button" id="requestedForUnfollowUsers"
                                                                     class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
@@ -200,10 +200,13 @@
                                                                         <% } else if (followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.requested == 0) { %>
                                                                             <button type="button"  id="followUsers"
                                                                             class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
-                                                                            <% } %>
-                                                        
-
-                                                                        <%  }); } else { %>
+                                                                           
+                                                                            <% } else if( followUser.followerId == followUser.userId && (followUser.requested == 1 || followUser.requested == 0)) {%>
+                                                                                <button type="button"  id="followUsers"
+                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                            <% }%>
+                                                                           
+                                                                                <%  }); } else { %>
                                                                     <button type="button" id="followUsers"
                                                                     class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
                                                                     <% }%>

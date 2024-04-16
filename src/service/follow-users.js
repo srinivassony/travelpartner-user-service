@@ -1,4 +1,5 @@
 const db = require('../database/db/follow-users');
+const userdb = require('../database/db/user');
 const common = require('../utils/utils');
 const Status = common.Status;
 
@@ -9,6 +10,10 @@ exports.createFollow = async (reqParams) =>
         let followingId = reqParams.followingId ? reqParams.followingId : null;
 
         let followerId = reqParams.followerId?  reqParams.followerId : null;
+
+        console.log('followingId',followingId)
+
+        console.log('followerId',followerId)
 
         let getFollowDetails = await db.getFollowDetails(followingId, followerId);
 
@@ -23,12 +28,24 @@ exports.createFollow = async (reqParams) =>
                 updatedBy : reqParams.uuid,
                 updatedAt : new Date()
             };
-    
-            let followUser = await db.updateRequestedForUnfollowUsers(ids ,params);
 
+            let NotificationParams =
+            {
+                subject: "Friend request sent",
+                notificationFrom : followerId,
+                notificationTo : followingId, 
+                userId: reqParams.userId,
+                createdAt: new Date(),
+                createdBy: reqParams.uuid
+            };
+    
+            let followUser_notification = await db.updateRequestedForUnfollowUsers(ids, params, NotificationParams);
+
+            console.log('followUser_notification',followUser_notification)
+    
             return {
                 status: Status.SUCCESS,
-                followUser: followUser
+                followUser_notification: followUser_notification
             }
         }
         else
@@ -114,7 +131,11 @@ exports.requestedForUnfollowUsers = async (reqParams) =>
 
         let followUser = await db.updateRequestedForUnfollowUsers(ids ,params);
 
-        console.log('followUser',followUser)
+        console.log('followUser',followUser);
+
+        let deleteNotification = await userdb.deleteNotification(followerId);
+
+        console.log('deleteNotification',deleteNotification)
 
         return {
             status: Status.SUCCESS,
