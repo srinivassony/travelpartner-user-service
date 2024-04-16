@@ -558,9 +558,16 @@ exports.getUserById = async (reqParams) =>
 
         let userDetails = await db.getUserDetailsById(userId);
 
+        console.log('userDetails',JSON.stringify(userDetails));
+
+        let NotificationView = await db.getNotificationDetails(userId);
+
+        console.log('NotificationView',NotificationView)
+
         return {
             status: Status.SUCCESS,
-            userDetails: userDetails
+            userDetails: userDetails,
+            NotificationView: NotificationView
         }
     }
     catch (error) 
@@ -690,6 +697,13 @@ exports.getUserDetails = async (id) =>
     try
     {
         let userDetails = await db.getUserDetails(id);
+
+        for(let users = 0;users<userDetails.length;users++)
+        {
+            let user =userDetails[users];
+
+            user.mainUserId = id;
+        }
 
         return {
             status: Status.SUCCESS,
