@@ -140,22 +140,29 @@
                                     </div>
 
                                     <div class="page-body">
-
                                         <% if(userDetails && userDetails.length > 0) {
-                                             userDetails.forEach(function(user) { %>
+                                            userDetails.forEach(function(user) { %>
+                                        
                                         <div class="row simple-cards users-card">
                                             <div class="col-md-12 col-xl-4">
                                                 <div class="card user-card">
                                                     <div class="card-header-img">
-                                                        <% if(user && user.image) { %>
                                                             <div class="row">
                                                                 <div class="col-lg-2">
+                                                                    <% if(user && user.image) { %>
                                                                     <div class="image-container">
                                                                         <div class="box">
                                                                             <img class="img-fluid img-radius"
                                                                             src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
                                                                         </div>
                                                                     </div>
+                                                                    <% } else {%>
+                                                                        <div class="image-container">
+                                                                            <div class="box">
+                                                                                <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
+                                                                            </div>
+                                                                        </div>
+                                                                    <% }%>
                                                                 </div>
                                                                 <div class="col-lg-8">
                                                                     <div class="user-title">
@@ -174,42 +181,36 @@
                                                                     </div>
                                                                 <% }%>
                                                             </div>
-                                                            <% } else {%>
-                                                                <div class="row">
-                                                                    <div class="col-lg-2">
-                                                                        <div class="image-container">
-                                                                            <div class="box">
-                                                                                <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-8">
-                                                                        <div class="user-title">
-                                                                            <h4>
-                                                                                <%= user.userName %>
-                                                                            </h4>
-                                                                        </div>
-                                                                    </div>
-                                                                    <% if(user && user.login == 1) { %>
-                                                                        <div class="col-lg-1">
-                                                                            <div class="green-dot"></div>
-                                                                        </div> 
-                                                                    <% } else {%>
-                                                                        <div class="col-lg-1">
-                                                                            <div class="red-dot"></div>
-                                                                        </div>
-                                                                    <% }%>
-                                                                </div>
-                                                            <% }%>
-                                                        
+                                                           
                                                         <h5><a href="mailto:<%= user.email %>"
                                                                 ><%= user.email %></a>
                                                         </h5>
                                                     </div>
                                                     <div style="margin-top: 10px;">
-                                                        <button type="button"
-                                                            class="btn btn-primary waves-effect waves-light m-r-15"><i
-                                                                class="icofont icofont-plus m-r-5"></i>Follow</button>
+                                                        <% if(user.followUsers &&  user.followUsers.length > 0) {
+                                                            user.followUsers.forEach(function(followUser) {  %>
+
+        
+                                                                <% if(followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1) { %>
+                                                                    <button type="button" id="requestedForUnfollowUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
+                                                                    <% } else if (followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId != user.mainUserId && followUser.requested == 1) { %>
+                                                                        <button type="button" 
+                                                                        class="btn btn-primary waves-effect waves-light m-r-15 " data-user-id="<%= user.id %>"><i class="fa fa-thumbs-up"></i>Requested</button>
+                                                                        <% } else if (followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.requested == 0) { %>
+                                                                            <button type="button"  id="followUsers"
+                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                           
+                                                                            <% } else if( followUser.followerId == followUser.userId && (followUser.requested == 1 || followUser.requested == 0)) {%>
+                                                                                <button type="button"  id="followUsers"
+                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                            <% }%>
+                                                                           
+                                                                                <%  }); } else { %>
+                                                                    <button type="button" id="followUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                    <% }%>
+
                                                         <button type="button"
                                                             class="btn btn-success waves-effect waves-light"><a href="/userprofile/<%= user.id %>" style="color:white;"><i
                                                                 class="icofont icofont-user m-r-5"></i>Profile</a></button>
@@ -252,6 +253,140 @@
     </div>
 
 <%- include('scripts'); %>
+
+<script>
+
+    function callAPI(followingId) 
+        {
+            document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+
+            const requestBody = {
+                followingId: followingId,
+                followerId: '<%= id %>',
+                uuid : '<%= uuid %>',
+                userId : '<%= id %>'
+            };
+
+            console.log('requestBody', requestBody)
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            };
+
+            fetch('/follow/users/', options)
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data =>
+                {
+                    console.log(data);
+
+                    if(data && data.status == 1)
+                    {
+                        document.getElementById('followUsers').innerText = 'Remove';
+
+                        alert('Request sent to the user!')
+                    }
+                    else
+                    {
+                        alert(data.message)
+                    }
+
+                })
+                .catch(error =>
+                {
+                    console.error('There was a problem with the API request:', error);
+
+                    alert('There was a problem with the API request:', error)
+                })
+        }
+
+        document.querySelectorAll('.followUser').forEach(button =>
+        {
+            button.addEventListener('click', () =>
+            {
+                const followingId = button.getAttribute('data-user-id');
+                callAPI(followingId);
+            });
+        });
+   
+</script>
+
+<script>
+
+    function requestedForUnfollowUsers(followingId) 
+    {
+        document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+
+        const requestBody = {
+            followingId: followingId,
+            followerId: '<%= id %>',
+            userId : '<%= id %>',
+            uuid : '<%= uuid %>'
+        };
+
+        console.log('requestBody', requestBody)
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        };
+
+        fetch('/update/unfollow/users/', options)
+            .then(response =>
+            {
+                if (!response.ok)
+                {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data =>
+            {
+                console.log(data);
+
+                if(data && data.status == 1)
+                {
+                    document.getElementById('requestedForUnfollowUsers').innerText = 'Follow';
+
+                    alert('User has unfollowed the account!')
+                }
+                else
+                {
+                    alert(data.message)
+                }
+
+            })
+            .catch(error =>
+            {
+                console.error('There was a problem with the API request:', error);
+
+                alert('There was a problem with the API request:', error)
+            })
+    }
+
+    document.querySelectorAll('.requestedForUnfollowUsers').forEach(button =>
+    {
+        button.addEventListener('click', () =>
+        {
+            const followingId = button.getAttribute('data-user-id');
+            requestedForUnfollowUsers(followingId);
+        });
+    });
+   
+</script>
 
 </body>
 
