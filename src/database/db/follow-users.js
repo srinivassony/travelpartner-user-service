@@ -51,10 +51,14 @@ let updateRequestedForUnfollowUsers = async (ids, data, NotificationParams) =>
 
     try 
     {
+        let notifications = null;
 
         let followUsers = await FollowUser.query().update(data).whereIn('id', ids);
 
-        let notifications =  await Notification.query().insert(NotificationParams);
+        if(NotificationParams)
+        {
+            notifications =  await Notification.query().insert(NotificationParams);
+        }
 
         await transaction.commit();
 
@@ -70,9 +74,35 @@ let updateRequestedForUnfollowUsers = async (ids, data, NotificationParams) =>
     } 
 }
 
+let updateRequestedForFollowUsers = async (ids, Followparams, followingId, notificationParams) =>
+{
+    const transaction = await FollowUser.startTransaction();
+
+    try 
+    {
+
+        let followUsers = await FollowUser.query().update(Followparams).whereIn('id', ids);
+
+        let notifications = await Notification.query().update(notificationParams).where('notificationTo', followingId);
+
+        await transaction.commit();
+
+        return {
+            followUsers: followUsers,
+            notifications: notifications
+        };
+    } 
+    catch (error) 
+    {
+        await transaction.rollback();
+        return {error: error}
+    } 
+}
+
 module.exports ={
     createFollow: createFollow,
     createNotification: createNotification,
     getFollowDetails: getFollowDetails,
-    updateRequestedForUnfollowUsers: updateRequestedForUnfollowUsers
+    updateRequestedForUnfollowUsers: updateRequestedForUnfollowUsers,
+    updateRequestedForFollowUsers: updateRequestedForFollowUsers
   }

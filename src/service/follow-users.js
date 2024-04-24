@@ -129,13 +129,71 @@ exports.requestedForUnfollowUsers = async (reqParams) =>
 
         console.log('params',params)
 
-        let followUser = await db.updateRequestedForUnfollowUsers(ids ,params);
+        let followUser = await db.updateRequestedForUnfollowUsers(ids, params, null);
 
         console.log('followUser',followUser);
 
         let deleteNotification = await userdb.deleteNotification(followerId);
 
         console.log('deleteNotification',deleteNotification)
+
+        return {
+            status: Status.SUCCESS,
+            followUser: followUser
+        }
+    } 
+    catch (error) 
+    {
+        console.log(error)
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
+
+exports.requestedForfollowUsers = async (reqParams) =>
+{
+    try 
+    {
+        let followingId = reqParams.followingId ? reqParams.followingId : null;
+
+        let followerId = reqParams.followerId?  reqParams.followerId : null;
+
+        console.log('followingId',followingId)
+
+        console.log('followerId',followerId)
+
+        let getFollowDetails = await db.getFollowDetails(followingId, followerId);
+
+        if(getFollowDetails.length == 0)
+        {
+            return {
+                status: Status.FAIL,
+                message: "Data not found!"
+            }
+        }
+
+        let ids = getFollowDetails.filter(follow =>follow.id ).map(follow =>follow.id);
+
+        let Followparams = 
+        {
+            isFollow : 1,
+            updatedBy : reqParams.uuid,
+            updatedAt : new Date()
+        };
+
+        console.log('Followparams',Followparams)
+
+        let notificationParams = {
+            isRead:1,
+            updatedBy : reqParams.uuid,
+            updatedAt : new Date()
+        }
+
+        console.log('notificationParams',notificationParams)
+
+        let followUser = await db.updateRequestedForFollowUsers(ids, Followparams, followerId, notificationParams);
 
         return {
             status: Status.SUCCESS,
