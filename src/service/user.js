@@ -558,8 +558,6 @@ exports.getUserById = async (reqParams) =>
 
         let userDetails = await db.getUserDetailsById(userId);
 
-        console.log('userDetails',JSON.stringify(userDetails));
-
         let NotificationView = await db.getNotificationDetails(userId);
 
         console.log('NotificationView',NotificationView)
