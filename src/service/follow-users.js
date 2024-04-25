@@ -123,6 +123,7 @@ exports.requestedForUnfollowUsers = async (reqParams) =>
         let params = 
         {
             requested : 0,
+            isFollow : 0,
             updatedBy : reqParams.uuid,
             updatedAt : new Date()
         };

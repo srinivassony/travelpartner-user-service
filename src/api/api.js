@@ -184,7 +184,7 @@ app.get('/dashboard', async (req, res) =>
 		username: name,
 		id: id,
 		uuid: uuid,
-		userDetails: userData && userData.status == 1 && userData.userDetails.length > 0 ? userData.userDetails : userData && userData.status == 0 ? userData.message : []
+		userInfo: userData && userData.status == 1 && userData.userDetails.length > 0 ? userData : userData && userData.status == 0 ? userData.message : []
 	});
 });
 

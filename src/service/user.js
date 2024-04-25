@@ -1,4 +1,5 @@
 const db = require('../database/db/user');
+const followDB = require('../database/db/follow-users');
 const bcrypt = require('bcrypt');
 const common = require('../utils/utils');
 const Status = common.Status;
@@ -558,8 +559,6 @@ exports.getUserById = async (reqParams) =>
 
         let userDetails = await db.getUserDetailsById(userId);
 
-        console.log('userDetails',JSON.stringify(userDetails));
-
         let NotificationView = await db.getNotificationDetails(userId);
 
         console.log('NotificationView',NotificationView)
@@ -705,9 +704,12 @@ exports.getUserDetails = async (id) =>
             user.mainUserId = id;
         }
 
+        let followers = await followDB.getFollowDetailsInfo();
+
         return {
             status: Status.SUCCESS,
-            userDetails: userDetails
+            userDetails: userDetails,
+            followersInfo: followers
         }
     }
     catch (error) 
