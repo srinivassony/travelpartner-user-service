@@ -140,8 +140,8 @@
                                     </div>
 
                                     <div class="page-body">
-                                        <% if(userDetails && userDetails.length > 0) {
-                                            userDetails.forEach(function(user) { %>
+                                        <% if(userInfo && userInfo.userDetails && userInfo.userDetails.length > 0) {
+                                            userInfo.userDetails.forEach(function(user) { %>
                                         
                                         <div class="row simple-cards users-card">
                                             <div class="col-md-12 col-xl-4">
@@ -187,38 +187,44 @@
                                                         </h5>
                                                     </div>
                                                     <div style="margin-top: 10px;">
+                                                        <% if(userInfo &&  userInfo.followersInfo && userInfo.followersInfo.length > 0) {
+                                                            userInfo.followersInfo.forEach(function(FollowDBInfo) { %>
+
                                                         <% if(user.followUsers &&  user.followUsers.length > 0) {
                                                             user.followUsers.forEach(function(followUser) {  %>
 
-                                                                <% if(followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                <% if(followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
                                                                     <button type="button" id="requestedForUnfollowUsers"
                                                                     class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
-                                                                    <% } else if (followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId != user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
-                                                                        <button type="button" id="requestedForfollowUsers"
-                                                                        class="btn btn-primary waves-effect waves-light m-r-15 requestedForfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-up"></i>Requested</button>
-                                                                        <% } else if (followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.requested == 0 && followUser.isFollow == 0) { %>
-                                                                            <button type="button"  id="followUsers"
-                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow1</button>
-                                                                           
-                                                                            
-                                                                            <% } else if(followUser.followerId == user.mainUserId && followUser.isFollow == 1) { %>
-                                                                                <button type="button" id="requestedForUnfollowUsers"
-                                                                                class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
-    
-                                                                                    <% } else if(followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.requested == 1 && followUser.isFollow == 1) { %>
-                                                                                        <button type="button"  id="followUsers"
-                                                                                        class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow3</button>
-                                                                                        <% } else if(followUser.followerId == user.mainUserId && followUser.followingId == followUser.userId && followUser.requested == 1 && followUser.isFollow == 1){ %>
-                                                                                            <button type="button"  id="followUsers"
-                                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow4</button>
-                                                                                        <% } else if(followUser.followerId == user.mainUserId && followUser.followingId == followUser.userId && followUser.requested == 1 && followUser.isFollow == 0){%>
-                                                                                            <button type="button"  id="followUsers"
-                                                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow5</button>
-                                                                                            <% }%>
-                                                                                            <%  }); } else { %>
+                                                                <% } else if (followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId != user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                    <button type="button" id="requestedForfollowUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-up"></i>Requested</button>
+                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.isFollow == 1) { %>
+                                                                    <button type="button" id="requestedForUnfollowUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
+                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId != followUser.userId) { %>
                                                                     <button type="button" id="followUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow6</button>
-                                                                    <% }%>
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow1</button>
+                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId == followUser.userId && followUser.followingId != user.id &&  followUser.requested == 0 ) { %>
+                                                                    <button type="button" id="followUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow2</button>
+                                                                <% }else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId == followUser.userId &&  followUser.requested == 1) { %>
+                                                                    <button type="button" id="followUsers"
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow3</button>
+                                                                <% }%>
+
+
+
+                                                        <%  }); } else { %>
+                                                            <button type="button" id="followUsers"
+                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow--</button>
+                                                        <% }%>
+
+                                                        <% // This is a FollowDBInfo closed %>
+                                                        <%  }); } else { %>
+                                                            <button type="button" id="followUsers"
+                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow++</button>
+                                                        <% }%>
 
                                                         <button type="button"
                                                             class="btn btn-success waves-effect waves-light"><a href="/userprofile/<%= user.id %>" style="color:white;"><i

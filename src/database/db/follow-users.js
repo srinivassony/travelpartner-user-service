@@ -99,10 +99,16 @@ let updateRequestedForFollowUsers = async (ids, Followparams, followingId, notif
     } 
 }
 
+let getFollowDetailsInfo = async () => 
+{
+  return await FollowUser.query().select();
+};
+
 module.exports ={
     createFollow: createFollow,
     createNotification: createNotification,
     getFollowDetails: getFollowDetails,
     updateRequestedForUnfollowUsers: updateRequestedForUnfollowUsers,
-    updateRequestedForFollowUsers: updateRequestedForFollowUsers
+    updateRequestedForFollowUsers: updateRequestedForFollowUsers,
+    getFollowDetailsInfo: getFollowDetailsInfo
   }
