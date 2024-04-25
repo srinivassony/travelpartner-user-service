@@ -404,6 +404,11 @@ app.post("/update/unfollow/users/", async (req, res) =>
 	return res.json(await followUsersService.requestedForUnfollowUsers(req.body));
 });
 
+app.post("/update/follow/users/", async (req, res) => 
+{
+	return res.json(await followUsersService.requestedForfollowUsers(req.body));
+});
+
 app.all('*', (req, res, next) => 
 {
     res.status(404).render('pagesInfo/404',{
