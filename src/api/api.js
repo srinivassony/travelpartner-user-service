@@ -13,6 +13,7 @@ let imageService = require('../service/image');
 let galleryService = require('../service/gallery');
 let userDb = require('../database/db/user');
 let followUsersService = require('../service/follow-users');
+let postService = require('../service/post');
 
 //middelwares
 app.use(flash());
@@ -415,5 +416,6 @@ app.all('*', (req, res, next) =>
 		isAuthenticated: req.session.isLoggedIn
 	});
 });
+
 
 module.exports = app;
