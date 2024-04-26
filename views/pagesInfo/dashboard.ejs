@@ -12,7 +12,6 @@
             .image-container {
                 position: relative;
                 display: inline-block;
-                display: block;
             }
 
             /* CSS for the image */
@@ -22,12 +21,11 @@
             }
 
             .box {
-                width: 60px;
-                height: 60px;
-                overflow: hidden;
+                width: 250px;
+                height: 210px;
                 /* Ensures the image doesn't overflow the box */
-                border: 2px solid rgba(46, 190, 226, 0.603);
-                border-radius: 50%;
+                border: 2px solid rgba(15, 169, 207, 0.521);
+                border-radius: 10%;
                 overflow: hidden;
                 /* Ensure the image doesn't overflow the box */
                 position: relative;
@@ -140,56 +138,36 @@
                                     </div>
 
                                     <div class="page-body">
-                                        <% if(userInfo && userInfo.userDetails && userInfo.userDetails.length > 0) {
-                                            userInfo.userDetails.forEach(function(user) { %>
-                                        
                                         <div class="row simple-cards users-card">
+                                            <% if(userInfo && userInfo.userDetails && userInfo.userDetails.length > 0) {
+                                                userInfo.userDetails.forEach(function(user) { %>
                                             <div class="col-md-12 col-xl-4">
                                                 <div class="card user-card">
                                                     <div class="card-header-img">
-                                                            <div class="row">
-                                                                <div class="col-lg-2">
-                                                                    <% if(user && user.image) { %>
-                                                                    <div class="image-container">
-                                                                        <div class="box">
-                                                                            <img class="img-fluid img-radius"
-                                                                            src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
-                                                                        </div>
-                                                                    </div>
-                                                                    <% } else {%>
-                                                                        <div class="image-container">
-                                                                            <div class="box">
-                                                                                <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
-                                                                            </div>
-                                                                        </div>
-                                                                    <% }%>
-                                                                </div>
-                                                                <div class="col-lg-8">
-                                                                    <div class="user-title">
-                                                                        <h4>
-                                                                            <%= user.userName %>
-                                                                        </h4>
+                                                        <% if(user && user.image) { %>
+                                                                <div class="image-container">
+                                                                    <div class="box">
+                                                                        <img class="img-fluid img-radius"
+                                                                        src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
                                                                     </div>
                                                                 </div>
-                                                                <% if(user && user.login == 1) { %>
-                                                                    <div class="col-lg-1">
-                                                                        <div class="green-dot"></div>
-                                                                    </div> 
-                                                                <% } else {%>
-                                                                    <div class="col-lg-1">
-                                                                        <div class="red-dot"></div>
+                                                            <% } else {%>
+                                                                <div class="image-container">
+                                                                    <div class="box">
+                                                                        <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
                                                                     </div>
-                                                                <% }%>
-                                                            </div>
-                                                           
-                                                        <h5><a href="mailto:<%= user.email %>"
-                                                                ><%= user.email %></a>
+                                                                </div>
+                                                            <% }%>
+                                                       
+                                                        <h4><%= user.userName %></h4>
+                                                        <h5><a href="mailto:<%= user.email %>" class="__cf_email__"><%= user.email %></a>
                                                         </h5>
+                                                        
                                                     </div>
+                                                   
                                                     <div style="margin-top: 10px;">
                                                         <% if(user.followUsers &&  user.followUsers.length > 0) {
                                                             user.followUsers.forEach(function(followUser) {  %>
-
                                                                 <% if(  followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
                                                                     <button type="button" id="requestedForUnfollowUsers"
                                                                     class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
@@ -215,30 +193,31 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
-                                        </div>
-                                        <% }); } else { %>
-
-                                            <div class="page-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h5>There is no users to see!</h5>
-                                                                <div class="card-header-right">
-                                                                    <ul class="list-unstyled card-option">
-                                                                        <li><i class="feather icon-maximize full-card"></i></li>
-                                                                        <li><i class="feather icon-minus minimize-card"></i>
-                                                                        </li>
-                                                                    </ul>
+                                            <% }); } else { %>
+                                                <div class="page-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <h5>There is no users to see!</h5>
+                                                                    <div class="card-header-right">
+                                                                        <ul class="list-unstyled card-option">
+                                                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                                                            <li><i class="feather icon-minus minimize-card"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             <% }%>
+
+                                        </div>
                                     </div>
+                                  
+                                    
                                 </div>
                             </div>
                             <div id="styleSelector">
