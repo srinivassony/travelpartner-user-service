@@ -1,5 +1,4 @@
 const db = require('../database/db/user');
-const followDB = require('../database/db/follow-users');
 const bcrypt = require('bcrypt');
 const common = require('../utils/utils');
 const Status = common.Status;
@@ -704,12 +703,9 @@ exports.getUserDetails = async (id) =>
             user.mainUserId = id;
         }
 
-        let followers = await followDB.getFollowDetailsInfo();
-
         return {
             status: Status.SUCCESS,
-            userDetails: userDetails,
-            followersInfo: followers
+            userDetails: userDetails
         }
     }
     catch (error) 
