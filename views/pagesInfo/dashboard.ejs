@@ -12,7 +12,6 @@
             .image-container {
                 position: relative;
                 display: inline-block;
-                display: block;
             }
 
             /* CSS for the image */
@@ -22,12 +21,11 @@
             }
 
             .box {
-                width: 60px;
-                height: 60px;
-                overflow: hidden;
+                width: 250px;
+                height: 210px;
                 /* Ensures the image doesn't overflow the box */
-                border: 2px solid rgba(46, 190, 226, 0.603);
-                border-radius: 50%;
+                border: 2px solid rgba(15, 169, 207, 0.521);
+                border-radius: 10%;
                 overflow: hidden;
                 /* Ensure the image doesn't overflow the box */
                 position: relative;
@@ -140,122 +138,86 @@
                                     </div>
 
                                     <div class="page-body">
-                                        <% if(userInfo && userInfo.userDetails && userInfo.userDetails.length > 0) {
-                                            userInfo.userDetails.forEach(function(user) { %>
-                                        
                                         <div class="row simple-cards users-card">
+                                            <% if(userInfo && userInfo.userDetails && userInfo.userDetails.length > 0) {
+                                                userInfo.userDetails.forEach(function(user) { %>
                                             <div class="col-md-12 col-xl-4">
                                                 <div class="card user-card">
                                                     <div class="card-header-img">
-                                                            <div class="row">
-                                                                <div class="col-lg-2">
-                                                                    <% if(user && user.image) { %>
-                                                                    <div class="image-container">
-                                                                        <div class="box">
-                                                                            <img class="img-fluid img-radius"
-                                                                            src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
-                                                                        </div>
-                                                                    </div>
-                                                                    <% } else {%>
-                                                                        <div class="image-container">
-                                                                            <div class="box">
-                                                                                <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
-                                                                            </div>
-                                                                        </div>
-                                                                    <% }%>
-                                                                </div>
-                                                                <div class="col-lg-8">
-                                                                    <div class="user-title">
-                                                                        <h4>
-                                                                            <%= user.userName %>
-                                                                        </h4>
+                                                        <% if(user && user.image) { %>
+                                                                <div class="image-container">
+                                                                    <div class="box">
+                                                                        <img class="img-fluid img-radius"
+                                                                        src='../images/uploads/<%= user.image.profilePicId %>/<%= user.image.profilePicName %>' ; alt="card-img">
                                                                     </div>
                                                                 </div>
-                                                                <% if(user && user.login == 1) { %>
-                                                                    <div class="col-lg-1">
-                                                                        <div class="green-dot"></div>
-                                                                    </div> 
-                                                                <% } else {%>
-                                                                    <div class="col-lg-1">
-                                                                        <div class="red-dot"></div>
+                                                            <% } else {%>
+                                                                <div class="image-container">
+                                                                    <div class="box">
+                                                                        <img class="img-fluid img-radius" src='../images/human.png' ; alt="card-img">
                                                                     </div>
-                                                                <% }%>
-                                                            </div>
-                                                           
-                                                        <h5><a href="mailto:<%= user.email %>"
-                                                                ><%= user.email %></a>
+                                                                </div>
+                                                            <% }%>
+                                                       
+                                                        <h4><%= user.userName %></h4>
+                                                        <h5><a href="mailto:<%= user.email %>" class="__cf_email__"><%= user.email %></a>
                                                         </h5>
+                                                        
                                                     </div>
+                                                   
                                                     <div style="margin-top: 10px;">
-                                                        <% if(userInfo &&  userInfo.followersInfo && userInfo.followersInfo.length > 0) {
-                                                            userInfo.followersInfo.forEach(function(FollowDBInfo) { %>
-
                                                         <% if(user.followUsers &&  user.followUsers.length > 0) {
                                                             user.followUsers.forEach(function(followUser) {  %>
-
-                                                                <% if(followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                <% if(  followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId == user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
                                                                     <button type="button" id="requestedForUnfollowUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
-                                                                <% } else if (followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId != user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-times"></i>Remove</button>
+                                                                <% } else if (  followUser.followerId == user.mainUserId && followUser.followingId == user.id && followUser.userId != user.mainUserId && followUser.requested == 1 && followUser.isFollow == 0) { %>
                                                                     <button type="button" id="requestedForfollowUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-up"></i>Requested</button>
-                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId == user.mainUserId && followUser.isFollow == 1) { %>
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForfollowUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-up"></i>Requested</button>
+                                                                <% } else if(  followUser.followerId == user.mainUserId && followUser.isFollow == 1) { %>
                                                                     <button type="button" id="requestedForUnfollowUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
-                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId != followUser.userId) { %>
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 requestedForUnfollowUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
+                                                                <%   } else { %>
                                                                     <button type="button" id="followUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow1</button>
-                                                                <% } else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId == followUser.userId && followUser.followingId != user.id &&  followUser.requested == 0 ) { %>
-                                                                    <button type="button" id="followUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow2</button>
-                                                                <% }else if(followUser.id == FollowDBInfo.id && followUser.followerId != user.id && followUser.followingId == followUser.userId &&  followUser.requested == 1) { %>
-                                                                    <button type="button" id="followUsers"
-                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow3</button>
+                                                                    class="btn btn-primary waves-effect waves-light m-r-15 followUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
                                                                 <% }%>
 
-
-
                                                         <%  }); } else { %>
                                                             <button type="button" id="followUsers"
-                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow--</button>
+                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUsers buttonInfo" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow</button>
                                                         <% }%>
 
-                                                        <% // This is a FollowDBInfo closed %>
-                                                        <%  }); } else { %>
-                                                            <button type="button" id="followUsers"
-                                                            class="btn btn-primary waves-effect waves-light m-r-15 followUser" data-user-id="<%= user.id %>"><i class="fa fa-user-plus"></i>Follow++</button>
-                                                        <% }%>
-
-                                                        <button type="button"
-                                                            class="btn btn-success waves-effect waves-light"><a href="/userprofile/<%= user.id %>" style="color:white;"><i
-                                                                class="icofont icofont-user m-r-5"></i>Profile</a></button>
+                                                        <button type="button" id="profileBtn"
+                                                            class="btn btn-success waves-effect waves-light profileBtn"><a href="/userprofile/<%= user.id %>" style="color:white;"><i
+                                                                class="icofont icofont-user m-r-5 buttonInfo"></i>Profile</a></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                           
-                                        </div>
-                                        <% }); } else { %>
-
-                                            <div class="page-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h5>There is no users to see!</h5>
-                                                                <div class="card-header-right">
-                                                                    <ul class="list-unstyled card-option">
-                                                                        <li><i class="feather icon-maximize full-card"></i></li>
-                                                                        <li><i class="feather icon-minus minimize-card"></i>
-                                                                        </li>
-                                                                    </ul>
+                                            <% }); } else { %>
+                                                <div class="page-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <h5>There is no users to see!</h5>
+                                                                    <div class="card-header-right">
+                                                                        <ul class="list-unstyled card-option">
+                                                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                                                            <li><i class="feather icon-minus minimize-card"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             <% }%>
+
+                                        </div>
                                     </div>
+                                  
+                                    
                                 </div>
                             </div>
                             <div id="styleSelector">
@@ -268,6 +230,49 @@
     </div>
 
 <%- include('scripts'); %>
+
+<script>
+   
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get all user cards
+        const userCards = document.querySelectorAll('.user-card');
+    
+        // Loop through each user card
+        userCards.forEach(function(card) {
+            console.log('card',card)
+            // Get buttons inside the current card
+            const followButton = card.querySelector('.followUsers');
+            const profileButton = card.querySelector('.profileBtn');
+            const requestedButton = card.querySelector('.requestedForfollowUsers');
+            const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
+            const followButtons = card.querySelectorAll('.followUsers');
+
+            console.log('followButton',followButton)
+    
+            // Check if both follow and profile buttons exist
+            if (followButton && requestedButton && profileButton)
+            {
+                // If both follow and profile buttons exist, remove the follow button
+                followButton.remove();
+            }
+            else if (followButton && unFollowButton && profileButton)
+            {
+                followButton.remove();
+            }
+            else if (followButtons.length > 1) // If there are multiple follow buttons, keep only the first one and remove the rest
+            {
+                // Loop through follow buttons starting from the second one
+                for (let i = 1; i < followButtons.length; i++)
+                {
+                    // Remove the follow button
+                    followButtons[i].remove();
+                }
+            }
+           
+
+        });
+    });
+</script>
 
 <script>
 
@@ -325,7 +330,7 @@
                 })
         }
 
-        document.querySelectorAll('.followUser').forEach(button =>
+        document.querySelectorAll('.followUsers').forEach(button =>
         {
             button.addEventListener('click', () =>
             {
