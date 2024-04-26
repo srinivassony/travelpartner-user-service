@@ -79,19 +79,21 @@ CREATE TABLE "tp_findAPartner"
 -- follow users
 CREATE TABLE "tp_follow_users" 
    (	
-    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
-	 "followerId" VARCHAR2(100 BYTE) not null ENABLE,
-     "followingId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
-     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
-    "requested" NUMBER(1,0) DEFAULT 0,
-    "isFollow" NUMBER(1,0) DEFAULT 0,
+	"id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	"followerId" VARCHAR2(100 BYTE) NOT NULL ENABLE, 
+	"followingId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	"userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	"requested" NUMBER(1,0) DEFAULT 0, 
+	"isFollow" NUMBER(1,0) DEFAULT 0, 
 	"createdAt" TIMESTAMP (8), 
 	"updatedAt" TIMESTAMP (8), 
 	"createdBy" VARCHAR2(36 BYTE), 
 	"updatedBy" VARCHAR2(36 BYTE), 
-	PRIMARY KEY ("id"),
-    CONSTRAINT "follow_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
-) ;
+	 PRIMARY KEY ("id"),
+     CONSTRAINT "follow_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id"),
+     CONSTRAINT "follower_id" FOREIGN KEY ("followerId") REFERENCES "tp_user" ("id"),
+     CONSTRAINT "following_id" FOREIGN KEY ("followingId") REFERENCES "tp_user" ("id")
+	 );
 
 -- notification
 CREATE TABLE "tp_notification" 
@@ -127,3 +129,4 @@ from "tp_user" us
 left join "tp_image" img on img."userId" = us."id"
 left join "tp_notification" notif on notif."userId" = us."id" and notif."isRead" = 0
 where us."isRegistered" = 1;
+
