@@ -130,3 +130,65 @@ left join "tp_image" img on img."userId" = us."id"
 left join "tp_notification" notif on notif."userId" = us."id" and notif."isRead" = 0
 where us."isRegistered" = 1;
 
+--post table
+
+create table "tp_post" (
+"id" varchar2(36) not null,
+"location" varchar2(36),
+"description" CLOB,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id")
+);
+
+
+--post images table
+
+create table "tp_post_images" (
+"id" varchar2(36) not null,
+"postId" varchar2(36)not null,
+"postFileName" varchar2(36),
+"postField" varchar2(36),
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key("postId") references "tp_post" ("id")
+);
+
+
+--post like table
+
+create table "tp_post_like" (
+"id" varchar2(36) not null,
+"post_id" varchar2(36)not null,
+"isLike" NUMBER(1,0) default 0,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id"),
+foreign key("post_id") references "tp_post" ("id")
+);
+
+
+--post comment table
+
+create table "tp_post_comment" (
+"id" varchar2(36) not null,
+"postId" varchar2(36) not null,
+"comment" varchar2(36),
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key("postId") references "tp_post" ("id"),
+foreign key ("userId") references "tp_user" ("id")
+);
