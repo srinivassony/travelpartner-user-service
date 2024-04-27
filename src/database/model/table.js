@@ -7,6 +7,10 @@ const tables = {
     findPartner: 'tp_findAPartner',
     followUsers: 'tp_follow_users',
     notification : 'tp_notification',
+    post : 'tp_post',
+    postComment : 'tp_post_comment',
+    postImages : 'tp_post_images',
+    postLike : 'tp_post_like',
     fetch_view_notifiction: 'tp_view_fetch_notification'
 };
 
