@@ -134,13 +134,15 @@ where us."isRegistered" = 1;
 
 create table "tp_post" (
 "id" varchar2(36) not null,
-"location" varchar2(36),
-"description" CLOB,
+"location" varchar2(1020) not null,
+"description" CLOB not null,
+"userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
 "updatedAt" TIMESTAMP(8),
 "updatedBy" varchar2(36),
-primary key("id")
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id")
 );
 
 
@@ -148,9 +150,9 @@ primary key("id")
 
 create table "tp_post_images" (
 "id" varchar2(36) not null,
-"postId" varchar2(36)not null,
-"postFileName" varchar2(36),
-"postField" varchar2(36),
+"postId" varchar2(36),
+"postFileName" varchar2(1020) not null,
+"postFieldId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
 "updatedAt" TIMESTAMP(8),
@@ -164,7 +166,7 @@ foreign key("postId") references "tp_post" ("id")
 
 create table "tp_post_like" (
 "id" varchar2(36) not null,
-"post_id" varchar2(36)not null,
+"postId" varchar2(36)not null,
 "isLike" NUMBER(1,0) default 0,
 "userId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
@@ -192,3 +194,34 @@ primary key("id"),
 foreign key("postId") references "tp_post" ("id"),
 foreign key ("userId") references "tp_user" ("id")
 );
+
+-- view posts
+CREATE OR REPLACE  view "tp_view_fetch_posts" AS  
+SELECT 
+    post."id",
+    us."userName",
+    post."location",
+    img."profilePicId",
+    img."profilePicName",
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'postFileName' VALUE imgs."postFileName",
+          'postFieldId' VALUE imgs."postFieldId"
+            )
+        ) AS imgs
+        FROM "tp_post_images" imgs 
+        WHERE imgs."postId" = post."id"
+        GROUP BY imgs."postId"
+    ) AS "postImages",
+    (select count(plike."id") from "tp_post_like" plike where post."id" = plike."postId" and plike."isLike" = 1) "likesCount"
+FROM 
+    "tp_post" post
+LEFT JOIN 
+    "tp_user" us ON us."id" = post."userId"
+LEFT JOIN 
+    "tp_image" img ON img."userId" = us."id"
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL;

@@ -11,7 +11,8 @@ const tables = {
     postComment : 'tp_post_comment',
     postImages : 'tp_post_images',
     postLike : 'tp_post_like',
-    fetch_view_notifiction: 'tp_view_fetch_notification'
+    fetch_view_notifiction: 'tp_view_fetch_notification',
+    fetch_view_post: 'tp_view_fetch_posts'
 };
 
 const rdsPrefix = config.rdsSql.owner;
