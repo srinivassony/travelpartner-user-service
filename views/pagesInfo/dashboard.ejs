@@ -144,7 +144,7 @@
                                             <div class="col-md-12 col-xl-4">
                                                 <div class="card user-card">
                                                     <div class="card-header-img">
-                                                        <% if(user && user.image) { %>
+                                                            <% if(user && user.image) { %>
                                                                 <div class="image-container">
                                                                     <div class="box">
                                                                         <img class="img-fluid img-radius"
@@ -162,7 +162,6 @@
                                                         <h4><%= user.userName %></h4>
                                                         <h5><a href="mailto:<%= user.email %>" class="__cf_email__"><%= user.email %></a>
                                                         </h5>
-                                                        
                                                     </div>
                                                    
                                                     <div style="margin-top: 10px;">
@@ -314,7 +313,8 @@
                     {
                         document.getElementById('followUsers').innerText = 'Remove';
 
-                        alert('Request sent to the user!')
+                        alert('Request sent to the user!');
+                        location.reload();
                     }
                     else
                     {
@@ -381,7 +381,8 @@
                 {
                     document.getElementById('requestedForUnfollowUsers').innerText = 'Follow';
 
-                    alert('User has unfollowed the account!')
+                    alert('User has unfollowed the account!');
+                    location.reload();
                 }
                 else
                 {
@@ -448,7 +449,8 @@
                 {
                     document.getElementById('requestedForfollowUsers').innerText = 'UnFollow';
 
-                    alert('User has followed the account!')
+                    alert('User has followed the account!');
+                    location.reload();
                 }
                 else
                 {

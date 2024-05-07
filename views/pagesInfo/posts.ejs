@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Travel partner | Feeds page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="#">
+    <%- include('links'); %>
+    <style>
+       
+        .post-card {
+            width: 300px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Adding shadow */
+        }
+    
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+    
+        .profile-picture {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    
+        .username {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    
+        .post-image {
+            width: 100%;
+        }
+    
+        .post-footer {
+            padding: 10px;
+        }
+    
+        .likes {
+            display: flex;
+            align-items: center;
+        }
+    
+        .heart-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+    
+        .likes-count {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    
+        .caption {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    
+    
+    
+        /* Styles for slideshow */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            margin-top: 10px;
+        }
+    
+        .mySlides {
+            display: none;
+        }
+    
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+    
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+    
+            to {
+                opacity: 1
+            }
+        }
+    
+        /* Styles for dots */
+        .dot {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+        }
+    
+        .active {
+            background-color: #717171;
+        }
+    
+        /* Responsive Styles */
+        .post-card {
+            max-width: 100%;
+        }
+    
+        .post-image {
+            width: 100%;
+            height: auto;
+        }
+    
+        .profile-picture {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    
+        .username {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    
+        .post-footer {
+            padding: 10px;
+        }
+    
+        .action-buttons {
+            display: flex;
+            align-items: center;
+        }
+    
+        .like-btn,
+        .comment-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    
+        .like-btn {
+            margin-right: auto;
+            /* Push like button to the left */
+        }
+    
+        .comment-btn {
+            margin-left: auto;
+            /* Push comment button to the right */
+        }
+    
+        .likes {
+            display: flex;
+            align-items: center;
+        }
+    
+        .likes-count {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    
+        .caption {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    
+        /* Styles for empty and liked button */
+        .like-btn .heart-icon {
+            color: black;
+            /* Initially empty */
+        }
+    
+        .like-btn.liked .heart-icon {
+            color: red;
+            /* When liked, turn red */
+        }
+    
+        @media screen and (max-width: 600px) {
+            .profile-picture {
+                width: 20px;
+                height: 20px;
+            }
+    
+            .username,
+            .likes-count,
+            .caption {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('loader'); %>
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('topNav'); %>
+                <div class="pcoded-main-container">
+                    <div class="pcoded-wrapper">
+                        <%- include('sideNav'); %>
+                            <div class="pcoded-content">
+                                <div class="pcoded-inner-content">
+    
+                                    <div class="main-body">
+                                        <div class="page-wrapper">
+    
+                                            <div class="page-header">
+                                                <div class="row align-items-end">
+                                                    <div class="col-lg-8">
+                                                        <div class="page-header-title">
+                                                            <div class="d-inline">
+                                                                <h4>Travel-partner is a Social Travel Community &
+                                                                    Experiences Marketplace</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="page-header-breadcrumb">
+                                                            <ul class="breadcrumb-title">
+                                                                <li class="breadcrumb-item" style="float: left;">
+                                                                    <a href="/"> <i class="feather icon-home"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="breadcrumb-item" style="float: left;"><a
+                                                                        href="/dashboard">Dashboard</a> </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="page-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Social media feeds</h5>
+                                                                <div class="card-header-right">
+                                                                    <ul class="list-unstyled card-option">
+                                                                        <li><i class="feather icon-maximize full-card"></i>
+                                                                        </li>
+                                                                        <li><i class="feather icon-minus minimize-card"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <p>
+                                                                    Your social media feeds are like a curated window into
+                                                                    the world, offering glimpses into the lives, thoughts,
+                                                                    and experiences of those you follow. They're a dynamic
+                                                                    tapestry of updates, photos, videos, and stories that
+                                                                    reflect the diversity of interests, opinions, and
+                                                                    activities of your online community.
+                                                                </p>
+                                                                <p>
+                                                                    Scrolling through your feeds can feel like embarking on
+                                                                    a journey, where each post is a unique destination,
+                                                                    inviting you to laugh, learn, empathize, or simply
+                                                                    connect with others. From the latest news and trends to
+                                                                    personal anecdotes and shared moments, your feeds serve
+                                                                    as a digital mosaic, constantly evolving and shaping
+                                                                    your online experience.
+                                                                </p>
+                                                                <p>
+                                                                    Whether you're seeking inspiration, entertainment, or a
+                                                                    sense of belonging, your social media feeds provide a
+                                                                    virtual sanctuary where you can engage with friends,
+                                                                    family, and like-minded individuals from around the
+                                                                    globe. They're not just a collection of updates but a
+                                                                    reflection of the interconnectedness of our digital age,
+                                                                    where every like, comment, and share contributes to the
+                                                                    vibrant tapestry of online culture.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="page-body">
+                                                <div class="post-card">
+                                                    <div class="post-header">
+                                                        <img src="./views/./images/avatar-1.jpg" alt="Profile Picture"
+                                                            class="profile-picture">
+                                                        <span class="username">username</span>
+                                                    </div>
+                                                    <div class="slideshow-container">
+                                                        <div class="mySlides fade">
+                                                            <img src="./views/./images/avatar-2.jpg" style="width:100%"
+                                                                class="post-image">
+                                                        </div>
+                                                        <div class="mySlides fade">
+                                                            <img src="./views/./images/avatar-3.jpg" style="width:100%"
+                                                                class="post-image">
+                                                        </div>
+                                                        <!-- Add more slides as needed -->
+                                                    </div>
+                                                    <div style="text-align:center">
+                                                        <span class="dot"></span>
+                                                        <span class="dot"></span>
+                                                        <!-- Add more dots for additional images -->
+                                                    </div>
+                                                    <div class="post-footer">
+                                                        <div class="action-buttons">
+                                                            <button class="like-btn" id="likeButton"><i
+                                                                    class="fas fa-heart heart-icon"></i><span
+                                                                    class="likes-count" id="likeCount"> 0</span>
+                                                                likes</button>
+                                                            <button class="comment-btn" data-toggle="modal"
+                                                                data-target="#large-Modal"><i class="fas fa-comment"></i>
+                                                                comments</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                    <div id="styleSelector">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+<%- include('scripts'); %>
+
+<script>
+   
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get all user cards
+        const userCards = document.querySelectorAll('.user-card');
+    
+        // Loop through each user card
+        userCards.forEach(function(card) {
+            console.log('card',card)
+            // Get buttons inside the current card
+            const followButton = card.querySelector('.followUsers');
+            const profileButton = card.querySelector('.profileBtn');
+            const requestedButton = card.querySelector('.requestedForfollowUsers');
+            const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
+            const followButtons = card.querySelectorAll('.followUsers');
+
+            console.log('followButton',followButton)
+    
+            // Check if both follow and profile buttons exist
+            if (followButton && requestedButton && profileButton)
+            {
+                // If both follow and profile buttons exist, remove the follow button
+                followButton.remove();
+            }
+            else if (followButton && unFollowButton && profileButton)
+            {
+                followButton.remove();
+            }
+            else if (followButtons.length > 1) // If there are multiple follow buttons, keep only the first one and remove the rest
+            {
+                // Loop through follow buttons starting from the second one
+                for (let i = 1; i < followButtons.length; i++)
+                {
+                    // Remove the follow button
+                    followButtons[i].remove();
+                }
+            }
+           
+
+        });
+    });
+</script>
+
+<script>
+
+    function callAPI(followingId) 
+        {
+            document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+
+            const requestBody = {
+                followingId: followingId,
+                followerId: '<%= id %>',
+                uuid : '<%= uuid %>',
+                userId : '<%= id %>'
+            };
+
+            console.log('requestBody', requestBody)
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            };
+
+            fetch('/follow/users/', options)
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data =>
+                {
+                    console.log(data);
+
+                    if(data && data.status == 1)
+                    {
+                        document.getElementById('followUsers').innerText = 'Remove';
+
+                        alert('Request sent to the user!');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert(data.message)
+                    }
+
+                })
+                .catch(error =>
+                {
+                    console.error('There was a problem with the API request:', error);
+
+                    alert('There was a problem with the API request:', error)
+                })
+        }
+
+        document.querySelectorAll('.followUsers').forEach(button =>
+        {
+            button.addEventListener('click', () =>
+            {
+                const followingId = button.getAttribute('data-user-id');
+                callAPI(followingId);
+            });
+        });
+   
+</script>
+
+<script>
+
+    function requestedForUnfollowUsers(followingId) 
+    {
+        document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+
+        const requestBody = {
+            followingId: followingId,
+            followerId: '<%= id %>',
+            userId : '<%= id %>',
+            uuid : '<%= uuid %>'
+        };
+
+        console.log('requestBody', requestBody)
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        };
+
+        fetch('/update/unfollow/users/', options)
+            .then(response =>
+            {
+                if (!response.ok)
+                {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data =>
+            {
+                console.log(data);
+
+                if(data && data.status == 1)
+                {
+                    document.getElementById('requestedForUnfollowUsers').innerText = 'Follow';
+
+                    alert('User has unfollowed the account!');
+                    location.reload();
+                }
+                else
+                {
+                    alert(data.message)
+                }
+
+            })
+            .catch(error =>
+            {
+                console.error('There was a problem with the API request:', error);
+
+                alert('There was a problem with the API request:', error)
+            })
+    }
+
+    document.querySelectorAll('.requestedForUnfollowUsers').forEach(button =>
+    {
+        button.addEventListener('click', () =>
+        {
+            const followingId = button.getAttribute('data-user-id');
+            requestedForUnfollowUsers(followingId);
+        });
+    });
+   
+</script>
+
+<script>
+
+    function requestedForfollowUsers(followingId) 
+    {
+        document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+
+        const requestBody = {
+            followingId: followingId,
+            followerId: '<%= id %>',
+            userId : '<%= id %>',
+            uuid : '<%= uuid %>'
+        };
+
+        console.log('requestBody', requestBody)
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        };
+
+        fetch('/update/follow/users/', options)
+            .then(response =>
+            {
+                if (!response.ok)
+                {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data =>
+            {
+                console.log(data);
+
+                if(data && data.status == 1)
+                {
+                    document.getElementById('requestedForfollowUsers').innerText = 'UnFollow';
+
+                    alert('User has followed the account!');
+                    location.reload();
+                }
+                else
+                {
+                    alert(data.message)
+                }
+
+            })
+            .catch(error =>
+            {
+                console.error('There was a problem with the API request:', error);
+
+                alert('There was a problem with the API request:', error)
+            })
+    }
+
+    document.querySelectorAll('.requestedForfollowUsers').forEach(button =>
+    {
+        button.addEventListener('click', () =>
+        {
+            const followingId = button.getAttribute('data-user-id');
+            requestedForfollowUsers(followingId);
+        });
+    });
+   
+</script>
+
+</body>
+
+</html>
