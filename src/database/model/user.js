@@ -13,7 +13,8 @@ class User extends guid(Model)
     {
         const Image = require('./image');
         const Gallery = require('./gallery');
-
+        const FollowUsers = require('./follow-users');
+        const Notification = require('./notification');
 
         return {
             image: {
@@ -29,6 +30,22 @@ class User extends guid(Model)
                 modelClass: Gallery,
                 join: {
                     from: `${tables.gallery}.userId`,
+                    to: `${tables.user}.id`
+                }
+            },
+            followUsers: {
+                relation: Model.HasManyRelation,
+                modelClass: FollowUsers,
+                join: {
+                    from: `${tables.followUsers}.followingId`,
+                    to: `${tables.user}.id`
+                }
+            },
+            notifications: {
+                relation: Model.HasManyRelation,
+                modelClass: Notification,
+                join: {
+                    from: `${tables.notification}.userId`,
                     to: `${tables.user}.id`
                 }
             }

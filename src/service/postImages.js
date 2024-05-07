@@ -1,17 +1,14 @@
-const config = require('../../config');
-const db = require('../database/db/gallery');
+const db = require('../database/db/postImages');
 const common = require('../utils/utils');
 const Status = common.Status;
 const fs = require("fs");
 const path = require("path");
+const config = require('../../config');
 
-exports.createImage = async (req, res) =>
+exports.createPostImage = async (reqParams, file) =>
 {
     try
     {
-        let file = req.file;
-        let reqParams = req.body;
-
         let uuid = common.uuid();
 
         const currentPath = path.join(config.gallery_files, file.filename);
@@ -27,24 +24,21 @@ exports.createImage = async (req, res) =>
         fs.renameSync(currentPath, filePath);
 
         var params = {
-            imageId: uuid,
-            fileName: file.filename,
-            userId: reqParams.userId,
+            postFieldId: uuid,
+            postFileName: file.filename,
             createdAt: new Date(),
             createdBy: reqParams.uuid
         }
 
-        let profilePic = await db.createImage(params);
+        let postImage= await db.createPostImage(params);
 
-        req.flash('success', 'User photos uploaded!');
-        
-        res.redirect('/user-profile');
-
+        return postImage
     }
     catch (error) 
     {
-        req.flash('error', error.message);
-
-        res.redirect('/user-profile');
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }

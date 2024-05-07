@@ -27,23 +27,6 @@
                 height: auto;
             }
 
-            /* CSS for the upload icon */
-            .upload-icon {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                cursor: pointer;
-                font-size: 2em;
-                /* Responsive font size */
-            }
-
-            .image-container:hover .upload-icon {
-                opacity: 1;
-            }
-
             .box {
                 width: 150px;
                 height: 150px;
@@ -221,6 +204,7 @@
                 right: 20px;
                 /* Position to the right */
             }
+          
         </style>
 </head>
 
@@ -287,24 +271,7 @@
                                                                             <form>
                                                                                 <div class="media-left image-container">
                                                                                     <div class="box">
-
-                                                                                        <a href="#"
-                                                                                            class="profile-image">
-                                                                                            <img class="user-img img-radius"
-                                                                                                id="myImage" src="#"
-                                                                                                alt="user-img">
-
-                                                                                        </a>
-                                                                                        <label for="fileInput"
-                                                                                            class="upload-icon"><i
-                                                                                                class="fa fa-camera"></i></label>
-
-                                                                                        <input type="file"
-                                                                                            id="fileInput"
-                                                                                            accept="image/*"
-                                                                                            style="display: none;"
-                                                                                            onchange="handleFileSelect(event)">
-
+                                                                                        <img class="user-img img-radius" id="myImage" src="#" alt="user-img">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="media-body row">
@@ -346,13 +313,7 @@
                                                                             Info</a>
                                                                         <div class="slide"></div>
                                                                     </li>
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link" data-toggle="tab"
-                                                                            href="#uploadImage" role="tab">Upload
-                                                                            Images</a>
-                                                                        <div class="slide"></div>
-                                                                    </li>
-
+                                                                   
                                                                     <li class="nav-item">
                                                                         <a class="nav-link" data-toggle="tab"
                                                                             href="#gallery" role="tab">User gallery</a>
@@ -369,13 +330,10 @@
                                                                     <div class="card">
                                                                         <div class="card-header">
                                                                             <h5 class="card-header-text">About Me</h5>
-                                                                
-                                                                            <button id="edit-btn" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right">
-                                                                                <i class="icofont icofont-edit"></i>
-                                                                            </button>
+                                                            
                                                                         </div>
                                                                         <div class="card-block">
-
+                                                            
                                                                             <div class="view-info">
                                                                                 <div class="row">
                                                                                     <div class="col-lg-12">
@@ -391,10 +349,10 @@
                                                                                                                         Name
                                                                                                                     </th>
                                                                                                                     <td id="name">
-                                                                            
+                                                            
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                            
+                                                            
                                                                                                                 <tr>
                                                                                                                     <th scope="row">
                                                                                                                         Birth
@@ -403,7 +361,7 @@
                                                                                                                     <td id="dob">
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                            
+                                                            
                                                                                                                 <tr>
                                                                                                                     <th scope="row">
                                                                                                                         Country
@@ -422,7 +380,7 @@
                                                                                                         </table>
                                                                                                     </div>
                                                                                                 </div>
-                                                                            
+                                                            
                                                                                                 <div class="col-lg-12 col-xl-6">
                                                                                                     <div class="table-responsive">
                                                                                                         <table class="table">
@@ -442,7 +400,7 @@
                                                                                                                     <td id="phone">
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                            
+                                                            
                                                                                                                 <tr>
                                                                                                                     <th scope="row">
                                                                                                                         State
@@ -452,216 +410,37 @@
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <th scope="row">
-                                                                            
+                                                            
                                                                                                                     </th>
                                                                                                                     <td>
                                                                                                                     </td>
                                                                                                                 </tr>
-                                                                            
+                                                            
                                                                                                             </tbody>
                                                                                                         </table>
                                                                                                     </div>
                                                                                                 </div>
-                                                                            
+                                                            
                                                                                             </div>
-                                                                            
+                                                            
                                                                                         </div>
-                                                                            
+                                                            
                                                                                     </div>
-                                                                            
+                                                            
                                                                                 </div>
                                                                             </div>
-
-                                                                            <div class="edit-info">
-                                                                                <div class="row">
-                                                                                    <div class="col-lg-12">
-                                                                                        <div class="general-info">
-                                                                
-                                                                                            <form action="/api/update/user" method="post" enctype="application/x-www-form-urlencoded"
-                                                                                                name="myUpdateForm" onsubmit="return validateUpdateForm()">
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Full
-                                                                                                        Name
-                                                                                                    </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" name="userName" id="editName" readonly>
-                                                                                                        <span id="errorName" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Email</label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="email" class="form-control" id="editEmailInfo" name="emailInfo"
-                                                                                                            readonly>
-                                                                                                        <span id="errorEmail" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Mobile
-                                                                                                        Number
-                                                                                                    </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editPhone" name="phone">
-                                                                                                        <span id="errorPhone" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">dob</label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="date" class="form-control" id="editDob" name="dob">
-                                                                                                        <span id="errorDob" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">Country
-                                                                                                    </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editCountry" name="country">
-                                                                                                        <span id="errorCountry" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group row">
-                                                                                                    <label class="col-sm-2 col-form-label">State
-                                                                                                    </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="text" class="form-control" id="editState" name="state">
-                                                                                                        <span id="errorState" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="row">
-                                                                                                    <label class="col-sm-2 col-form-label">Gender
-                                                                                                    </label>
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <div class="form-check form-check-inline">
-                                                                                                            <label class="form-check-label">
-                                                                                                                <input class="form-check-input" type="radio" name="gender"
-                                                                                                                    id="editGender" value="male">
-                                                                                                                Male
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                        <div class="form-check form-check-inline">
-                                                                                                            <label class="form-check-label">
-                                                                                                                <input class="form-check-input" type="radio" name="gender"
-                                                                                                                    id="editGender" value="female">
-                                                                                                                Female
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                        <span id="errorGender" style="color: red;"></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                
-                                                                                                <div class="form-group row">
-                                                                
-                                                                                                    <div class="col-sm-10">
-                                                                                                        <input type="hidden" class="form-control" id="uuid" name="userId"
-                                                                                                            value="<%= id %>">
-                                                                
-                                                                                                    </div>
-                                                                                                </div>
-                                                                
-                                                                                                <div class="text-center">
-                                                                                                    <button type="submit"
-                                                                                                        class="btn btn-primary waves-effect waves-light m-r-20">Save</button>
-                                                                                                    <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
-                                                                                                </div>
-                                                                
-                                                                                            </form>
-                                                                                        </div>
-                                                                
-                                                                                    </div>
-                                                                
-                                                                                </div>
-                                                                
-                                                                            </div>
-                                                                          
+                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- upload file -->
-
-                                                                <div class="tab-pane" id="uploadImage" role="tabpanel">
-
-                                                                    <div class="card">
-                                                                        <div class="card-header">
-                                                                            <h5 class="card-header-text">Upload Image
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div class="card-block">
-
-                                                                            <div class="j-wrapper j-wrapper-640">
-                                                                                <form action="/upload/images"
-                                                                                    method="post" class="j-pro"
-                                                                                    id="j-pro" enctype="multipart/form-data"
-                                                                                    >
-                                                                                    <div class="j-content">
-
-                                                                                        <div
-                                                                                            class="j-divider j-gap-bottom-25">
-                                                                                        </div>
-
-                                                                                        <div class="j-unit">
-                                                                                            <div
-                                                                                                class="j-input j-append-big-btn">
-                                                                                                <label
-                                                                                                    class="j-icon-left"
-                                                                                                    for="file_input">
-                                                                                                    <i
-                                                                                                        class="icofont icofont-download"></i>
-                                                                                                </label>
-                                                                                                <div
-                                                                                                    class="j-file-button">
-                                                                                                    Browse
-                                                                                                    <input type="file"
-                                                                                                        name="file_name"
-                                                                                                        id="fileUpload"
-                                                                                                        onchange="validateFile()">
-                                                                                                </div>
-                                                                                                <input type="text"
-                                                                                                    id="file_input"
-                                                                                                    readonly
-                                                                                                    placeholder="no file selected" >
-                                                                                                    <input type="hidden" name="userId" value="<%= id %>">
-                                                                                                    <input type="hidden" name="uuid" value="<%= uuid %>">
-                                                                                                <span
-                                                                                                    class="j-hint">Only:
-                                                                                                    jpg / png,
-                                                                                                    less 1Mb</span>
-
-                                                                                                    <span
-                                                                                                    class="j-hint" id="fileError" style="color: red;font-weight:bold;"></span>
-
-                                                                                            </div>
-                                                                                        </div>
-
-
-                                                                                        <div class="j-response"></div>
-
-                                                                                    </div>
-
-                                                                                    <div class="j-footer">
-                                                                                        <button type="submit"
-                                                                                            class="btn btn-primary" id="submitButton" disabled>Send</button>
-                                                                                        <button type="reset"
-                                                                                            class="btn btn-default m-r-20">Reset</button>
-                                                                                    </div>
-
-                                                                                </form>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                </div>
-
+                                                            
                                                                 <!-- gallery Images -->
                                                                 <div class="tab-pane" id="gallery" role="tabpanel">
                                                                     <div class="page-body gallery-page">
                                                                         <div class="row">
-
+                                                            
                                                                             <div class="col-sm-12">
-
+                                                            
                                                                                 <div class="card">
                                                                                     <div class="card-header">
                                                                                         <h5>User Gallery</h5>
@@ -669,47 +448,39 @@
                                                                                     <div class="card-block">
                                                                                         <div class="row">
                                                                                             <div class="col-lg-12">
-
-                                                                                                <div
-                                                                                                    id="imageContainer">
-
+                                                            
+                                                                                                <div id="imageContainer">
+                                                                                                    <p id="textInfo" style="display: none;">Images not available</p>
+                                                            
                                                                                                 </div>
-                                                                                                <div id="imageModal"
-                                                                                                    class="modal">
-                                                                                                    <div
-                                                                                                        class="modal-content">
-                                                                                                        <span
-                                                                                                            class="close">&times;</span>
-                                                                                                        <img id="modalImage"
-                                                                                                            src=""
-                                                                                                            alt="Modal Image">
+                                                                                                <div id="imageModal" class="modal">
+                                                                                                    <div class="modal-content">
+                                                                                                        <span class="close">&times;</span>
+                                                                                                        <img id="modalImage" src="" alt="Modal Image">
                                                                                                         <!-- Navigation buttons -->
-                                                                                                        <button
-                                                                                                            class="nav-button"
-                                                                                                            id="prevButton">Previous</button>
-                                                                                                        <button
-                                                                                                            class="nav-button"
-                                                                                                            id="nextButton">Next</button>
+                                                                                                        <button class="nav-button" id="prevButton">Previous</button>
+                                                                                                        <button class="nav-button" id="nextButton">Next</button>
                                                                                                     </div>
-
+                                                            
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-
+                                                            
                                                                                 </div>
-
-
+                                                            
+                                                            
                                                                             </div>
                                                                         </div>
-
-
+                                                            
+                                                            
                                                                     </div>
-
-
+                                                            
+                                                            
                                                                 </div>
-
+                                                            
                                                             </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -728,6 +499,173 @@
 
 
         <%- include('scripts'); %>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function ()
+            {
+                // Prepare data to be sent in the request body
+                var requestData = {
+                    id: "<%= userId %>" // Example user ID, replace with your actual parameter
+                };
+                // Fetch user data from the backend when the page loads
+                fetch('/api/user/id', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                    .then(response =>
+                    {
+                        if (response.ok)
+                        {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(data =>
+                    {
+                        // Populate input boxes with fetched data
+                        let user = data && data.userDetails ? data.userDetails : null;
+                        let image = user && user.image ? user.image : null;
+                        let galleryImages = user && user.gallerys ? user.gallerys : [];
+                        const modal = document.getElementById('imageModal');
+                        const modalImage = document.getElementById('modalImage');
+                        var text = document.getElementById('textInfo');
+                        let currentImageIndex = 0;
+                        let gallerys = [];
+
+                        document.getElementById('name').textContent = user.userName;
+
+                        document.getElementById('emailInfo').textContent = user.email;
+
+                        document.getElementById('phone').textContent = user.phone;
+
+                        document.getElementById('dob').textContent = user.dob;
+
+                        document.getElementById('country').textContent = user.country;
+
+                        document.getElementById('state').textContent = user.state;
+
+                        document.getElementById('gender').textContent = user.gender;
+
+                        if (image)
+                        {
+                            const uploadedImage = document.getElementById('myImage');
+                            uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
+                            uploadedImage.style.display = 'block'; // Show the image element
+                        }
+                        else
+                        {
+                            const uploadedImage = document.getElementById('myImage');
+                            uploadedImage.src = `../images/human.png`;
+                            uploadedImage.style.display = 'block'; // Show the image element
+                        }
+
+                        let userName = document.getElementById('userName');
+                        userName.textContent = user.userName;
+
+                        if (galleryImages && galleryImages.length > 0)
+                        {
+                            const container = document.getElementById('imageContainer');
+
+                            // Clear existing images in the container
+                            container.innerHTML = '';
+
+                            // Loop through the array and create img elements
+                            galleryImages.forEach((imageUrl, index) =>
+                            {
+
+                                gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName);
+
+                            });
+
+                            gallerys.forEach((imageUrl, index) =>
+                            {
+                                const img = document.createElement('img');
+                                img.src = imageUrl
+                                img.className = "img-fluid img-thumbnail";
+                                img.alt = 'Image';
+                                img.addEventListener('click', () => openModal(index));
+                                container.appendChild(img);
+
+                            });
+
+
+
+                            // Open the modal with the selected image
+                            function openModal(index) 
+                            {
+                                currentImageIndex = index;
+                                modalImage.src = gallerys[currentImageIndex];
+                                modal.style.display = 'block';
+
+                                // Close modal when close button or outside modal is clicked
+                                const closeBtn = document.querySelector('.close');
+                                closeBtn.onclick = closeModal;
+                                window.onclick = function (event) 
+                                {
+                                    if (event.target === modal) 
+                                    {
+                                        closeModal();
+                                    }
+                                };
+
+                                // Update navigation buttons visibility
+
+                                updateNavButtons();
+                            }
+
+                            // Function to close the modal
+                            function closeModal() 
+                            {
+                                modal.style.display = 'none';
+                            }
+                            // Function to update navigation buttons visibility
+                            function updateNavButtons() 
+                            {
+                                const prevBtn = document.getElementById('prevButton');
+                                const nextBtn = document.getElementById('nextButton');
+
+                                prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+                                nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
+                            }
+
+                            // Event listeners for navigation buttons
+                            document.getElementById('prevButton').addEventListener('click', () => 
+                            {
+                                if (currentImageIndex > 0) 
+                                {
+                                    currentImageIndex--;
+                                    modalImage.src = gallerys[currentImageIndex];
+                                    updateNavButtons();
+                                }
+                            });
+
+                            document.getElementById('nextButton').addEventListener('click', () => 
+                            {
+                                if (currentImageIndex < gallerys.length - 1) 
+                                {
+                                    currentImageIndex++;
+                                    modalImage.src = gallerys[currentImageIndex];
+                                    updateNavButtons();
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            text.style.display = 'block';
+                        }
+
+                    })
+                    .catch(error =>
+                    {
+                        console.error('Error fetching user data:', error);
+                    });
+
+            });
+        </script>
            
 </body>
 

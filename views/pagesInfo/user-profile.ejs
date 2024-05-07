@@ -743,7 +743,6 @@
                 function handleFileSelect(event)
                 {
                     const file = event.target.files[0];
-                    console.log('file', file)
                     if (!file)
                     {
                         alert('No file selected.');
@@ -770,7 +769,6 @@
 
                     const userId = "<%= id %>";
                     const uuid = "<%= uuid %>";
-                    console.log('userId', userId)
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('userId', userId);
@@ -790,8 +788,6 @@
                         })
                         .then(data =>
                         {
-                            console.log(data); // Handle API response data here
-
                             if (data && data.status == 0)
                             {
                                 alert('There was an error to upload the profile Picture');
@@ -889,7 +885,6 @@
                     var requestData = {
                         id: "<%= id %>" // Example user ID, replace with your actual parameter
                     };
-                    console.log('requestData', requestData)
                     // Fetch user data from the backend when the page loads
                     fetch('/api/user/id', {
                         method: 'POST',
@@ -916,8 +911,6 @@
                             const modalImage = document.getElementById('modalImage');
                             let currentImageIndex = 0;
                             let gallerys = [];
-
-                            console.log('galleryImages', galleryImages)
 
                             document.getElementById('name').textContent = user.userName;
                             document.getElementById('editName').value = user.userName;
@@ -990,9 +983,6 @@
 
                                 });
 
-
-
-                                console.log('gallerys', gallerys)
                                 // Open the modal with the selected image
                                 function openModal(index) 
                                 {
