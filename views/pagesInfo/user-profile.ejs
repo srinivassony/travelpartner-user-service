@@ -136,7 +136,7 @@
 
             /* Style for each image */
             #imageContainer img {
-                width: 100px;
+                width: 270px;
                 /* Adjust the width as needed */
                 height: auto;
                 /* Maintain aspect ratio */
@@ -168,9 +168,8 @@
             .modal-content {
                 margin: 10% auto;
                 /* Center modal on screen */
-                width: 40%;
-                /* Width of modal content */
-                height: 40%;
+                width: 600px; /* Adjust the width and height according to your container */
+                height: 500px;    
                 /* Height of modal content (40% of viewport height) */
                 position: relative;
                 text-align: center;
@@ -192,10 +191,8 @@
 
             /* Image inside modal */
             .modal-content img {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
-                /* Fit the image inside its container */
+                width: 100%;
+                height: 100%;
             }
 
             /* Navigation buttons */
@@ -330,7 +327,7 @@
                                                                                     </div>
                                                                                     <div>
                                                                                         <div
-                                                                                            class="pull-right cover-btn">
+                                                                                            class=" cover-btn">
                                                                                             <button type="button"
                                                                                                 class="btn btn-primary m-r-10 m-b-5"><i
                                                                                                     class="icofont icofont-plus"></i>
@@ -377,325 +374,216 @@
 
 
                                                             <div class="tab-content">
-
                                                                 <!-- user-profile -->
-
-                                                                <div class="tab-pane active" id="personal"
-                                                                    role="tabpanel">
-
+                                                                <div class="tab-pane active" id="personal" role="tabpanel">
                                                                     <div class="card">
                                                                         <div class="card-header">
                                                                             <h5 class="card-header-text">About Me</h5>
-
-                                                                            <button id="edit-btn" type="button"
-                                                                                class="btn btn-sm btn-primary waves-effect waves-light f-right">
+                                                                
+                                                                            <button id="edit-btn" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right">
                                                                                 <i class="icofont icofont-edit"></i>
                                                                             </button>
                                                                         </div>
                                                                         <div class="card-block">
+
                                                                             <div class="view-info">
                                                                                 <div class="row">
                                                                                     <div class="col-lg-12">
                                                                                         <div class="general-info">
                                                                                             <div class="row">
-                                                                                                <div
-                                                                                                    class="col-lg-12 col-xl-6">
-                                                                                                    <div
-                                                                                                        class="table-responsive">
-                                                                                                        <table
-                                                                                                            class="table m-0">
+                                                                                                <div class="col-lg-12 col-xl-6">
+                                                                                                    <div class="table-responsive">
+                                                                                                        <table class="table m-0">
                                                                                                             <tbody>
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Full
                                                                                                                         Name
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="name">
-
+                                                                                                                    <td id="name">
+                                                                            
                                                                                                                     </td>
                                                                                                                 </tr>
-
+                                                                            
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Birth
                                                                                                                         Date
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="dob">
+                                                                                                                    <td id="dob">
                                                                                                                     </td>
                                                                                                                 </tr>
-
+                                                                            
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Country
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="country">
+                                                                                                                    <td id="country">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Gender
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="gender">
+                                                                                                                    <td id="gender">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
                                                                                                         </table>
                                                                                                     </div>
                                                                                                 </div>
-
-                                                                                                <div
-                                                                                                    class="col-lg-12 col-xl-6">
-                                                                                                    <div
-                                                                                                        class="table-responsive">
-                                                                                                        <table
-                                                                                                            class="table">
+                                                                            
+                                                                                                <div class="col-lg-12 col-xl-6">
+                                                                                                    <div class="table-responsive">
+                                                                                                        <table class="table">
                                                                                                             <tbody>
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Email
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="emailInfo">
+                                                                                                                    <td id="emailInfo">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         Mobile
                                                                                                                         Number
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="phone">
+                                                                                                                    <td id="phone">
                                                                                                                     </td>
                                                                                                                 </tr>
-
+                                                                            
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
+                                                                                                                    <th scope="row">
                                                                                                                         State
                                                                                                                     </th>
-                                                                                                                    <td
-                                                                                                                        id="state">
+                                                                                                                    <td id="state">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <th
-                                                                                                                        scope="row">
-
+                                                                                                                    <th scope="row">
+                                                                            
                                                                                                                     </th>
                                                                                                                     <td>
                                                                                                                     </td>
                                                                                                                 </tr>
-
+                                                                            
                                                                                                             </tbody>
                                                                                                         </table>
                                                                                                     </div>
                                                                                                 </div>
-
+                                                                            
                                                                                             </div>
-
+                                                                            
                                                                                         </div>
-
+                                                                            
                                                                                     </div>
-
+                                                                            
                                                                                 </div>
-
                                                                             </div>
 
                                                                             <div class="edit-info">
                                                                                 <div class="row">
                                                                                     <div class="col-lg-12">
                                                                                         <div class="general-info">
-
-                                                                                            <form
-                                                                                                action="/api/update/user"
-                                                                                                method="post"
-                                                                                                enctype="application/x-www-form-urlencoded"
-                                                                                                name="myUpdateForm"
-                                                                                                onsubmit="return validateUpdateForm()">
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">Full
+                                                                
+                                                                                            <form action="/api/update/user" method="post" enctype="application/x-www-form-urlencoded"
+                                                                                                name="myUpdateForm" onsubmit="return validateUpdateForm()">
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">Full
                                                                                                         Name
                                                                                                     </label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="userName"
-                                                                                                            id="editName">
-                                                                                                        <span
-                                                                                                            id="errorName"
-                                                                                                            style="color: red;"></span>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="text" class="form-control" name="userName" id="editName" readonly>
+                                                                                                        <span id="errorName" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">Email</label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="email"
-                                                                                                            class="form-control"
-                                                                                                            id="editEmailInfo"
-                                                                                                            name="emailInfo">
-                                                                                                        <span
-                                                                                                            id="errorEmail"
-                                                                                                            style="color: red;"></span>
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">Email</label>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="email" class="form-control" id="editEmailInfo" name="emailInfo"
+                                                                                                            readonly>
+                                                                                                        <span id="errorEmail" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">Mobile
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">Mobile
                                                                                                         Number
                                                                                                     </label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="text"
-                                                                                                            class="form-control"
-                                                                                                            id="editPhone"
-                                                                                                            name="phone">
-                                                                                                        <span
-                                                                                                            id="errorPhone"
-                                                                                                            style="color: red;"></span>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="text" class="form-control" id="editPhone" name="phone">
+                                                                                                        <span id="errorPhone" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">dob</label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="date"
-                                                                                                            class="form-control"
-                                                                                                            id="editDob"
-                                                                                                            name="dob">
-                                                                                                        <span
-                                                                                                            id="errorDob"
-                                                                                                            style="color: red;"></span>
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">dob</label>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="date" class="form-control" id="editDob" name="dob">
+                                                                                                        <span id="errorDob" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">Country
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">Country
                                                                                                     </label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="text"
-                                                                                                            class="form-control"
-                                                                                                            id="editCountry"
-                                                                                                            name="country">
-                                                                                                        <span
-                                                                                                            id="errorCountry"
-                                                                                                            style="color: red;"></span>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="text" class="form-control" id="editCountry" name="country">
+                                                                                                        <span id="errorCountry" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="form-group row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">State
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-2 col-form-label">State
                                                                                                     </label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="text"
-                                                                                                            class="form-control"
-                                                                                                            id="editState"
-                                                                                                            name="state">
-                                                                                                        <span
-                                                                                                            id="errorState"
-                                                                                                            style="color: red;"></span>
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="text" class="form-control" id="editState" name="state">
+                                                                                                        <span id="errorState" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="row">
-                                                                                                    <label
-                                                                                                        class="col-sm-2 col-form-label">Gender
+                                                                                                    <label class="col-sm-2 col-form-label">Gender
                                                                                                     </label>
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <div
-                                                                                                            class="form-check form-check-inline">
-                                                                                                            <label
-                                                                                                                class="form-check-label">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="gender"
-                                                                                                                    id="editGender"
-                                                                                                                    value="male">
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <div class="form-check form-check-inline">
+                                                                                                            <label class="form-check-label">
+                                                                                                                <input class="form-check-input" type="radio" name="gender"
+                                                                                                                    id="editGender" value="male">
                                                                                                                 Male
                                                                                                             </label>
                                                                                                         </div>
-                                                                                                        <div
-                                                                                                            class="form-check form-check-inline">
-                                                                                                            <label
-                                                                                                                class="form-check-label">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="gender"
-                                                                                                                    id="editGender"
-                                                                                                                    value="female">
+                                                                                                        <div class="form-check form-check-inline">
+                                                                                                            <label class="form-check-label">
+                                                                                                                <input class="form-check-input" type="radio" name="gender"
+                                                                                                                    id="editGender" value="female">
                                                                                                                 Female
                                                                                                             </label>
                                                                                                         </div>
-                                                                                                        <span
-                                                                                                            id="errorGender"
-                                                                                                            style="color: red;"></span>
+                                                                                                        <span id="errorGender" style="color: red;"></span>
                                                                                                     </div>
                                                                                                 </div>
-
-                                                                                                <div
-                                                                                                    class="form-group row">
-
-                                                                                                    <div
-                                                                                                        class="col-sm-10">
-                                                                                                        <input
-                                                                                                            type="hidden"
-                                                                                                            class="form-control"
-                                                                                                            id="uuid"
-                                                                                                            name="userId"
+                                                                
+                                                                                                <div class="form-group row">
+                                                                
+                                                                                                    <div class="col-sm-10">
+                                                                                                        <input type="hidden" class="form-control" id="uuid" name="userId"
                                                                                                             value="<%= id %>">
-
+                                                                
                                                                                                     </div>
                                                                                                 </div>
-
-                                                                                                <div
-                                                                                                    class="text-center">
-                                                                                                    <button
-                                                                                                        type="submit"
+                                                                
+                                                                                                <div class="text-center">
+                                                                                                    <button type="submit"
                                                                                                         class="btn btn-primary waves-effect waves-light m-r-20">Save</button>
-                                                                                                    <a href="#!"
-                                                                                                        id="edit-cancel"
-                                                                                                        class="btn btn-default waves-effect">Cancel</a>
+                                                                                                    <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
                                                                                                 </div>
-
+                                                                
                                                                                             </form>
                                                                                         </div>
-
+                                                                
                                                                                     </div>
-
+                                                                
                                                                                 </div>
-
+                                                                
                                                                             </div>
-
+                                                                          
                                                                         </div>
 
                                                                     </div>
@@ -737,18 +625,23 @@
                                                                                                     Browse
                                                                                                     <input type="file"
                                                                                                         name="file_name"
-                                                                                                        onchange="document.getElementById('file_input').value = this.value;">
+                                                                                                        id="fileUpload"
+                                                                                                        onchange="validateFile()">
                                                                                                 </div>
                                                                                                 <input type="text"
                                                                                                     id="file_input"
                                                                                                     readonly
-                                                                                                    placeholder="no file selected">
+                                                                                                    placeholder="no file selected" >
                                                                                                     <input type="hidden" name="userId" value="<%= id %>">
                                                                                                     <input type="hidden" name="uuid" value="<%= uuid %>">
                                                                                                 <span
                                                                                                     class="j-hint">Only:
                                                                                                     jpg / png,
                                                                                                     less 1Mb</span>
+
+                                                                                                    <span
+                                                                                                    class="j-hint" id="fileError" style="color: red;font-weight:bold;"></span>
+
                                                                                             </div>
                                                                                         </div>
 
@@ -759,7 +652,7 @@
 
                                                                                     <div class="j-footer">
                                                                                         <button type="submit"
-                                                                                            class="btn btn-primary" id="imageUpload">Send</button>
+                                                                                            class="btn btn-primary" id="submitButton" disabled>Send</button>
                                                                                         <button type="reset"
                                                                                             class="btn btn-default m-r-20">Reset</button>
                                                                                     </div>
@@ -850,7 +743,6 @@
                 function handleFileSelect(event)
                 {
                     const file = event.target.files[0];
-                    console.log('file', file)
                     if (!file)
                     {
                         alert('No file selected.');
@@ -877,7 +769,6 @@
 
                     const userId = "<%= id %>";
                     const uuid = "<%= uuid %>";
-                    console.log('userId', userId)
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('userId', userId);
@@ -897,8 +788,6 @@
                         })
                         .then(data =>
                         {
-                            console.log(data); // Handle API response data here
-
                             if (data && data.status == 0)
                             {
                                 alert('There was an error to upload the profile Picture');
@@ -996,7 +885,6 @@
                     var requestData = {
                         id: "<%= id %>" // Example user ID, replace with your actual parameter
                     };
-                    console.log('requestData', requestData)
                     // Fetch user data from the backend when the page loads
                     fetch('/api/user/id', {
                         method: 'POST',
@@ -1023,8 +911,6 @@
                             const modalImage = document.getElementById('modalImage');
                             let currentImageIndex = 0;
                             let gallerys = [];
-
-                            console.log('galleryImages', galleryImages)
 
                             document.getElementById('name').textContent = user.userName;
                             document.getElementById('editName').value = user.userName;
@@ -1097,9 +983,6 @@
 
                                 });
 
-
-
-                                console.log('gallerys', gallerys)
                                 // Open the modal with the selected image
                                 function openModal(index) 
                                 {
@@ -1168,6 +1051,37 @@
                         });
 
                 });
+            </script>
+
+            <script>
+                function validateFile()
+                {
+                    const fileInput = document.getElementById('fileUpload');
+                    const fileError = document.getElementById('fileError');
+                    document.getElementById('file_input').value = fileInput.value;
+                    const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+                    const maxFileSizeMB = 1; // Maximum file size in megabytes
+
+                    const file = fileInput.files[0];
+                    const fileSizeMB = file.size / (1024 * 1024); // Calculate file size in megabytes
+
+                    if (!file || !allowedExtensions.exec(file.name))
+                    {
+                        fileError.textContent = 'Please select a valid PNG or JPG file.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else if (fileSizeMB > maxFileSizeMB)
+                    {
+                        fileError.textContent = 'File size should not exceed 1MB.';
+                        fileInput.value = ''; // Clear the file input
+                        return false;
+                    } else
+                    {
+                        fileError.textContent = '';
+                        document.getElementById('submitButton').disabled = false;
+                        return true;
+                    }
+                }
             </script>
 </body>
 

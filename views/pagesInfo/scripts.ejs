@@ -20,8 +20,28 @@
 <script src="../js/pcoded.min.js"></script>
 <script src="../js/vartical-layout.min.js"></script>
 <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script type="text/javascript" src="../js/script.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function () {
+                return $('#primary-popover-content').html();
+            }
+        });
+    });
+
+</script>
+
+<script type="text/javascript" src="../js/sweetalert.js"></script>
+<script type="text/javascript" src="../js/modal.js"></script>
+
+
+<script type="text/javascript" src="../js/modalEffects.js"></script>
+<script type="text/javascript" src="../js/classie.js"></script>
 
 <script data-cfasync="false" src="../js/email-decode.min.js"></script>
 <script type="text/javascript" src="../pages/advance-elements/moment-with-locales.min.js"></script>
@@ -45,6 +65,7 @@
 <script type="text/javascript" src="../pages/form-validation/form-validation.js"></script>
 <script type="text/javascript" src="../pages/form-validation/validate.js"></script>
 
+<script type="text/javascript" src="../bower_components/lightbox2/dist/js/lightbox.min.js"></script>
 <script>
     lightbox.option({
         'resizeDuration': 200,
@@ -53,4 +74,16 @@
 
 </script>
 
-<script type="text/javascript" src="../bower_components/lightbox2/dist/js/lightbox.min.js"></script>
+<!-- add before </body> -->
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+
+<script type="text/javascript" src="../js/script.js"></script>
+<!-- include FilePond library -->
+<!-- <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script> -->

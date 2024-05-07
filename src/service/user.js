@@ -88,7 +88,6 @@ exports.createUser = async (req, res) =>
         {
             if (existingUserDetails.email == email) 
             {
-                console.log('here')
                 req.flash('error', 'User email already exists. Try with different email.');
 
                 res.redirect('/register');
@@ -143,8 +142,6 @@ exports.createUser = async (req, res) =>
             };
 
            let x=  await smtp.sendEmail(userEmailParams);
-
-           console.log(x)
 
         }
         catch (error)
@@ -251,10 +248,22 @@ exports.userLogin = async (req, res) =>
             return "";
         }
 
+        let params = {
+            login: 1,
+            logout: 0,
+            loginUpdatedAt: new Date()
+        }
+
+        let userInfo = await db.updateUser(user.id, params);
+
+        console.log('userInfo',userInfo)
+
         req.session.isLoggedIn = true;
         req.session.name = user.userName;
         req.session.userId = user.id;
         req.session.uuid =  user.uuid;
+        req.session.profilePicId =  userInfo && userInfo.image && userInfo.image.profilePicId ? userInfo.image.profilePicId : null;
+        req.session.profilePicName =  userInfo && userInfo.image && userInfo.image.profilePicName ? userInfo.image.profilePicName : null;
         req.session.save();
 
         res.redirect('/dashboard');
@@ -507,15 +516,12 @@ exports.changePassword = async (req, res) =>
         } 
         catch (error)
         {
-            console.log('error',error)
             req.flash('error', error.message);
 
             res.redirect('/change-password');
 
             return "";
         }
-
-        console.log('params',params)
 
         await db.updateUser(user.id, params);
 
@@ -550,9 +556,12 @@ exports.getUserById = async (reqParams) =>
 
         let userDetails = await db.getUserDetailsById(userId);
 
+        let NotificationView = await db.getNotificationDetails(userId);
+
         return {
             status: Status.SUCCESS,
-            userDetails: userDetails
+            userDetails: userDetails,
+            NotificationView: NotificationView
         }
     }
     catch (error) 
@@ -650,11 +659,7 @@ exports.updateUser = async (req, res) =>
             updatedBy: uuid
         }
 
-        console.log('params',params)
-
         let updateUser = await db.updateUser(id, params);
-
-        console.log('updateUser',updateUser)
 
         if(!updateUser)
         {
@@ -674,5 +679,32 @@ exports.updateUser = async (req, res) =>
         res.redirect('/user-profile');
 
         return "";
+    }
+}
+
+exports.getUserDetails = async (id) =>
+{
+    try
+    {
+        let userDetails = await db.getUserDetails(id);
+
+        for(let users = 0;users<userDetails.length;users++)
+        {
+            let user =userDetails[users];
+
+            user.mainUserId = id;
+        }
+
+        return {
+            status: Status.SUCCESS,
+            userDetails: userDetails
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }
