@@ -7,193 +7,147 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="#">
     <%- include('links'); %>
-    <style>
-       
-        .post-card {
-            width: 300px;
-            border: 1px solid #dbdbdb;
-            border-radius: 3px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            /* Adding shadow */
-        }
-    
-        .post-header {
-            display: flex;
-            align-items: center;
+ <style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+      }
+  
+      .post-card {
+        width: 450px;
+        border: 1px solid #dbdbdb;
+        background-color: #fff;
+        border-radius: 5px;
+        margin: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+  
+      .post-header {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+      }
+  
+      .profile-picture {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+  
+      .username {
+        font-weight: bold;
+      }
+  
+      .location {
+        width: 200px;
+        margin-left: 5px;
+        color: #8e8e8e;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .post-image-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .post-image-container img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+  
+      .post-image-slider {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+  
+      .post-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Adjust the object-fit property */
+        object-position: center; /* Center the image within the container */
+      }
+  
+      .post-footer {
+        padding: 10px;
+        border-top: 1px solid #dbdbdb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+  
+      .like-btn,
+      .comment-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #262626;
+      }
+  
+      .heart-icon,
+      .comment-icon {
+        margin-right: 5px;
+      }
+  
+      .description {
+        padding: 10px;
+      }
+  
+      .arrow-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        cursor: pointer;
+        color: #262626;
+        padding: 5px;
+        border-radius: 50%;
+        z-index: 2;
+      }
+  
+      .left-arrow {
+        left: 10px;
+      }
+  
+      .right-arrow {
+        right: 10px;
+      }
+  
+      .hidden {
+        display: none;
+      }
+
+      .dotsIcons {
             padding: 10px;
-        }
+      }
+
+       /* Optional: Adjust for smaller screens */
+  @media screen and (max-width: 900px) {
+    .post-card {
+      width: calc(50% - 20px);
+      /* Adjust margin/padding accordingly */
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .post-card {
+      width: calc(100% - 20px);
+      /* Adjust margin/padding accordingly */
+    }
+  }
+
+
+  .like-btn.liked .heart-icon {
+    color: red;
+    /* When liked, turn red */
+  }
     
-        .profile-picture {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-    
-        .username {
-            font-weight: bold;
-            font-size: 14px;
-        }
-    
-        .post-image {
-            width: 100%;
-        }
-    
-        .post-footer {
-            padding: 10px;
-        }
-    
-        .likes {
-            display: flex;
-            align-items: center;
-        }
-    
-        .heart-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-    
-        .likes-count {
-            font-weight: bold;
-            font-size: 14px;
-        }
-    
-        .caption {
-            margin-top: 5px;
-            font-size: 14px;
-        }
-    
-    
-    
-        /* Styles for slideshow */
-        .slideshow-container {
-            position: relative;
-            width: 100%;
-            margin-top: 10px;
-        }
-    
-        .mySlides {
-            display: none;
-        }
-    
-        .fade {
-            animation-name: fade;
-            animation-duration: 1.5s;
-        }
-    
-        @keyframes fade {
-            from {
-                opacity: .4
-            }
-    
-            to {
-                opacity: 1
-            }
-        }
-    
-        /* Styles for dots */
-        .dot {
-            height: 15px;
-            width: 15px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 2px;
-        }
-    
-        .active {
-            background-color: #717171;
-        }
-    
-        /* Responsive Styles */
-        .post-card {
-            max-width: 100%;
-        }
-    
-        .post-image {
-            width: 100%;
-            height: auto;
-        }
-    
-        .profile-picture {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-    
-        .username {
-            font-weight: bold;
-            font-size: 14px;
-        }
-    
-        .post-footer {
-            padding: 10px;
-        }
-    
-        .action-buttons {
-            display: flex;
-            align-items: center;
-        }
-    
-        .like-btn,
-        .comment-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-    
-        .like-btn {
-            margin-right: auto;
-            /* Push like button to the left */
-        }
-    
-        .comment-btn {
-            margin-left: auto;
-            /* Push comment button to the right */
-        }
-    
-        .likes {
-            display: flex;
-            align-items: center;
-        }
-    
-        .likes-count {
-            font-weight: bold;
-            font-size: 14px;
-        }
-    
-        .caption {
-            margin-top: 5px;
-            font-size: 14px;
-        }
-    
-        /* Styles for empty and liked button */
-        .like-btn .heart-icon {
-            color: black;
-            /* Initially empty */
-        }
-    
-        .like-btn.liked .heart-icon {
-            color: red;
-            /* When liked, turn red */
-        }
-    
-        @media screen and (max-width: 600px) {
-            .profile-picture {
-                width: 20px;
-                height: 20px;
-            }
-    
-            .username,
-            .likes-count,
-            .caption {
-                font-size: 12px;
-            }
-        }
-    </style>
+ </style>
 </head>
 <body>
 
@@ -230,7 +184,7 @@
                                                                     </a>
                                                                 </li>
                                                                 <li class="breadcrumb-item" style="float: left;"><a
-                                                                        href="/dashboard">Dashboard</a> </li>
+                                                                        href="/posts">Feeds</a> </li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -285,42 +239,135 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+    
+    
                                             <div class="page-body">
-                                                <div class="post-card">
-                                                    <div class="post-header">
-                                                        <img src="./views/./images/avatar-1.jpg" alt="Profile Picture"
-                                                            class="profile-picture">
-                                                        <span class="username">username</span>
-                                                    </div>
-                                                    <div class="slideshow-container">
-                                                        <div class="mySlides fade">
-                                                            <img src="./views/./images/avatar-2.jpg" style="width:100%"
-                                                                class="post-image">
+                                                <div class="card-container">
+                                                    <% if(postInfo && postInfo.length> 0) {
+                                                        postInfo.forEach(function(post) { %>
+                                            
+                                                        <!-- <div class="post-card">
+                                                                                                        <div class="post-header">
+                                                                                                            <img src="../images/uploads/<%= post.profilePicId %>/<%= post.profilePicName %>"
+                                                                                                                alt="<%= post.profilePicName %>" class="profile-picture">
+                                                                                                            <span class="username">
+                                                                                                                <%= post.userName %>
+                                                                                                            </span>
+                                                                                                        </div>
+                                            
+                                                                                                        <% if(post && post.postImages.length> 0) {
+                                                                                                            post.postImages.forEach(function(postImage) { %>
+                                                                                                            <div class="slideshow-container">
+                                                                                                                <div class="mySlides fade">
+                                                                                                                    <img src="../gallery/<%= postImage.postFieldId %>/<%= postImage.postFileName %>"  alt="<%= postImage.postFileName %>" style="width:100%"
+                                                                                                                        class="post-image">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        <% }); } %>
+                                                                                                        
+                                                                                                        <div style="text-align:center">
+                                                                                                            <a class="prev" onclick="prevSlide(this)">&#10094;</a>
+                                                                                                            <a class="next" onclick="nextSlide(this)">&#10095;</a>
+                                                                                                           
+                                                                                                        </div>
+                                                                                                        <div class="post-footer">
+                                                                                                            <div class="action-buttons">
+                                                                                                                <a class="like-btn" id="likeButton"><i class="fa fa-heart-o heart-icon "></i><span
+                                                                                                                        class="likes-count" id="likeCount"> 0</span> likes</a>
+                                                                                                                <button class="comment-btn" data-toggle="modal"
+                                                                                                                    data-target="#large-Modal"><i class="fa fa-comments-o"></i> comments</button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div> -->
+                                                      
+                                                        <div class="post-card">
+                                                            <div class="post-header">
+                                                                <img src="../images/uploads/<%= post.profilePicId %>/<%= post.profilePicName %>"
+                                                                    alt="<%= post.profilePicName %>" class="profile-picture">
+                                                                <span class="username">
+                                                                    <%= post.userName %>
+                                                                </span>
+                                                                <span class="location" id="location">is at 
+                                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                                        <%= post.location %>
+                                                                            <span class="tooltip-content5">
+                                                                                <span class="tooltip-text3">
+                                                                                    <span class="tooltip-inner2">
+                                                                                        <%= post.location %>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </span>
+                                                                    </a>
+                                                                </span>
+                                                                <div class="user-profile header-notification dotsIcons">
+                                                                    <div class="dropdown-primary dropdown">
+                                                                        <div class="dropdown-toggle" data-toggle="dropdown">
+                                                                            <!-- Use the three dots icon instead of dropdown icon -->
+                                                                            <i class="fa fa-ellipsis-v"></i>
+                                                                        </div>
+                                                                        <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn"
+                                                                            data-dropdown-out="fadeOut" style="padding: 10px;">
+                                                                            <li>
+                                                                                <a href="#">
+                                                                                    <i class="fa fa-edit"></i> Edit
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#">
+                                                                                    <i class="fa fa-trash"></i> Delete
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                           
+                                                                <div class="post-image-container">
+                                                                    <span class="arrow-icon left-arrow hidden">&#10094;</span>
+                                                                    <span class="arrow-icon right-arrow hidden">&#10095;</span>
+                                                                    <div class="post-image-slider">
+                                                                        <% if(post && post.postImages.length> 0) {
+                                                                            post.postImages.forEach(function(postImage) { %>
+                                                                            <img src="../gallery/<%= postImage.postFieldId %>/<%= postImage.postFileName %>"
+                                                                                alt="<%= postImage.postFileName %>" class="post-image">
+                                                                            <% }); } %>
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                                    <div class="description">
+                                                                        <%= post.description %>
+                                                                    </div>
+
+                                                                    <div class="post-footer">
+                                                                        <a class="like-btn"  id="likeButton" data-post-id="<%= post.id %>"><i class="fa fa-heart-o heart-icon"></i><span class="likes-count"
+                                                                            id="likeCount"> <%= post.likesCount %></span> Like</a>
+                                                                        <button class="comment-btn"><i class="fa fa-comments-o"></i> Comment</button>
+                                                                    </div>
                                                         </div>
-                                                        <div class="mySlides fade">
-                                                            <img src="./views/./images/avatar-3.jpg" style="width:100%"
-                                                                class="post-image">
-                                                        </div>
-                                                        <!-- Add more slides as needed -->
-                                                    </div>
-                                                    <div style="text-align:center">
-                                                        <span class="dot"></span>
-                                                        <span class="dot"></span>
-                                                        <!-- Add more dots for additional images -->
-                                                    </div>
-                                                    <div class="post-footer">
-                                                        <div class="action-buttons">
-                                                            <button class="like-btn" id="likeButton"><i
-                                                                    class="fas fa-heart heart-icon"></i><span
-                                                                    class="likes-count" id="likeCount"> 0</span>
-                                                                likes</button>
-                                                            <button class="comment-btn" data-toggle="modal"
-                                                                data-target="#large-Modal"><i class="fas fa-comment"></i>
-                                                                comments</button>
-                                                        </div>
-                                                    </div>
+                                                        <% }); } else { %>
+                                                            <div class="page-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="card">
+                                                                            <div class="card-header">
+                                                                                <h5>There is no feeds here to see!</h5>
+                                                                                <div class="card-header-right">
+                                                                                    <ul class="list-unstyled card-option">
+                                                                                        <li><i class="feather icon-maximize full-card"></i>
+                                                                                        </li>
+                                                                                        <li><i class="feather icon-minus minimize-card"></i>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <% }%>
                                                 </div>
+                                            
                                             </div>
     
                                         </div>
@@ -337,250 +384,171 @@
 <%- include('scripts'); %>
 
 <script>
-   
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get all user cards
-        const userCards = document.querySelectorAll('.user-card');
-    
-        // Loop through each user card
-        userCards.forEach(function(card) {
-            console.log('card',card)
-            // Get buttons inside the current card
-            const followButton = card.querySelector('.followUsers');
-            const profileButton = card.querySelector('.profileBtn');
-            const requestedButton = card.querySelector('.requestedForfollowUsers');
-            const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
-            const followButtons = card.querySelectorAll('.followUsers');
-
-            console.log('followButton',followButton)
-    
-            // Check if both follow and profile buttons exist
-            if (followButton && requestedButton && profileButton)
-            {
-                // If both follow and profile buttons exist, remove the follow button
-                followButton.remove();
-            }
-            else if (followButton && unFollowButton && profileButton)
-            {
-                followButton.remove();
-            }
-            else if (followButtons.length > 1) // If there are multiple follow buttons, keep only the first one and remove the rest
-            {
-                // Loop through follow buttons starting from the second one
-                for (let i = 1; i < followButtons.length; i++)
-                {
-                    // Remove the follow button
-                    followButtons[i].remove();
-                }
-            }
-           
-
-        });
-    });
+    var description = document.getElementById('description');
+    // Set the maximum length of the description
+    var maxLength = 25;
+  
+    // Check if the description exceeds the maximum length
+    if (description.textContent.length > maxLength) {
+      // Truncate the description and add three dots
+      var truncatedText = description.textContent.substring(0, maxLength) + '...';
+      // Update the description content
+      description.textContent = truncatedText;
+    }
 </script>
 
 <script>
+    document.querySelectorAll('.post-card').forEach(card =>
+    {
+        const slider = card.querySelector('.post-image-slider');
+        const images = card.querySelectorAll('.post-image');
+        const leftArrow = card.querySelector('.left-arrow');
+        const rightArrow = card.querySelector('.right-arrow');
 
-    function callAPI(followingId) 
+        if (images.length > 1)
         {
-            document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+            leftArrow.classList.remove('hidden');
+            rightArrow.classList.remove('hidden');
+        }
 
-            const requestBody = {
-                followingId: followingId,
-                followerId: '<%= id %>',
-                uuid : '<%= uuid %>',
-                userId : '<%= id %>'
+        let currentSlide = 0;
+
+        leftArrow.addEventListener('click', () =>
+        {
+            if (currentSlide === 0)
+            {
+                currentSlide = images.length - 1;
+            } else
+            {
+                currentSlide--;
+            }
+            updateSlider();
+        });
+
+        rightArrow.addEventListener('click', () =>
+        {
+            if (currentSlide === images.length - 1)
+            {
+                currentSlide = 0;
+            } else
+            {
+                currentSlide++;
+            }
+            updateSlider();
+        });
+
+        function updateSlider()
+        {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+    });
+</script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.like-btn').forEach(function(button) {
+            let postId = button.dataset.postId;
+
+            var requestData = {
+                id: "<%= id %>", // Example user ID, replace with your actual parameter
+                postId : postId
             };
-
-            console.log('requestBody', requestBody)
-
-            const options = {
+    
+            // Make an initial API call to check if the post is liked
+            fetch('/api/like', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestData) // Send post ID in the request body
+            })
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+
+                if (data && data.postLikeList && data.postLikeList.isLike === 1) 
+                {
+                    // If post is liked, turn the like button red
+                    button.classList.add('liked');
+                } else {
+                    // If post is not liked, turn the like button black
+                    button.classList.remove('liked');
+                }
+            })
+            .catch(error => {
+                alert('Error checking like status:', error)
+                console.error('Error checking like status:', error);
+            });
+        });
+    });
+    
+  </script>
+
+<script>
+    document.querySelectorAll('.like-btn').forEach(function (button)
+    {
+        button.addEventListener('click', function ()
+        {
+            let isLiked = this.classList.contains('liked');
+            let likeCountElement = this.querySelector('.likes-count');
+            let likeCount = parseInt(likeCountElement.textContent);
+            let postId = button.dataset.postId;
+
+            // Simulate API call URL (replace with your actual API endpoints)
+            let apiUrl = isLiked ? '/api/update/unlike' : '/api/update/like';
+
+            var requestData = {
+                id: "<%= id %>", // Example user ID, replace with your actual parameter
+                postId: postId,
+                uuid: "<%= uuid %>"
             };
 
-            fetch('/follow/users/', options)
+            // Simulate fetch call
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData) // Send post ID in the request body
+            })
                 .then(response =>
                 {
-                    if (!response.ok)
+                    if (response.ok)
                     {
-                        throw new Error('Network response was not ok');
+                        return response.json();
                     }
-                    return response.json();
+                    throw new Error('Network response was not ok.');
                 })
                 .then(data =>
                 {
-                    console.log(data);
 
-                    if(data && data.status == 1)
+                    if (data && data.status === 1) 
                     {
-                        document.getElementById('followUsers').innerText = 'Remove';
-
-                        alert('Request sent to the user!');
-                        location.reload();
+                        // If post is liked, turn the like button red
+                        if (isLiked)
+                        {
+                            likeCount--;
+                            button.classList.remove('liked');
+                        } else
+                        {
+                            likeCount++;
+                            button.classList.add('liked');
+                        }
+                        likeCountElement.textContent = likeCount; // Update like count
                     }
-                    else
-                    {
-                        alert(data.message)
-                    }
-
                 })
                 .catch(error =>
                 {
-                    console.error('There was a problem with the API request:', error);
-
-                    alert('There was a problem with the API request:', error)
-                })
-        }
-
-        document.querySelectorAll('.followUsers').forEach(button =>
-        {
-            button.addEventListener('click', () =>
-            {
-                const followingId = button.getAttribute('data-user-id');
-                callAPI(followingId);
-            });
-        });
-   
-</script>
-
-<script>
-
-    function requestedForUnfollowUsers(followingId) 
-    {
-        document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
-
-        const requestBody = {
-            followingId: followingId,
-            followerId: '<%= id %>',
-            userId : '<%= id %>',
-            uuid : '<%= uuid %>'
-        };
-
-        console.log('requestBody', requestBody)
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        };
-
-        fetch('/update/unfollow/users/', options)
-            .then(response =>
-            {
-                if (!response.ok)
-                {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data =>
-            {
-                console.log(data);
-
-                if(data && data.status == 1)
-                {
-                    document.getElementById('requestedForUnfollowUsers').innerText = 'Follow';
-
-                    alert('User has unfollowed the account!');
-                    location.reload();
-                }
-                else
-                {
-                    alert(data.message)
-                }
-
-            })
-            .catch(error =>
-            {
-                console.error('There was a problem with the API request:', error);
-
-                alert('There was a problem with the API request:', error)
-            })
-    }
-
-    document.querySelectorAll('.requestedForUnfollowUsers').forEach(button =>
-    {
-        button.addEventListener('click', () =>
-        {
-            const followingId = button.getAttribute('data-user-id');
-            requestedForUnfollowUsers(followingId);
+                    console.error('Error:', error);
+                });
         });
     });
-   
-</script>
-
-<script>
-
-    function requestedForfollowUsers(followingId) 
-    {
-        document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
-
-        const requestBody = {
-            followingId: followingId,
-            followerId: '<%= id %>',
-            userId : '<%= id %>',
-            uuid : '<%= uuid %>'
-        };
-
-        console.log('requestBody', requestBody)
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        };
-
-        fetch('/update/follow/users/', options)
-            .then(response =>
-            {
-                if (!response.ok)
-                {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data =>
-            {
-                console.log(data);
-
-                if(data && data.status == 1)
-                {
-                    document.getElementById('requestedForfollowUsers').innerText = 'UnFollow';
-
-                    alert('User has followed the account!');
-                    location.reload();
-                }
-                else
-                {
-                    alert(data.message)
-                }
-
-            })
-            .catch(error =>
-            {
-                console.error('There was a problem with the API request:', error);
-
-                alert('There was a problem with the API request:', error)
-            })
-    }
-
-    document.querySelectorAll('.requestedForfollowUsers').forEach(button =>
-    {
-        button.addEventListener('click', () =>
-        {
-            const followingId = button.getAttribute('data-user-id');
-            requestedForfollowUsers(followingId);
-        });
-    });
-   
 </script>
 
 </body>

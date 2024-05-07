@@ -88,7 +88,6 @@ exports.createUser = async (req, res) =>
         {
             if (existingUserDetails.email == email) 
             {
-                console.log('here')
                 req.flash('error', 'User email already exists. Try with different email.');
 
                 res.redirect('/register');
@@ -143,8 +142,6 @@ exports.createUser = async (req, res) =>
             };
 
            let x=  await smtp.sendEmail(userEmailParams);
-
-           console.log(x)
 
         }
         catch (error)
@@ -515,15 +512,12 @@ exports.changePassword = async (req, res) =>
         } 
         catch (error)
         {
-            console.log('error',error)
             req.flash('error', error.message);
 
             res.redirect('/change-password');
 
             return "";
         }
-
-        console.log('params',params)
 
         await db.updateUser(user.id, params);
 
@@ -559,8 +553,6 @@ exports.getUserById = async (reqParams) =>
         let userDetails = await db.getUserDetailsById(userId);
 
         let NotificationView = await db.getNotificationDetails(userId);
-
-        console.log('NotificationView',NotificationView)
 
         return {
             status: Status.SUCCESS,
@@ -663,11 +655,7 @@ exports.updateUser = async (req, res) =>
             updatedBy: uuid
         }
 
-        console.log('params',params)
-
         let updateUser = await db.updateUser(id, params);
-
-        console.log('updateUser',updateUser)
 
         if(!updateUser)
         {

@@ -11,10 +11,6 @@ exports.createFollow = async (reqParams) =>
 
         let followerId = reqParams.followerId?  reqParams.followerId : null;
 
-        console.log('followingId',followingId)
-
-        console.log('followerId',followerId)
-
         let getFollowDetails = await db.getFollowDetails(followingId, followerId);
 
         if (getFollowDetails.length > 0)
@@ -41,8 +37,6 @@ exports.createFollow = async (reqParams) =>
     
             let followUser_notification = await db.updateRequestedForUnfollowUsers(ids, params, NotificationParams);
 
-            console.log('followUser_notification',followUser_notification)
-    
             return {
                 status: Status.SUCCESS,
                 followUser_notification: followUser_notification
@@ -67,8 +61,6 @@ exports.createFollow = async (reqParams) =>
                 createdAt : new Date()
             }]
     
-            console.log('params',params)
-
             let NotificationParams =
             {
                 subject: "Friend request sent",
@@ -79,12 +71,8 @@ exports.createFollow = async (reqParams) =>
                 createdBy: reqParams.uuid
             };
 
-            console.log('NotificationParams',NotificationParams)
-    
             let followUser_notification = await db.createFollow(params, NotificationParams);
     
-            console.log('followUser_notification',followUser_notification)
-
             return {
                 status: Status.SUCCESS,
                 followUser_notification: followUser_notification
@@ -128,15 +116,9 @@ exports.requestedForUnfollowUsers = async (reqParams) =>
             updatedAt : new Date()
         };
 
-        console.log('params',params)
-
         let followUser = await db.updateRequestedForUnfollowUsers(ids, params, null);
 
-        console.log('followUser',followUser);
-
         let deleteNotification = await userdb.deleteNotification(followerId);
-
-        console.log('deleteNotification',deleteNotification)
 
         return {
             status: Status.SUCCESS,
@@ -145,7 +127,6 @@ exports.requestedForUnfollowUsers = async (reqParams) =>
     } 
     catch (error) 
     {
-        console.log(error)
         return {
             status: Status.FAIL,
             message: error.message
@@ -160,10 +141,6 @@ exports.requestedForfollowUsers = async (reqParams) =>
         let followingId = reqParams.followingId ? reqParams.followingId : null;
 
         let followerId = reqParams.followerId?  reqParams.followerId : null;
-
-        console.log('followingId',followingId)
-
-        console.log('followerId',followerId)
 
         let getFollowDetails = await db.getFollowDetails(followingId, followerId);
 
@@ -184,15 +161,11 @@ exports.requestedForfollowUsers = async (reqParams) =>
             updatedAt : new Date()
         };
 
-        console.log('Followparams',Followparams)
-
         let notificationParams = {
             isRead:1,
             updatedBy : reqParams.uuid,
             updatedAt : new Date()
         }
-
-        console.log('notificationParams',notificationParams)
 
         let followUser = await db.updateRequestedForFollowUsers(ids, Followparams, followerId, notificationParams);
 
@@ -203,7 +176,6 @@ exports.requestedForfollowUsers = async (reqParams) =>
     } 
     catch (error) 
     {
-        console.log(error)
         return {
             status: Status.FAIL,
             message: error.message

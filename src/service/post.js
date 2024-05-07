@@ -12,10 +12,6 @@ exports.createPost = async (req, res) =>
         let imageIds = req.body.imageIds ? req.body.imageIds : null;
         let ids = imageIds.split(",");
 
-        console.log('location',location)
-        console.log('description',description)
-        console.log('ids',ids)
-
         if (!location)
         {
             req.flash('error', 'Location is requried.');

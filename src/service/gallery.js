@@ -11,8 +11,6 @@ exports.createImage = async (req, res) =>
     {
         let file = req.file;
         let reqParams = req.body;
-        console.log('file', file)
-        console.log('reqParams', reqParams)
 
         let uuid = common.uuid();
 
@@ -28,10 +26,6 @@ exports.createImage = async (req, res) =>
 
         fs.renameSync(currentPath, filePath);
 
-        console.log('currentPath',currentPath)
-        console.log('newPath',newPath)
-
-
         var params = {
             imageId: uuid,
             fileName: file.filename,
@@ -41,8 +35,6 @@ exports.createImage = async (req, res) =>
         }
 
         let profilePic = await db.createImage(params);
-
-        console.log('profilePic-1', profilePic)
 
         req.flash('success', 'User photos uploaded!');
         

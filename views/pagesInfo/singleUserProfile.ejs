@@ -507,7 +507,6 @@
                 var requestData = {
                     id: "<%= userId %>" // Example user ID, replace with your actual parameter
                 };
-                console.log('requestData', requestData)
                 // Fetch user data from the backend when the page loads
                 fetch('/api/user/id', {
                     method: 'POST',
@@ -535,8 +534,6 @@
                         var text = document.getElementById('textInfo');
                         let currentImageIndex = 0;
                         let gallerys = [];
-
-                        console.log('galleryImages', galleryImages)
 
                         document.getElementById('name').textContent = user.userName;
 
@@ -596,7 +593,6 @@
 
 
 
-                            console.log('gallerys', gallerys)
                             // Open the modal with the selected image
                             function openModal(index) 
                             {
@@ -659,7 +655,6 @@
                         }
                         else
                         {
-                            console.log('here')
                             text.style.display = 'block';
                         }
 

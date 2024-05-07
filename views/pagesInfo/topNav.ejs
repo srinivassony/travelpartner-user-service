@@ -73,7 +73,6 @@
         var requestData = {
             id: "<%= id %>" // Example user ID, replace with your actual parameter
         };
-        console.log('requestData', requestData)
         // Fetch user data from the backend when the page loads
         fetch('/api/user/id', {
             method: 'POST',
@@ -175,8 +174,6 @@
                         // Example usage
                         const timestampString = item.createdAt;
                         const timeSince = calculateTimeSince(timestampString);
-                        console.log('Time since creation:', timeSince);
-
 
                         const li = document.createElement('li');
                         const divMedia = document.createElement('div');

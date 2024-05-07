@@ -9,9 +9,6 @@ exports.createProfilePicImage = async (file, reqParams) =>
 {
     try
     {
-        console.log('file',file)
-        console.log('reqParams',reqParams)
-
         let documentData = await db.getProfilePicImage(reqParams.userId);
 
         let profilePic = null;
@@ -43,8 +40,6 @@ exports.createProfilePicImage = async (file, reqParams) =>
     
             profilePic = await db.createProfilePicImage(params);
 
-            console.log('profilePic-1',profilePic)
-
             return {
                 status: Status.SUCCESS,
                 profilePic: profilePic
@@ -74,12 +69,8 @@ exports.createProfilePicImage = async (file, reqParams) =>
                 updatedBy: reqParams.uuid
             };
 
-            console.log('updatedParams',updatedParams)
-    
             profilePic = await db.updateProfilePic(documentData.id, updatedParams);
 
-            console.log('profilePic-2',profilePic)
-    
             return {
                 status: Status.SUCCESS,
                 profilePic: profilePic
