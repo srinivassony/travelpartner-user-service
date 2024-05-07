@@ -196,13 +196,15 @@ foreign key ("userId") references "tp_user" ("id")
 );
 
 -- view posts
-CREATE OR REPLACE  view "tp_view_fetch_posts" AS  
-SELECT 
+ CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "TRAVELPARTNER"."tp_view_fetch_posts" ("id", "userName", "location", "description", "profilePicId", "profilePicName", "userId", "postImages", "likesCount") AS 
+  SELECT 
     post."id",
     us."userName",
     post."location",
+    post."description",
     img."profilePicId",
     img."profilePicName",
+    us."id" "userId",
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -219,6 +221,27 @@ FROM
     "tp_post" post
 LEFT JOIN 
     "tp_user" us ON us."id" = post."userId"
+LEFT JOIN 
+    "tp_image" img ON img."userId" = us."id"
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL;
+
+-- view comments
+
+    CREATE OR REPLACE  view "tp_view_fetch_post_comments" AS 
+select 
+    pc."id",
+    pc."postId",
+    us."userName",
+    pc."comment",
+    img."profilePicId",
+    img."profilePicName",
+    us."id" "userId"
+from "tp_post_comment" pc
+LEFT JOIN 
+    "tp_user" us ON us."id" = pc."userId"
 LEFT JOIN 
     "tp_image" img ON img."userId" = us."id"
 WHERE 

@@ -23,9 +23,6 @@ exports.createPostImage = async (reqParams, file) =>
 
         fs.renameSync(currentPath, filePath);
 
-        console.log('currentPath',currentPath)
-        console.log('newPath',newPath)
-
         var params = {
             postFieldId: uuid,
             postFileName: file.filename,

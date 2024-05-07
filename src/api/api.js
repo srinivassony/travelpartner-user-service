@@ -15,6 +15,8 @@ let userDb = require('../database/db/user');
 let followUsersService = require('../service/follow-users');
 let postService = require('../service/post');
 let postImageService = require('../service/postImages');
+let postLikeService = require('../service/postLike');
+let postCommentService = require('../service/postComment');
 
 
 //middelwares
@@ -178,8 +180,6 @@ app.get('/dashboard', async (req, res) =>
 
 	let userData = await userService.getUserDetails(id);
 
-	console.log('userData',JSON.stringify(userData))
-
 	res.render('pagesInfo/dashboard', {
 		isAuthenticated: req.session.isLoggedIn,
 		errorMessage: message,
@@ -310,6 +310,8 @@ app.get('/posts', async (req, res) =>
 	var name = req.session.name;
 	var id = req.session.userId;
 	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
 
 	if (!req.session.isLoggedIn)
 	{
@@ -318,13 +320,13 @@ app.get('/posts', async (req, res) =>
 
 	let postDetails = await postService.getPostList();
 
-	console.log('postDetails',JSON.stringify(postDetails))
-
 	res.render('pagesInfo/posts', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		id: id,
 		uuid: uuid,
+		profilePicId : profilePicId,
+		profilePicName : profilePicName,
 		postInfo: postDetails && postDetails.status == 1 && postDetails.postList.length > 0 ? postDetails.postList : postDetails && postDetails.status == 0 ? postDetails.message : []
 	});
 });
@@ -465,6 +467,31 @@ app.post("/upload/post/image",postUpload.single('filesInfo'), async (req, res) =
 });
 
 app.post('/api/add/post', postService.createPost);
+
+app.post("/api/like",  async (req, res) => 
+{
+	return res.json(await postLikeService.postLikeList(req.body));
+});
+
+app.post("/api/update/like", async (req, res) => 
+{
+	return res.json(await postLikeService.createPostLike(req.body));
+});
+
+app.post("/api/update/unlike", async (req, res) => 
+{
+	return res.json(await postLikeService.updatePostLike(req.body));
+});
+
+app.post("/api/add/comment", async (req, res) => 
+{
+	return res.json(await postCommentService.createComment(req.body));
+});
+
+app.post("/api/comments", async (req, res) => 
+{
+	return res.json(await postCommentService.postCommentsList(req.body));
+});
 
 app.all('*', (req, res, next) => 
 {

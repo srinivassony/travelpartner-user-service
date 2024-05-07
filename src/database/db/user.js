@@ -26,7 +26,7 @@ let getUserDetailsById = async(id) =>
 
 let updateUser = async (id, data) =>
 {
-    return await User.query().patchAndFetchById(id, data);
+    return await User.query().patchAndFetchById(id, data).withGraphFetched('[image]');
 }
 
 let getUserByEmailId = async(email) =>

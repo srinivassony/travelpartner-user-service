@@ -296,13 +296,8 @@
 <script>
     function validatePostForm() 
     {
-        console.log('here2')
         let location = document.forms["myPostForm"]["location"].value;
         let description = document.forms["myPostForm"]["descrip"].value;
-
-        console.log('location',location)
-        console.log('description',description)
-
 
         if (!location) 
         {
@@ -320,9 +315,9 @@
             document.getElementById('errorDescription').innerHTML = "Description minimum character limit is 5";
             return false;
         }
-        else if (description.toString().length > 300) 
+        else if (description.toString().length > 1000) 
         {
-            document.getElementById('errorDescription').innerHTML = "Description maximum character limit is 300.";
+            document.getElementById('errorDescription').innerHTML = "Description maximum character limit is 1000.";
             return false;
         }
 
@@ -357,7 +352,6 @@
         {
             let parsedPostImageList = postImageList.map(item => JSON.parse(item));
             let postImageIds = parsedPostImageList.map(postImg => postImg.id);
-            console.log("postImageIds:", postImageIds);
             document.getElementById('imageIds').value = postImageIds.join(',');
         }
     }
@@ -393,12 +387,9 @@
                         // the load method accepts either a string (id) or an object
                         load(request.responseText);
 
-                        console.log(request.responseText)
-
                         let imageDetails = request.responseText; // Assuming response is JSON
 
                         postImageList.push(imageDetails);
-                        console.log('postImageList', postImageList)
 
                         checkPostImageList();
 
@@ -538,7 +529,6 @@
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
-            console.log(data.results);
             displaySuggestions(data.results);
         } catch (error) {
             console.error('Error fetching locations:', error);
