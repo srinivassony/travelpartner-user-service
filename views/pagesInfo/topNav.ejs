@@ -20,32 +20,197 @@
                 </li>
             </ul>
             <% if (isAuthenticated) { %>
-            <ul class="nav-right">
-                <li class="user-profile header-notification">
-                    <div class="dropdown-primary dropdown">
-                        <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../images/avatar-4.jpg" class="img-radius"
-                                alt="User-Profile-Image">
-                            <span><%= username %></span>
-                            <i class="feather icon-chevron-down"></i>
+                <ul class="nav-right">
+                    <li class="header-notification">
+                        <div class="dropdown-primary dropdown">
+                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="feather icon-bell"></i>
+                                <span class="badge bg-c-pink" id="count"></span>
+                            </div>
+                            <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn"
+                                data-dropdown-out="fadeOut" id="notificationList">
+                                <li>
+                                    <h6>Notifications</h6>
+                                    <label class="label label-danger">New</label>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="show-notification profile-notification dropdown-menu"
-                            data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                            <li>
-                                <a href="#">
-                                    <i class="feather icon-user"></i> Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/logout">
-                                    <i class="feather icon-log-out"></i> Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                    <li class="user-profile header-notification">
+                        <div class="dropdown-primary dropdown">
+                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                <img class="img-radius" alt="User-Profile-Image" id="smallImage" src="#">
+                                <span>
+                                    <%= username %>
+                                </span>
+                                <i class="feather icon-chevron-down"></i>
+                            </div>
+                            <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn"
+                                data-dropdown-out="fadeOut">
+                                <li>
+                                    <a href="/user-profile">
+                                        <i class="feather icon-user"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/logout">
+                                        <i class="feather icon-log-out"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             <% } %>
         </div>
     </div>
 </nav>
+<% if (isAuthenticated) { %>
+<script>
+    document.addEventListener("DOMContentLoaded", function ()
+    {
+        // Prepare data to be sent in the request body
+        var requestData = {
+            id: "<%= id %>" // Example user ID, replace with your actual parameter
+        };
+        // Fetch user data from the backend when the page loads
+        fetch('/api/user/id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data =>
+            {
+                // Populate input boxes with fetched data
+                let user = data && data.userDetails ? data.userDetails : null;
+                let image = user && user.image ? user.image : null;
+                let notificationDetails = data && data.NotificationView ? data.NotificationView : [];
+                const notificationList = document.getElementById('notificationList');
+
+                if (image)
+                {
+                    const uploadedImage = document.getElementById('smallImage');
+                    uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
+                }
+                else
+                {
+                    const uploadedImage = document.getElementById('smallImage');
+                    uploadedImage.src = `../images/human.png`;
+                }
+
+                const count = document.getElementById('count').textContent = notificationDetails && notificationDetails.length ? notificationDetails.length : 0;
+
+                if(notificationDetails && notificationDetails.length > 0)
+                {
+                    notificationDetails.forEach(item => {
+                        let image = item.profilePicId && item.profilePicName ? '../images/uploads/' + item.profilePicId + '/' + item.profilePicName : '../images/human.png';
+                        // Given date and time string
+                        // Function to calculate time difference and return formatted result
+                        function calculateTimeSince(timestampString) {
+                            // Convert timestamp string to JavaScript Date object
+                            const timestamp = new Date(timestampString);
+
+                            // Get current time
+                            const currentTime = new Date();
+
+                            // Calculate time difference in milliseconds
+                            const timeDifference = currentTime - timestamp;
+
+                            // Convert time difference to seconds
+                            const secondsDifference = Math.floor(timeDifference / 1000);
+
+                            // Convert seconds to days, weeks, years, hours, minutes, and seconds
+                            const secondsInDay = 24 * 60 * 60;
+                            const secondsInWeek = 7 * secondsInDay;
+                            const secondsInYear = 365.25 * secondsInDay;
+
+                            const years = Math.floor(secondsDifference / secondsInYear);
+                            const weeks = Math.floor((secondsDifference % secondsInYear) / secondsInWeek);
+                            const days = Math.floor(((secondsDifference % secondsInYear) % secondsInWeek) / secondsInDay);
+                            const hours = Math.floor(((secondsDifference % secondsInYear) % secondsInWeek % secondsInDay) / 3600);
+                            const minutes = Math.floor(((secondsDifference % secondsInYear) % secondsInWeek % secondsInDay % 3600) / 60);
+                            const seconds = Math.floor(((secondsDifference % secondsInYear) % secondsInWeek % secondsInDay % 3600) % 60);
+
+                            // Format the result
+                            let result = '';
+
+                            if (years > 0) {
+                                result += years + (years === 1 ? ' year ' : ' years ');
+                            }
+
+                            if (weeks > 0) {
+                                result += weeks + (weeks === 1 ? ' week ' : ' weeks ');
+                            }
+
+                            if (days > 0) {
+                                result += days + (days === 1 ? ' day ' : ' days ');
+                            }
+
+                            if (hours > 0) {
+                                result += hours + (hours === 1 ? ' hour ' : ' hours ');
+                            }
+
+                            if (minutes > 0) {
+                                result += minutes + (minutes === 1 ? ' minute ' : ' minutes ');
+                            }
+
+                            if (seconds > 0) {
+                                result += seconds + (seconds === 1 ? ' second ' : ' seconds ');
+                            }
+
+                            return result;
+                        }
+
+                        // Example usage
+                        const timestampString = item.createdAt;
+                        const timeSince = calculateTimeSince(timestampString);
+
+                        const li = document.createElement('li');
+                        const divMedia = document.createElement('div');
+                        divMedia.classList.add('media');
+                        divMedia.innerHTML = `
+                            <img class="d-flex align-self-center img-radius" src="${image}" alt="Avatar">
+                            <div class="media-body">
+                                <h5 class="notification-user">${item.userName}</h5>
+                                <p class="notification-msg">${item.userName} sent to a friend request to you!</p>
+                                <span class="notification-time">${timeSince} ago</span>
+                            </div>
+                        `;
+                        li.appendChild(divMedia);
+                        notificationList.appendChild(li);
+                    });
+                }
+                else
+                {
+                    const li = document.createElement('li');
+                    const divMedia = document.createElement('div');
+                    divMedia.classList.add('media');
+                    divMedia.innerHTML = `
+                        <div class="media-body">
+                            <h2 class="notification-user">No notifications</h5>
+                        </div>
+                    `;
+                    li.appendChild(divMedia);
+                    notificationList.appendChild(li);
+
+                }
+
+            })
+            .catch(error =>
+            {
+                console.error('Error fetching user data:', error);
+            });
+
+    });
+</script>
+<% } %>

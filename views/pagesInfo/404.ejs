@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from demo.dashboardpack.com/adminty-html/files/extra-pages/404/2/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 24 Feb 2024 11:21:00 GMT -->
 <head>
 <meta charset="utf-8">
 <title>Adminty - Premium Admin Template by Colorlib</title>
@@ -22,7 +21,11 @@
 <li class="layer" data-depth="0.10"><img src="../images/monster-eyes-01.png"></li>
 </ul>
 <h1>The page you were looking for doesn't exist.We think the page may have moved.</h1>
-<a href="/" class="btn">Back to home</a>
+<% if (isAuthenticated) { %>
+<a href="/dashboard" class="btn">Back to home</a>
+<% } else {%>
+	<a href="/" class="btn">Back to home</a>
+	<% } %>
 </div>
 
 <script src="../js/404.js"></script>
@@ -33,5 +36,4 @@
 	</script>
 </body>
 
-<!-- Mirrored from demo.dashboardpack.com/adminty-html/files/extra-pages/404/2/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 24 Feb 2024 11:21:03 GMT -->
 </html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Travel partner | Find a partner page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="#">
+    <%- include('links'); %>
+    <style>
+        /* use a hand cursor intead of arrow for the action buttons */
+        .filepond--file-action-button {
+            cursor: pointer;
+        }
+    
+        /* the text color of the drop label*/
+        .filepond--drop-label {
+            color: #555;
+        }
+    
+        /* underline color for "Browse" button */
+        .filepond--label-action {
+            text-decoration-color: #aaa;
+        }
+    
+        /* the background color of the filepond drop area */
+        .filepond--panel-root {
+            background-color: #9ea4ac;
+        }
+    
+        /* the border radius of the drop area */
+        .filepond--panel-root {
+            border-radius: 0.5em;
+        }
+    
+        /* the border radius of the file item */
+        .filepond--item-panel {
+            border-radius: 0.5em;
+        }
+    
+        /* the background color of the file and file panel (used when dropping an image) */
+        .filepond--item-panel {
+            background-color: #555;
+        }
+    
+        /* the background color of the drop circle */
+        .filepond--drip-blob {
+            background-color: #999;
+        }
+    
+        /* the background color of the black action buttons */
+        .filepond--file-action-button {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    
+        /* the icon color of the black action buttons */
+        .filepond--file-action-button {
+            color: white;
+        }
+    
+        /* the color of the focus ring */
+        .filepond--file-action-button:hover,
+        .filepond--file-action-button:focus {
+            box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.9);
+        }
+    
+        /* the text color of the file status and info labels */
+        .filepond--file {
+            color: white;
+        }
+    
+        /* error state color */
+        [data-filepond-item-state*='error'] .filepond--item-panel,
+        [data-filepond-item-state*='invalid'] .filepond--item-panel {
+            background-color: red;
+        }
+    
+        [data-filepond-item-state='processing-complete'] .filepond--item-panel {
+            background-color: green;
+        }
+    
+        /* bordered drop area */
+        .filepond--panel-root {
+            background-color: transparent;
+            border: 2px solid #2c3340;
+        }
+    
+        .filepond--item {
+            width: calc(50% - 0.5em);
+        }
+    
+        @media (min-width: 30em) {
+            .filepond--item {
+                width: calc(50% - 0.5em);
+            }
+        }
+    
+        @media (min-width: 50em) {
+            .filepond--item {
+                width: calc(33.33% - 0.5em);
+            }
+        }
+
+        #suggestions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            width: calc(100% - 2px); /* Adjust width to match the input box */
+            z-index: 999; /* Set a higher z-index */
+        }
+    
+        #suggestions-list li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    
+        #suggestions-list li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('loader'); %>
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('topNav'); %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                        <%- include('sideNav'); %>
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+    
+                            <div class="main-body">
+                                <div class="page-wrapper">
+    
+                                    <div class="page-header">
+                                        <div class="row align-items-end">
+                                            <div class="col-lg-8">
+                                                <div class="page-header-title">
+                                                    <div class="d-inline">
+                                                        <h4>Travel-partner is a Social Travel Community & Experiences Marketplace</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="page-header-breadcrumb">
+                                                    <ul class="breadcrumb-title">
+                                                        <li class="breadcrumb-item" style="float: left;">
+                                                            <a href="/dashboard"> <i class="feather icon-home"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="breadcrumb-item" style="float: left;"><a
+                                                                href="/find-partner">Find a partner</a> </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                    
+                                                <div class="tab-header card">
+                                                    <ul class="nav nav-tabs md-tabs tab-timeline" role="tablist" id="mytab">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" data-toggle="tab" href="#sharePost" role="tab">Share a post
+                                                                </a>
+                                                            <div class="slide"></div>
+                                                        </li>
+                                    
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" data-toggle="tab" href="#findPartner" role="tab">Find a buddy</a>
+                                                            <div class="slide"></div>
+                                                        </li>
+                                    
+                                                    </ul>
+                                                </div>
+                                    
+                                    
+                                                <div class="tab-content">
+                                                    <!-- share a post -->
+                                                    <div class="tab-pane active" id="sharePost" role="tabpanel">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5 class="card-header-text">Share a post to your friends</h5>
+                                                
+                                                            </div>
+                                                            <div class="card-block">
+                                                            
+                                                                <div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12">
+                                                                            <div class="general-info">
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-sm-4 col-form-label">Upload Images/Videos</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="file" class="my-pond" id="fileInput" name="filesInfo" multiple accept="image/*,video/*" />
+                                                                                        <span id="errorFileUpload" style="color: red;font-weight:bold;"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                            
+                                                                                <form action="/api/add/post" method="post" enctype="application/x-www-form-urlencoded" id="myPostForm" name="myPostForm" onsubmit="return validatePostForm()">
+                                                                                
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-sm-4 col-form-label">Location</label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <input type="text" class="form-control" id="location" name="location" required>
+                                                                                            <ul id="suggestions-list"></ul>
+                                                                                            <span id="errorLocation" style="color: red;"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-sm-4 col-form-label">Trip
+                                                                                            description
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <textarea class="col-sm-12" class="form-control" rows="8" id="descrip" name="descrip" required></textarea>
+                                                                                            <span id="errorDescription" style="color: red;"></span>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-8">
+                                                                                            <input type="hidden" class="form-control" id="imageIds" name="imageIds">
+                                                                                            <input type="hidden" name="uuid" value="<%= uuid %>">
+                                                                                            <input type="hidden" name="userId" value="<%= id %>">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                
+                                                                                    <div class="text-center">
+                                                                                        <button  class="btn btn-primary waves-effect waves-light m-r-20" id="uploadButton">Save</button>
+                                                                                        <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
+                                                                                    </div>
+                                                                                
+                                                                                </form>
+                                                                            </div>
+                                                            
+                                                                        </div>
+                                                            
+                                                                    </div>
+                                                            
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- find a partner -->
+                                                    <div class="tab-pane" id="findPartner" role="tabpanel">
+                                                        <div class="page-body gallery-page">
+                                                            <div class="row">
+                                                
+                                                                <div class="col-sm-12">
+                                                
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <h5>Find a partnerto travel</h5>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                           
+                                                                        </div>
+                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="styleSelector">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('scripts'); %>
+
+<script>
+    function validatePostForm() 
+    {
+        let location = document.forms["myPostForm"]["location"].value;
+        let description = document.forms["myPostForm"]["descrip"].value;
+
+        if (!location) 
+        {
+            document.getElementById('errorLocation').innerHTML = "Location is required.";
+            return false;
+        }
+
+        if (!description) 
+        {
+            document.getElementById('errorDescription').innerHTML = "Description is required.";
+            return false;
+        }
+        else if (description.toString().length < 5) 
+        {
+            document.getElementById('errorDescription').innerHTML = "Description minimum character limit is 5";
+            return false;
+        }
+        else if (description.toString().length > 1000) 
+        {
+            document.getElementById('errorDescription').innerHTML = "Description maximum character limit is 1000.";
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+
+<script>
+
+
+    let postImageList = [];
+
+    FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
+    const pond = FilePond.create(fileInput, {
+        allowMultiple: true,
+        allowFileTypeValidation: true,
+        acceptedFileTypes: ['image/*', 'video/*'],
+        labelFileTypeNotAllowed: 'File of invalid type',
+        allowFileSizeValidation: true,
+        maxFileSize: '10MB',
+        maxTotalFileSize: '60MB',
+        labelMaxFileSizeExceeded: 'File is too large',
+        labelMaxFileSize: `Maximum file size is 10MB`,
+        labelMaxTotalFileSize: 'Maximum total file size is 60MB'
+    });
+
+    function checkPostImageList()
+    {
+        if (Array.isArray(postImageList) && postImageList.length > 0)
+        {
+            let parsedPostImageList = postImageList.map(item => JSON.parse(item));
+            let postImageIds = parsedPostImageList.map(postImg => postImg.id);
+            document.getElementById('imageIds').value = postImageIds.join(',');
+        }
+    }
+
+    pond.setOptions({
+        maxFiles: 5,
+        server: {
+            process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) =>
+            {
+                // fieldName is the name of the input field
+                // file is the actual file object to send
+                const uuid = "<%= uuid %>";
+                const formData = new FormData();
+                formData.append(fieldName, file, file.name);
+                formData.append('uuid', uuid);
+                const request = new XMLHttpRequest();
+                request.open('POST', '/upload/post/image');
+
+                // Should call the progress method to update the progress to 100% before calling load
+                // Setting computable to false switches the loading indicator to infinite mode
+                request.upload.onprogress = (e) =>
+                {
+                    progress(e.lengthComputable, e.loaded, e.total);
+                };
+
+                // Should call the load method when done and pass the returned server file id
+                // this server file id is then used later on when reverting or restoring a file
+                // so your server knows which file to return without exposing that info to the client
+                request.onload = function ()
+                {
+                    if (request.status <= 200 && request.status < 300)
+                    {
+                        // the load method accepts either a string (id) or an object
+                        load(request.responseText);
+
+                        let imageDetails = request.responseText; // Assuming response is JSON
+
+                        postImageList.push(imageDetails);
+
+                        checkPostImageList();
+
+                        // window.location.href = '#';
+                    } else
+                    {
+                        // Can call the error method if something is wrong, should exit after
+                        error('oh no');
+                    }
+                };
+
+                request.send(formData);
+
+                // Should expose an abort method so the request can be cancelled
+                return {
+                    abort: () =>
+                    {
+                        // This function is entered if the user has tapped the cancel button
+                        request.abort();
+
+                        // Let FilePond know the request has been cancelled
+                        abort();
+                    },
+                };
+            },
+        },
+    });
+
+    checkPostImageList();
+
+</script>
+
+<script>
+    $(function ()
+    {
+        // First register any plugins
+        $.fn.filepond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
+        // Turn input element into a pond
+        $('.my-pond').filepond();
+
+        // Set allowMultiple property to true
+
+        $('.my-pond').filepond({
+            allowMultiple: true,
+            allowFileTypeValidation: true,
+            acceptedFileTypes: ['image/*', 'video/*'],
+            labelFileTypeNotAllowed: 'File of invalid type',
+            allowFileSizeValidation: true,
+            maxFileSize: '10MB',
+            maxTotalFileSize: '60MB',
+            labelMaxFileSizeExceeded: 'File is too large',
+            labelMaxFileSize: `Maximum file size is 10MB`,
+            labelMaxTotalFileSize: 'Maximum total file size is 60MB'
+        })
+
+        const location = $('#location').val();
+        const description = $('#descrip').val();
+
+        // Handle click event on the upload button
+        $('#uploadButton').click(function ()
+        {
+            $('.my-pond').filepond('setOptions',{
+                maxFiles: 5,
+                server: {
+                    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+                        // fieldName is the name of the input field
+                        // file is the actual file object to send
+                        const userId = "<%= id %>";
+                        const formData = new FormData();
+                        formData.append(fieldName, file, file.name);
+                        formData.append('userId', userId);
+                        const request = new XMLHttpRequest();
+                        request.open('POST', '/add/post');
+            
+                        // Should call the progress method to update the progress to 100% before calling load
+                        // Setting computable to false switches the loading indicator to infinite mode
+                        request.upload.onprogress = (e) => {
+                            progress(e.lengthComputable, e.loaded, e.total);
+                        };
+            
+                        // Should call the load method when done and pass the returned server file id
+                        // this server file id is then used later on when reverting or restoring a file
+                        // so your server knows which file to return without exposing that info to the client
+                        request.onload = function () {
+                            if (request.status >= 200 && request.status < 300) {
+                                // the load method accepts either a string (id) or an object
+                                load(request.responseText);
+                            } else {
+                                // Can call the error method if something is wrong, should exit after
+                                error('oh no');
+                            }
+                        };
+            
+                        request.send(formData);
+            
+                        // Should expose an abort method so the request can be cancelled
+                        return {
+                            abort: () => {
+                                // This function is entered if the user has tapped the cancel button
+                                request.abort();
+            
+                                // Let FilePond know the request has been cancelled
+                                abort();
+                            },
+                        };
+                    },
+                },
+            })
+        });
+    });
+</script>
+
+<script>
+    const input = document.getElementById('location');
+    const suggestionsList = document.getElementById('suggestions-list');
+
+    input.addEventListener('input', handleInput);
+    input.addEventListener('keyup', handleInput);
+
+    async function handleInput() {
+        const userInput = input.value.trim().toLowerCase();
+        if (userInput.length > 0) {
+            fetchLocations(userInput);
+        } else {
+            clearSuggestions();
+        }
+    }
+
+    async function fetchLocations(userInput) {
+        const apiKey = '49ce4908b7ee4c9a84810d565963e661';
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${userInput}&key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+            displaySuggestions(data.results);
+        } catch (error) {
+            console.error('Error fetching locations:', error);
+        }
+    }
+
+    function displaySuggestions(suggestions) {
+        suggestionsList.innerHTML = '';
+
+        suggestions.forEach(suggestion => {
+            const listItem = document.createElement('li');
+            listItem.textContent = suggestion.formatted;
+            suggestionsList.appendChild(listItem);
+
+            // Add click event listener to each suggestion item
+            listItem.addEventListener('click', function() {
+                input.value = suggestion.formatted;
+                clearSuggestions();
+            });
+        });
+
+        suggestionsList.style.display = 'block';
+    }
+
+    function clearSuggestions() {
+        suggestionsList.innerHTML = '';
+        suggestionsList.style.display = 'none';
+    }
+</script>
+
+</body>
+
+</html>
