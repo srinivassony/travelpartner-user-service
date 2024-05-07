@@ -12,7 +12,9 @@ const tables = {
     postImages : 'tp_post_images',
     postLike : 'tp_post_like',
     fetch_view_notifiction: 'tp_view_fetch_notification',
-    fetch_view_post: 'tp_view_fetch_posts'
+    fetch_view_post: 'tp_view_fetch_posts',
+    fetch_view_post_comment: 'tp_view_fetch_post_comments'
+
 };
 
 const rdsPrefix = config.rdsSql.owner;

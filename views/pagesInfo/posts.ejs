@@ -146,6 +146,109 @@
     color: red;
     /* When liked, turn red */
   }
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 800px; /* Limit maximum width */
+    z-index: 1000; /* Adjust the z-index to ensure it appears above other content */
+  }
+
+  /* Responsive styles */
+@media screen and (max-width: 600px) {
+    .popup {
+      width: 90%; /* Adjust width for smaller screens */
+    }
+  }
+
+  .popup-content {
+    padding: 20px;
+  }
+
+  .popup-content {
+    max-height: 70vh; /* Limit maximum height */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds the height */
+  }
+
+  .containerComment {
+    position: relative;
+  }
+
+  #comment-icon {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  .chat-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding-right: 10px;
+  }
+
+  .message {
+    background-color: #f1f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+
+  .chat-input {
+    display: flex;
+  }
+
+  .message-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .send-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .close-btn {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .close-btn:hover {
+    background-color: #f9f9f9;
+  }
+
+   /* CSS styles remain unchanged from the previous version */
+   .user-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Make the photo round */
+    margin-right: 10px;
+    overflow: hidden; /* Ensure the photo stays within the circle */
+  }
     
  </style>
 </head>
@@ -340,9 +443,28 @@
                                                                     </div>
 
                                                                     <div class="post-footer">
-                                                                        <a class="like-btn"  id="likeButton" data-post-id="<%= post.id %>"><i class="fa fa-heart-o heart-icon"></i><span class="likes-count"
-                                                                            id="likeCount"> <%= post.likesCount %></span> Like</a>
-                                                                        <button class="comment-btn"><i class="fa fa-comments-o"></i> Comment</button>
+                                                                        <a class="like-btn" id="likeButton" data-post-id="<%= post.id %>"><i class="fa fa-heart-o heart-icon"></i><span
+                                                                                class="likes-count" id="likeCount">
+                                                                                <%= post.likesCount %>
+                                                                            </span> Like</a>
+                                                                        <div class="containerComment">
+                                                                            <div class="post-card-info" data-post-id="<%= post.id %>">
+                                                                                <a class="comment-btn comment-icon" id="comment-icon"  data-post-id="<%= post.id %>"><i class="fa fa-comments-o"></i> Comment</a>
+                                                                                <div class="popup">
+                                                                                    <div class="popup-content">
+                                                                                        <div class="chat-messages" id="chat-messages"></div>
+                                                                                        <div class="chat-input">
+                                                                                            <input type="text" class="message-input" placeholder="Type your message...">
+                                                                                            <input type="hidden" value="<%= post.id %>" id="postId" class="postId">
+                                                                                            <input type="hidden" value="<%= profilePicId %>" id="profilePicId" class="profilePicId">
+                                                                                            <input type="hidden" value="<%= profilePicName %>" id="profilePicName" class="profilePicName">
+                                                                                            <button class="send-btn">Send</button>
+                                                                                        </div>
+                                                                                        <button class="close-btn">Close</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                         </div>
                                                         <% }); } else { %>
@@ -444,16 +566,18 @@
     });
 </script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.like-btn').forEach(function(button) {
+<script>
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+        document.querySelectorAll('.like-btn').forEach(function (button)
+        {
             let postId = button.dataset.postId;
 
             var requestData = {
                 id: "<%= id %>", // Example user ID, replace with your actual parameter
-                postId : postId
+                postId: postId
             };
-    
+
             // Make an initial API call to check if the post is liked
             fetch('/api/like', {
                 method: 'POST',
@@ -462,33 +586,36 @@
                 },
                 body: JSON.stringify(requestData) // Send post ID in the request body
             })
-            .then(response =>
-            {
-                if (response.ok)
+                .then(response =>
                 {
-                    return response.json();
-                }
-                throw new Error('Network response was not ok.');
-            })
-            .then(data => {
+                    if (response.ok)
+                    {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data =>
+                {
 
-                if (data && data.postLikeList && data.postLikeList.isLike === 1) 
+                    if (data && data.postLikeList && data.postLikeList.isLike === 1) 
+                    {
+                        // If post is liked, turn the like button red
+                        button.classList.add('liked');
+                    } else
+                    {
+                        // If post is not liked, turn the like button black
+                        button.classList.remove('liked');
+                    }
+                })
+                .catch(error =>
                 {
-                    // If post is liked, turn the like button red
-                    button.classList.add('liked');
-                } else {
-                    // If post is not liked, turn the like button black
-                    button.classList.remove('liked');
-                }
-            })
-            .catch(error => {
-                alert('Error checking like status:', error)
-                console.error('Error checking like status:', error);
-            });
+                    alert('Error checking like status:', error)
+                    console.error('Error checking like status:', error);
+                });
         });
     });
-    
-  </script>
+
+</script>
 
 <script>
     document.querySelectorAll('.like-btn').forEach(function (button)
@@ -549,6 +676,243 @@
                 });
         });
     });
+</script>
+
+<script>
+    // Select all post cards
+    var postCards = document.querySelectorAll('.post-card-info');
+
+    // Iterate through each post card
+    postCards.forEach(function (card)
+    {
+        // Event listener for comment icon click
+        card.querySelector('.comment-icon').addEventListener("click", function ()
+        {
+            card.querySelector('.popup').style.display = "block";
+        });
+
+        // Event listener for close button click
+        card.querySelector('.close-btn').addEventListener("click", function ()
+        {
+            card.querySelector('.popup').style.display = "none";
+        });
+
+        // Event listener for send button click
+        card.querySelector('.send-btn').addEventListener("click", function ()
+        {
+            sendMessage(card);
+        });
+
+        // Event listener for message input enter press
+        card.querySelector('.message-input').addEventListener("keypress", function (e)
+        {
+            if (e.key === 'Enter')
+            {
+                sendMessage(card);
+            }
+        });
+    });
+
+    function sendMessage(card)
+    {
+        var messageInput = card.querySelector('.message-input');
+        var message = messageInput.value.trim();
+
+        var postId = card.querySelector('.postId').value;
+        var profilePicId = card.querySelector('.profilePicId').value;
+        var profilePicName = card.querySelector('.profilePicName').value;
+
+        console.log('postId',postId)
+        console.log('message',message)
+
+
+        if (message !== "")
+        {
+            var chatMessages = card.querySelector('.chat-messages');
+            var newMessage = document.createElement("div");
+
+            var userPhotoURL = null
+
+            // User photo and name (replace these with actual user data)
+            if(profilePicId && profilePicName)
+            {
+                userPhotoURL = "../images/uploads/<%= profilePicId %>/<%= profilePicName %>";
+            }
+            else
+            {
+                userPhotoURL = "../images/human.png";
+            }
+
+            var userName = "<%= username %>";
+
+            // Create elements for user photo and name
+            var userPhoto = document.createElement("img");
+            userPhoto.src = userPhotoURL;
+            userPhoto.classList.add("user-photo");
+
+            var userNameElement = document.createElement("div");
+            userNameElement.textContent = userName;
+            userNameElement.classList.add("user-name");
+
+            // Create element for message content
+            var messageContent = document.createElement("div");
+            messageContent.textContent = message;
+
+            // Assemble message
+            newMessage.appendChild(userPhoto);
+            newMessage.appendChild(userNameElement);
+            newMessage.appendChild(messageContent);
+
+            newMessage.classList.add("message");
+            chatMessages.appendChild(newMessage);
+
+            var requestData = {
+                id: "<%= id %>", // Example user ID, replace with your actual parameter
+                postId: postId,
+                message : message,
+                uuid: "<%= uuid %>"
+            };
+
+            fetch('/api/add/comment', {
+                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData) // Send post ID in the request body
+            })
+                .then(function (response)
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(function (data)
+                {
+                    console.log(data);
+                    alert('comment added')
+                    location.reload();
+                    // Handle success
+                })
+                .catch(function (error)
+                {
+                    alert('error', error)
+                    console.error('Error:', error.message);
+                    // Handle error
+                });
+            // Clear input
+            messageInput.value = "";
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+</script>
+
+<script>
+    // Function to fetch and display previous comments for a specific post
+    function fetchPreviousComments(postId)
+    {
+        var requestData = {
+            id: "<%= id %>", // Example user ID, replace with your actual parameter
+            postId: postId
+        };
+
+        console.log('requestData', requestData)
+
+        fetch('/api/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData) // Send post ID in the request body
+        })
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data =>
+            {
+                let postCommentDetails = data && data.postCommentList ? data.postCommentList : [];
+                // Ensure postCommentList is an array
+                if (Array.isArray(postCommentDetails))
+                {
+                    // Display the previous comments for the specific post
+                    const chatMessages = document.getElementById(`chat-messages`);
+                    chatMessages.innerHTML = ""; // Clear previous comments
+
+                    console.log('here')
+
+                    if (postCommentDetails.length > 0)
+                    {
+                        postCommentDetails.forEach(comment =>
+                        {
+                            var newMessage = document.createElement("div");
+                            var userPhotoURL = null;
+                            // User photo and name (replace these with actual user data)
+                            if (comment.profilePicId && comment.profilePicName)
+                            {
+                                userPhotoURL = '../images/uploads/' + comment.profilePicId + '/' + comment.profilePicName;
+                            }
+                            else
+                            {
+                                userPhotoURL = "../images/human.png";
+                            }
+        
+                            // Create elements for user photo and name
+                            var userPhoto = document.createElement("img");
+                            userPhoto.src = userPhotoURL;
+                            userPhoto.classList.add("user-photo");
+        
+                            var userNameElement = document.createElement("div");
+                            userNameElement.textContent = comment.userName;
+                            userNameElement.classList.add("user-name");
+        
+                            // Create element for message content
+                            var messageContent = document.createElement("div");
+                            messageContent.textContent = comment.comment;
+        
+                            // Assemble message
+                            newMessage.appendChild(userPhoto);
+                            newMessage.appendChild(userNameElement);
+                            newMessage.appendChild(messageContent);
+        
+                            newMessage.classList.add("message");
+                            chatMessages.appendChild(newMessage);
+                        });
+                    } 
+                    else
+                    {
+                        console.log('No comments found.'); // Log if there are no comments
+                    }
+                } 
+                else
+                {
+                    console.log('postCommentList is not an array:', postCommentList);
+                    // Handle the case where postCommentList is not an array
+                }
+            })
+            .catch(error =>
+            {
+                console.log('Error:', error.message);
+                // Handle error
+            });
+    }
+
+    // Example: When the user clicks on a post card
+    document.querySelectorAll('.post-card-info').forEach(postCard =>
+    {
+        postCard.addEventListener('click', () =>
+        {
+            const postId = postCard.dataset.postId;
+            fetchPreviousComments(postId);
+        });
+    });
+
 </script>
 
 </body>

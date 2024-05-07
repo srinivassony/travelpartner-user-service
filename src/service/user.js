@@ -254,12 +254,16 @@ exports.userLogin = async (req, res) =>
             loginUpdatedAt: new Date()
         }
 
-        await db.updateUser(user.id, params);
+        let userInfo = await db.updateUser(user.id, params);
+
+        console.log('userInfo',userInfo)
 
         req.session.isLoggedIn = true;
         req.session.name = user.userName;
         req.session.userId = user.id;
         req.session.uuid =  user.uuid;
+        req.session.profilePicId =  userInfo && userInfo.image && userInfo.image.profilePicId ? userInfo.image.profilePicId : null;
+        req.session.profilePicName =  userInfo && userInfo.image && userInfo.image.profilePicName ? userInfo.image.profilePicName : null;
         req.session.save();
 
         res.redirect('/dashboard');

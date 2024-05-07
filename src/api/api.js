@@ -16,6 +16,7 @@ let followUsersService = require('../service/follow-users');
 let postService = require('../service/post');
 let postImageService = require('../service/postImages');
 let postLikeService = require('../service/postLike');
+let postCommentService = require('../service/postComment');
 
 
 //middelwares
@@ -309,6 +310,8 @@ app.get('/posts', async (req, res) =>
 	var name = req.session.name;
 	var id = req.session.userId;
 	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
 
 	if (!req.session.isLoggedIn)
 	{
@@ -322,6 +325,8 @@ app.get('/posts', async (req, res) =>
 		username: name,
 		id: id,
 		uuid: uuid,
+		profilePicId : profilePicId,
+		profilePicName : profilePicName,
 		postInfo: postDetails && postDetails.status == 1 && postDetails.postList.length > 0 ? postDetails.postList : postDetails && postDetails.status == 0 ? postDetails.message : []
 	});
 });
@@ -476,6 +481,16 @@ app.post("/api/update/like", async (req, res) =>
 app.post("/api/update/unlike", async (req, res) => 
 {
 	return res.json(await postLikeService.updatePostLike(req.body));
+});
+
+app.post("/api/add/comment", async (req, res) => 
+{
+	return res.json(await postCommentService.createComment(req.body));
+});
+
+app.post("/api/comments", async (req, res) => 
+{
+	return res.json(await postCommentService.postCommentsList(req.body));
 });
 
 app.all('*', (req, res, next) => 
