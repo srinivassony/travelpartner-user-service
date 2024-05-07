@@ -14,6 +14,8 @@ let galleryService = require('../service/gallery');
 let userDb = require('../database/db/user');
 let followUsersService = require('../service/follow-users');
 let postService = require('../service/post');
+let postImageService = require('../service/postImages');
+
 
 //middelwares
 app.use(flash());
@@ -285,11 +287,45 @@ app.get('/find-partner',  (req, res) =>
 		return res.redirect('/');
 	}
 
+	let message = req.flash('error');
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
 	res.render('pagesInfo/find-partner', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		id: id,
-		uuid: uuid
+		uuid: uuid,
+		errorMessage: message
+	});
+});
+
+app.get('/posts', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let postDetails = await postService.getPostList();
+
+	console.log('postDetails',JSON.stringify(postDetails))
+
+	res.render('pagesInfo/posts', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		postInfo: postDetails && postDetails.status == 1 && postDetails.postList.length > 0 ? postDetails.postList : postDetails && postDetails.status == 0 ? postDetails.message : []
 	});
 });
 
@@ -409,6 +445,26 @@ app.post("/update/follow/users/", async (req, res) =>
 {
 	return res.json(await followUsersService.requestedForfollowUsers(req.body));
 });
+
+const postUpload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) 
+        {
+            cb(null, config.gallery_files);
+        },
+        filename: function (req, file, cb) 
+        {
+            cb(null, file.originalname);
+        }
+    })
+});
+
+app.post("/upload/post/image",postUpload.single('filesInfo'), async (req, res) => 
+{
+	return res.json(await postImageService.createPostImage(req.body, req.file));
+});
+
+app.post('/api/add/post', postService.createPost);
 
 app.all('*', (req, res, next) => 
 {
