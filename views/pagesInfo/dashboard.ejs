@@ -245,18 +245,50 @@
             const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
             const followButtons = card.querySelectorAll('.followUsers');
 
+            console.log('followButtons',followButtons)
+            console.log('followButtons-length',followButtons.length)
+
+
             // Check if both follow and profile buttons exist
-            if (followButton && requestedButton && profileButton)
+            if (followButtons.length > 0 && requestedButton && profileButton) // If there are multiple follow buttons, keep only the first one and remove the rest
             {
+                console.log('here-1')
+
+                // Loop through follow buttons starting from the second one
+                for (let i = 0; i < followButtons.length; i++)
+                {
+                    // Remove the follow button
+                    followButtons[i].remove();
+                }
+            }
+            else if (followButtons.length > 0 && unFollowButton && profileButton) // If there are multiple follow buttons, keep only the first one and remove the rest
+            {
+                console.log('here-1')
+
+                // Loop through follow buttons starting from the second one
+                for (let i = 0; i < followButtons.length; i++)
+                {
+                    // Remove the follow button
+                    followButtons[i].remove();
+                }
+            }
+            else if (followButton && requestedButton && profileButton)
+            {
+                console.log('here-2')
                 // If both follow and profile buttons exist, remove the follow button
                 followButton.remove();
             }
             else if (followButton && unFollowButton && profileButton)
             {
+                console.log('here-3')
+
                 followButton.remove();
             }
-            else if (followButtons.length > 1) // If there are multiple follow buttons, keep only the first one and remove the rest
+           
+            else if (followButtons.length > 1 ) // If there are multiple follow buttons, keep only the first one and remove the rest
             {
+                console.log('here-4')
+
                 // Loop through follow buttons starting from the second one
                 for (let i = 1; i < followButtons.length; i++)
                 {
