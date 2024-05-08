@@ -168,6 +168,21 @@
     }
   }
 
+  @media screen and (max-width: 900px) {
+    .post-card {
+      width: 90%;
+      /* Adjust margin/padding accordingly */
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .post-card {
+      width: 90%;
+      /* Adjust margin/padding accordingly */
+    }
+  }
+
+
   .popup-content {
     padding: 20px;
   }
@@ -452,7 +467,7 @@
                                                                                 <a class="comment-btn comment-icon" id="comment-icon"  data-post-id="<%= post.id %>"><i class="fa fa-comments-o"></i> Comment</a>
                                                                                 <div class="popup">
                                                                                     <div class="popup-content">
-                                                                                        <div class="chat-messages" id="chat-messages"></div>
+                                                                                        <div class="chat-messages" id="chat-messages-<%= post.id %>"></div>
                                                                                         <div class="chat-input">
                                                                                             <input type="text" class="message-input" placeholder="Type your message...">
                                                                                             <input type="hidden" value="<%= post.id %>" id="postId" class="postId">
@@ -791,8 +806,17 @@
                 .then(function (data)
                 {
                     console.log(data);
-                    alert('comment added')
-                    location.reload();
+                    
+                    if(data.status === 1)
+                    {
+                        alert('comment added')
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('comment is not added', data)
+                    }
+                  
                     // Handle success
                 })
                 .catch(function (error)
@@ -838,63 +862,67 @@
             .then(data =>
             {
                 let postCommentDetails = data && data.postCommentList ? data.postCommentList : [];
-                // Ensure postCommentList is an array
-                if (Array.isArray(postCommentDetails))
-                {
-                    // Display the previous comments for the specific post
-                    const chatMessages = document.getElementById(`chat-messages`);
-                    chatMessages.innerHTML = ""; // Clear previous comments
 
+                const chatMessages = document.getElementById(`chat-messages-${postId}`);
+
+                if (!chatMessages)
+                {
+                    console.log('chat-messages element not found.');
+                    return; // Exit the function if chat-messages element is not found
+                }
+                chatMessages.innerHTML = ""; // Clear previous comments
+                
                     console.log('here')
 
                     if (postCommentDetails.length > 0)
                     {
+                        console.log('here1')
                         postCommentDetails.forEach(comment =>
                         {
-                            var newMessage = document.createElement("div");
-                            var userPhotoURL = null;
-                            // User photo and name (replace these with actual user data)
-                            if (comment.profilePicId && comment.profilePicName)
+                            if (comment.postId === postId)
                             {
-                                userPhotoURL = '../images/uploads/' + comment.profilePicId + '/' + comment.profilePicName;
+                                var newMessage = document.createElement("div");
+                                var userPhotoURL = null;
+                                // User photo and name (replace these with actual user data)
+                                if (comment.profilePicId && comment.profilePicName)
+                                {
+                                    userPhotoURL = '../images/uploads/' + comment.profilePicId + '/' + comment.profilePicName;
+                                }
+                                else
+                                {
+                                    userPhotoURL = "../images/human.png";
+                                }
+                                
+                                console.log('userPhotoURL', userPhotoURL)
+                                // Create elements for user photo and name
+                                var userPhoto = document.createElement("img");
+                                userPhoto.src = userPhotoURL;
+                                userPhoto.classList.add("user-photo");
+
+                                var userNameElement = document.createElement("div");
+                                userNameElement.textContent = comment.userName;
+                                userNameElement.classList.add("user-name");
+
+                                // Create element for message content
+                                var messageContent = document.createElement("div");
+                                messageContent.textContent = comment.comment;
+
+                                // Assemble message
+                                newMessage.appendChild(userPhoto);
+                                newMessage.appendChild(userNameElement);
+                                newMessage.appendChild(messageContent);
+
+                                newMessage.classList.add("message");
+                                chatMessages.appendChild(newMessage);
                             }
-                            else
-                            {
-                                userPhotoURL = "../images/human.png";
-                            }
-        
-                            // Create elements for user photo and name
-                            var userPhoto = document.createElement("img");
-                            userPhoto.src = userPhotoURL;
-                            userPhoto.classList.add("user-photo");
-        
-                            var userNameElement = document.createElement("div");
-                            userNameElement.textContent = comment.userName;
-                            userNameElement.classList.add("user-name");
-        
-                            // Create element for message content
-                            var messageContent = document.createElement("div");
-                            messageContent.textContent = comment.comment;
-        
-                            // Assemble message
-                            newMessage.appendChild(userPhoto);
-                            newMessage.appendChild(userNameElement);
-                            newMessage.appendChild(messageContent);
-        
-                            newMessage.classList.add("message");
-                            chatMessages.appendChild(newMessage);
+
                         });
-                    } 
+                    }
                     else
                     {
                         console.log('No comments found.'); // Log if there are no comments
                     }
-                } 
-                else
-                {
-                    console.log('postCommentList is not an array:', postCommentList);
-                    // Handle the case where postCommentList is not an array
-                }
+               
             })
             .catch(error =>
             {
