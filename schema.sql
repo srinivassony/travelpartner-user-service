@@ -184,7 +184,7 @@ foreign key("post_id") references "tp_post" ("id")
 create table "tp_post_comment" (
 "id" varchar2(36) not null,
 "postId" varchar2(36) not null,
-"comment" varchar2(36),
+"comment" CLOB not null,
 "userId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
@@ -230,7 +230,7 @@ WHERE
 
 -- view comments
 
-    CREATE OR REPLACE  view "tp_view_fetch_post_comments" AS 
+       CREATE OR REPLACE  view "tp_view_fetch_post_comments" AS 
 select 
     pc."id",
     pc."postId",
@@ -238,7 +238,8 @@ select
     pc."comment",
     img."profilePicId",
     img."profilePicName",
-    us."id" "userId"
+    us."id" "userId",
+    pc."createdAt"
 from "tp_post_comment" pc
 LEFT JOIN 
     "tp_user" us ON us."id" = pc."userId"
