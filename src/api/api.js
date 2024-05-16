@@ -331,6 +331,34 @@ app.get('/posts', async (req, res) =>
 	});
 });
 
+app.get('/user-posts', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let postDetails = await postService.getUserPostList(id);
+
+	res.render('pagesInfo/user-posts', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		profilePicId: profilePicId,
+		profilePicName: profilePicName,
+		postInfo: postDetails && postDetails.status == 1 && postDetails.postList.length > 0 ? postDetails.postList : postDetails && postDetails.status == 0 ? postDetails.message : []
+	});
+});
+
+app.get('/post-delete/:id', postService.deletePost);
+
 app.get(`/userprofile/:id`, async (req, res) =>
 {
 	var id = req.session.userId;

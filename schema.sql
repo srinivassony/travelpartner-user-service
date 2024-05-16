@@ -145,7 +145,6 @@ primary key("id"),
 foreign key ("userId") references "tp_user" ("id")
 );
 
-
 --post images table
 
 create table "tp_post_images" (
@@ -158,7 +157,7 @@ create table "tp_post_images" (
 "updatedAt" TIMESTAMP(8),
 "updatedBy" varchar2(36),
 primary key("id"),
-foreign key("postId") references "tp_post" ("id")
+foreign key("postId") references "tp_post" ("id") ON DELETE CASCADE
 );
 
 
@@ -175,7 +174,7 @@ create table "tp_post_like" (
 "updatedBy" varchar2(36),
 primary key("id"),
 foreign key ("userId") references "tp_user" ("id"),
-foreign key("post_id") references "tp_post" ("id")
+foreign key("postId") references "tp_post" ("id") ON DELETE CASCADE
 );
 
 
@@ -191,8 +190,8 @@ create table "tp_post_comment" (
 "updatedAt" TIMESTAMP(8),
 "updatedBy" varchar2(36),
 primary key("id"),
-foreign key("postId") references "tp_post" ("id"),
-foreign key ("userId") references "tp_user" ("id")
+foreign key("postId") references "tp_post" ("id") ON DELETE CASCADE,
+foreign key ("userId") references "tp_user" ("id") 
 );
 
 -- view posts
@@ -216,7 +215,8 @@ foreign key ("userId") references "tp_user" ("id")
         WHERE imgs."postId" = post."id"
         GROUP BY imgs."postId"
     ) AS "postImages",
-    (select count(plike."id") from "tp_post_like" plike where post."id" = plike."postId" and plike."isLike" = 1) "likesCount"
+    (select count(plike."id") from "tp_post_like" plike where post."id" = plike."postId" and plike."isLike" = 1) "likesCount",
+    (select count(pcomment."id") from "tp_post_comment" pcomment where post."id" = pcomment."postId") "commentsCount"
 FROM 
     "tp_post" post
 LEFT JOIN 
