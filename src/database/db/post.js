@@ -12,7 +12,19 @@ let getPostList = async() =>
   return await PostView.query().select();
 }
 
+let getUserPostList = async (id) =>
+{
+  return await PostView.query().select().where({userId : id});
+}
+
+let deletePost = async (id) =>
+{
+  return await Post.query().delete().where({ id: id });
+}
+
 module.exports = {
-    createPost: createPost,
-    getPostList: getPostList
+  createPost: createPost,
+  getPostList: getPostList,
+  getUserPostList: getUserPostList,
+  deletePost: deletePost
 }
