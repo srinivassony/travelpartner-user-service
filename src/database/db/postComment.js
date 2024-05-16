@@ -9,7 +9,7 @@ let createPostComment = async (data) =>
 
 let getPostCommentList = async (userId, postId) =>
 {
-    return await PostCommentView.query().select().where({  postId: postId });
+    return await PostCommentView.query().select().where({  postId: postId }).orderBy('createdAt', 'desc');
 }
 
 module.exports = {
