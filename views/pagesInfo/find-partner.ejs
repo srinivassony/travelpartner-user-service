@@ -141,24 +141,24 @@
                             <div class="main-body">
                                 <div class="page-wrapper">
     
-                                    <div class="page-header">
-                                        <div class="row align-items-end">
-                                            <div class="col-lg-8">
-                                                <div class="page-header-title">
-                                                    <div class="d-inline">
-                                                        <h4>Travel-partner is a Social Travel Community & Experiences Marketplace</h4>
-                                                    </div>
+                                    <div class="page-body breadcrumb-page">
+
+                                        <div class="card borderless-card">
+                                            <div class="card-block primary-breadcrumb">
+                                                <div class="breadcrumb-header">
+                                                    <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
+                                                    <span>Here we can find the buddy and you can share the post into the community.</span>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-4">
                                                 <div class="page-header-breadcrumb">
                                                     <ul class="breadcrumb-title">
                                                         <li class="breadcrumb-item" style="float: left;">
-                                                            <a href="/dashboard"> <i class="feather icon-home"></i>
+                                                            <a href="/">
+                                                                <i class="icofont icofont-home"></i>
                                                             </a>
                                                         </li>
                                                         <li class="breadcrumb-item" style="float: left;"><a
-                                                                href="/find-partner">Find a partner</a> </li>
+                                                            href="/find-partner">Find a partner</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -336,7 +336,7 @@
     const pond = FilePond.create(fileInput, {
         allowMultiple: true,
         allowFileTypeValidation: true,
-        acceptedFileTypes: ['image/*', 'video/*'],
+        acceptedFileTypes: ['image/*'],
         labelFileTypeNotAllowed: 'File of invalid type',
         allowFileSizeValidation: true,
         maxFileSize: '10MB',
@@ -420,87 +420,6 @@
 
     checkPostImageList();
 
-</script>
-
-<script>
-    $(function ()
-    {
-        // First register any plugins
-        $.fn.filepond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
-
-        // Turn input element into a pond
-        $('.my-pond').filepond();
-
-        // Set allowMultiple property to true
-
-        $('.my-pond').filepond({
-            allowMultiple: true,
-            allowFileTypeValidation: true,
-            acceptedFileTypes: ['image/*', 'video/*'],
-            labelFileTypeNotAllowed: 'File of invalid type',
-            allowFileSizeValidation: true,
-            maxFileSize: '10MB',
-            maxTotalFileSize: '60MB',
-            labelMaxFileSizeExceeded: 'File is too large',
-            labelMaxFileSize: `Maximum file size is 10MB`,
-            labelMaxTotalFileSize: 'Maximum total file size is 60MB'
-        })
-
-        const location = $('#location').val();
-        const description = $('#descrip').val();
-
-        // Handle click event on the upload button
-        $('#uploadButton').click(function ()
-        {
-            $('.my-pond').filepond('setOptions',{
-                maxFiles: 5,
-                server: {
-                    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-                        // fieldName is the name of the input field
-                        // file is the actual file object to send
-                        const userId = "<%= id %>";
-                        const formData = new FormData();
-                        formData.append(fieldName, file, file.name);
-                        formData.append('userId', userId);
-                        const request = new XMLHttpRequest();
-                        request.open('POST', '/add/post');
-            
-                        // Should call the progress method to update the progress to 100% before calling load
-                        // Setting computable to false switches the loading indicator to infinite mode
-                        request.upload.onprogress = (e) => {
-                            progress(e.lengthComputable, e.loaded, e.total);
-                        };
-            
-                        // Should call the load method when done and pass the returned server file id
-                        // this server file id is then used later on when reverting or restoring a file
-                        // so your server knows which file to return without exposing that info to the client
-                        request.onload = function () {
-                            if (request.status >= 200 && request.status < 300) {
-                                // the load method accepts either a string (id) or an object
-                                load(request.responseText);
-                            } else {
-                                // Can call the error method if something is wrong, should exit after
-                                error('oh no');
-                            }
-                        };
-            
-                        request.send(formData);
-            
-                        // Should expose an abort method so the request can be cancelled
-                        return {
-                            abort: () => {
-                                // This function is entered if the user has tapped the cancel button
-                                request.abort();
-            
-                                // Let FilePond know the request has been cancelled
-                                abort();
-                            },
-                        };
-                    },
-                },
-            })
-        });
-    });
 </script>
 
 <script>
