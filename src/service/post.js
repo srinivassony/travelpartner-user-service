@@ -10,7 +10,7 @@ exports.createPost = async (req, res) =>
         let location = req.body.location ? req.body.location : null;
         let description  = req.body.descrip ? req.body.descrip : null;
         let imageIds = req.body.imageIds ? req.body.imageIds : null;
-        let ids = imageIds.split(",");
+        let ids = imageIds ? imageIds.split(",") : [];
 
         if (!location)
         {
@@ -164,36 +164,33 @@ exports.getUserPostList = async (id) =>
     }
 }
 
-exports.deletePost = async (req, res) =>
+exports.deletePost = async (reqParams) =>
 {
     try 
     {
-        let postId = req.params.id ? req.params.id : null;
-        
+        let postId = reqParams.id ? reqParams.id : null;
+
         if (!postId)
         {
-            req.flash('error', 'Post id is requried.');
-
-            res.redirect('/user-posts');
-
-            return "";
+            return {
+                status: Status.FAIL,
+                message: "Post id is requried."
+            }
         }
 
         let postData = await db.deletePost(postId);
 
-        req.flash('success', 'Post Successfuly added!');
-
-        res.redirect('/user-posts');
-
-        return "";
+        return {
+            status: Status.SUCCESS,
+            message: "Post deleted sucessfully"
+        }
     }
     catch (error) 
     {
-        req.flash('error', error.message);
-
-        res.redirect('/reset-password');
-
-        return "";
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }
 
@@ -246,9 +243,9 @@ exports.createFindPost = async (req, res) =>
 
         let postData = await db.createFindPost(params);
 
-        req.flash('success', 'Find Post Successfuly added!');
+        req.flash('data', JSON.stringify(postData));
 
-        res.redirect('/find-partner');
+        res.redirect('/find-posts');
 
         return "";
     }
