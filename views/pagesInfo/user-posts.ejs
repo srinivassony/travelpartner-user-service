@@ -15,7 +15,7 @@
       }
   
       .post-card {
-        width: 550px;
+        width: 450px;
         border: 1px solid #dbdbdb;
         background-color: #fff;
         border-radius: 5px;
@@ -280,24 +280,24 @@
                                     <div class="main-body">
                                         <div class="page-wrapper">
     
-                                            <div class="page-body breadcrumb-page">
-
-                                                <div class="card borderless-card">
-                                                    <div class="card-block primary-breadcrumb">
-                                                        <div class="breadcrumb-header">
-                                                            <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
-                                                            <span>Your social media feeds are like a curated window into the world, offering glimpses into the lives, thoughts, and experiences of those you follow.</span>
+                                            <div class="page-header">
+                                                <div class="row align-items-end">
+                                                    <div class="col-lg-12">
+                                                        <div class="page-header-title">
+                                                            <div class="d-inline">
+                                                                <h4>User related posts</h4>
+                                                            </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
                                                         <div class="page-header-breadcrumb">
                                                             <ul class="breadcrumb-title">
                                                                 <li class="breadcrumb-item" style="float: left;">
-                                                                    <a href="/">
-                                                                        <i class="icofont icofont-home"></i>
+                                                                    <a href="/"> <i class="feather icon-home"></i>
                                                                     </a>
                                                                 </li>
                                                                 <li class="breadcrumb-item" style="float: left;"><a
-                                                                        href="/posts">Users Posts</a>
-                                                                </li>
+                                                                        href="/user-posts">User posts</a> </li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -384,6 +384,23 @@
                                                                                                 </span>
                                                                                         </a>
                                                                                     </span>
+                                                                    </div>
+                                                                    <div class="col-sm-2">
+                                                                        <div class="user-profile header-notification dotsIcons">
+                                                                            <div class="dropdown-primary dropdown">
+                                                                                <div class="dropdown-toggle" data-toggle="dropdown">
+                                                                                    <i class="fa fa-ellipsis-v"></i>
+                                                                                </div>
+                                                                                <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn"
+                                                                                    data-dropdown-out="fadeOut" style="padding: 10px;">
+                                                                                    <li>
+                                                                                        <a href="/post-delete/<%= post.id %>">
+                                                                                            <i class="fa fa-trash"></i> Delete
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
