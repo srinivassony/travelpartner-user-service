@@ -21,6 +21,15 @@ exports.createPost = async (req, res) =>
             return "";
         }
 
+        if(ids && ids.length == 0)
+        {
+            req.flash('error', 'please upload the image.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
         if (!description)
          {
             req.flash('error', 'Description is requried.');
@@ -175,6 +184,71 @@ exports.deletePost = async (req, res) =>
         req.flash('success', 'Post Successfuly added!');
 
         res.redirect('/user-posts');
+
+        return "";
+    }
+    catch (error) 
+    {
+        req.flash('error', error.message);
+
+        res.redirect('/reset-password');
+
+        return "";
+    }
+}
+
+exports.createFindPost = async (req, res) =>
+{
+    try 
+    {
+        let location = req.body.tripLocation ? req.body.tripLocation : null;
+        let date = req.body.tripDate ? req.body.tripDate : null;
+        let description = req.body.TripDescrip ? req.body.TripDescrip : null;
+        console.log('date',date)
+
+        if (!location)
+        {
+            req.flash('error', 'Trip location is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        if (!date)
+        {
+            req.flash('error', 'Trip date is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        if (!description)
+        {
+            req.flash('error', 'Trip description is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        let params = {
+            tripLocation: location.trim(),
+            tripDate: date,
+            tripDescription: description,
+            userId: req.body.userId,
+            createdAt: new Date(),
+            createdBy: req.body.uuid
+        }
+
+        console.log('params',params)
+
+        let postData = await db.createFindPost(params);
+
+        req.flash('success', 'Find Post Successfuly added!');
+
+        res.redirect('/find-partner');
 
         return "";
     }

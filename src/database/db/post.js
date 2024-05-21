@@ -1,5 +1,6 @@
 const Post = require('../../database/model/post');
 const PostView = require('../../database/model/postView');
+const findPost = require('../model/find-post');
 
 
 let createPost = async (data) =>
@@ -22,9 +23,15 @@ let deletePost = async (id) =>
   return await Post.query().delete().where({ id: id });
 }
 
+let createFindPost = async (data) =>
+{
+  return await findPost.query().insert(data);
+}
+
 module.exports = {
   createPost: createPost,
   getPostList: getPostList,
   getUserPostList: getUserPostList,
-  deletePost: deletePost
+  deletePost: deletePost,
+  createFindPost: createFindPost
 }

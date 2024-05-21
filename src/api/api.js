@@ -288,6 +288,7 @@ app.get('/find-partner',  (req, res) =>
 	}
 
 	let message = req.flash('error');
+	
 	if (message.length > 0)
 	{
 		message = message[0];
@@ -520,6 +521,8 @@ app.post("/api/comments", async (req, res) =>
 {
 	return res.json(await postCommentService.postCommentsList(req.body));
 });
+
+app.post('/api/add/find/post', postService.createFindPost);
 
 app.all('*', (req, res, next) => 
 {

@@ -249,3 +249,18 @@ WHERE
     us."isRegistered" = 1 
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL;
+
+-- find post
+create table "tp_find_post" (
+"id" varchar2(36) not null,
+"tripLocation" varchar2(1020) not null,
+"tripDate" varchar2(1020) not null,
+"tripDescription" CLOB not null,
+"userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id")
+);
