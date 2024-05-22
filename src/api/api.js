@@ -288,7 +288,7 @@ app.get('/find-partner',  (req, res) =>
 	}
 
 	let message = req.flash('error');
-	
+
 	if (message.length > 0)
 	{
 		message = message[0];
@@ -358,7 +358,53 @@ app.get('/user-posts', async (req, res) =>
 	});
 });
 
-app.get('/post-delete/:id', postService.deletePost);
+app.get("/post-delete/:id", async (req, res) => 
+{
+	return res.json(await postService.deletePost(req.params));
+});
+
+app.get('/find-posts', (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let postInfo = req.flash('data');
+
+	if (postInfo.length > 0)
+	{
+		postInfo = JSON.parse(postInfo[0]);
+	} 
+	else
+	{
+		postInfo = null;
+	}
+
+	console.log('postInfo', postInfo)
+
+	res.render('pagesInfo/find-partner', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		errorMessage: message
+	});
+});
 
 app.get(`/userprofile/:id`, async (req, res) =>
 {

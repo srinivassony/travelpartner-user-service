@@ -15,7 +15,7 @@
       }
   
       .post-card {
-        width: 450px;
+        width: 550px;
         border: 1px solid #dbdbdb;
         background-color: #fff;
         border-radius: 5px;
@@ -260,7 +260,6 @@
     margin-right: 10px;
     overflow: hidden; /* Ensure the photo stays within the circle */
   }
-    
  </style>
 </head>
 <body>
@@ -280,26 +279,23 @@
                                     <div class="main-body">
                                         <div class="page-wrapper">
     
-                                            <div class="page-header">
-                                                <div class="row align-items-end">
-                                                    <div class="col-lg-12">
-                                                        <div class="page-header-title">
-                                                            <div class="d-inline">
-                                                                <h4>User related posts</h4>
-                                                            </div>
-                                                        </div>
+                                            <div class="card borderless-card">
+                                                <div class="card-block primary-breadcrumb">
+                                                    <div class="breadcrumb-header">
+                                                        <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
+                                                        <span>Your social media feeds are like a curated window into the world, offering glimpses into the lives, thoughts, and experiences of those you follow.</span>
                                                     </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="page-header-breadcrumb">
-                                                            <ul class="breadcrumb-title">
-                                                                <li class="breadcrumb-item" style="float: left;">
-                                                                    <a href="/"> <i class="feather icon-home"></i>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="breadcrumb-item" style="float: left;"><a
-                                                                        href="/user-posts">User posts</a> </li>
-                                                            </ul>
-                                                        </div>
+                                                    <div class="page-header-breadcrumb">
+                                                        <ul class="breadcrumb-title">
+                                                            <li class="breadcrumb-item" style="float: left;">
+                                                                <a href="/">
+                                                                    <i class="icofont icofont-home"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="breadcrumb-item" style="float: left;"><a
+                                                                    href="/user-posts">Users Posts</a>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -394,9 +390,7 @@
                                                                                 <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn"
                                                                                     data-dropdown-out="fadeOut" style="padding: 10px;">
                                                                                     <li>
-                                                                                        <a href="/post-delete/<%= post.id %>">
-                                                                                            <i class="fa fa-trash"></i> Delete
-                                                                                        </a>
+                                                                                        <button type="button" class="btn btn-primary btn-sm pnotify-confirm" id="pnotify-confirm" data-post-id="<%= post.id %>"><i class="fa fa-trash"></i> Delete</button>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -492,6 +486,48 @@
     </div>
 
 <%- include('scripts'); %>
+
+<script>
+
+    document.querySelectorAll('.pnotify-confirm').forEach(function (notify)
+    {
+        notify.addEventListener('click', function ()
+        {
+            let postId = notify.dataset.postId;
+            console.log('postId', postId)
+            var notice = new PNotify({ title: 'Are you sure you?', text: '<p>Once you delete the post, you will not be able to recover it.</p>', hide: false, type: 'warning', confirm: { confirm: true, buttons: [{ text: 'Yes', addClass: 'btn btn-sm btn-primary' }, { addClass: 'btn btn-sm btn-link' }] }, buttons: { closer: false, sticker: false }, history: { history: false } })
+            notice.get().on('pnotify.confirm', function ()
+            {
+                fetch('/post-delete/'+ postId,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response =>
+                    {
+                        if (response.ok)
+                        {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(data =>
+                    {
+                        console.log(data)
+                    })
+                    .catch(error =>
+                    {
+                        console.error('Error checking ', error);
+                        alert(error)
+                    });
+                    
+                    location.reload();
+            })
+            notice.get().on('pnotify.cancel', function () { });
+        });
+    });
+</script>
 
 <script>
     document.querySelectorAll('.post-card').forEach(card =>
