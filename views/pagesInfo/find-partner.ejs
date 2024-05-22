@@ -234,7 +234,7 @@
                                                                                     <div class="form-group row">
                                                                                         <label class="col-sm-4 col-form-label">Location</label>
                                                                                         <div class="col-sm-8">
-                                                                                            <input type="text" class="form-control" id="location" name="location" required>
+                                                                                            <input type="text" class="form-control" id="location" name="location" >
                                                                                             <ul id="suggestions-list"></ul>
                                                                                             <span id="errorLocation" style="color: red;"></span>
                                                                                         </div>
@@ -244,7 +244,7 @@
                                                                                             Description
                                                                                         </label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea class="form-control max-textarea" maxlength="255" rows="4" id="descrip" name="descrip" required></textarea>
+                                                                                            <textarea class="form-control max-textarea" maxlength="255" rows="4" id="descrip" name="descrip" ></textarea>
                                                                                             <span id="errorDescription" style="color: red;"></span>
                                                                                         </div>
                                                                                     </div>
@@ -258,7 +258,7 @@
                                                                                     </div>
                                                                                 
                                                                                     <div class="text-center">
-                                                                                        <button  class="btn btn-primary waves-effect waves-light m-r-20" id="uploadButton">Save</button>
+                                                                                        <button type="submit" class="btn btn-primary waves-effect waves-light m-r-20" id="uploadButton">Save</button>
                                                                                         <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
                                                                                     </div>
                                                                                 
@@ -326,6 +326,14 @@
                                                                                                     <button  class="btn btn-primary waves-effect waves-light m-r-20" type ="submit">Save</button>
                                                                                                     <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
                                                                                                 </div>
+
+                                                                                                <div class="form-group row">
+
+                                                                                                </div>
+
+                                                                                                <div class="form-group row">
+                                                                                                    
+                                                                                                </div>
                                                                                             
                                                                                             </form>
                                                                                         </div>
@@ -360,54 +368,7 @@
     </div>
 
 <%- include('scripts'); %>
-<!-- <script>
-    $(document).ready(function ()
-    {
-        function notify(from, align, icon, type, animIn, animOut)
-        {
-            $.growl({
-                icon: icon, title: ' Bootstrap Growl ',
-                message: 'Turning standard Bootstrap alerts into awesome notifications', url: ''
-            },
-                {
-                    element: 'body',
-                    type: type,
-                    allow_dismiss: true,
-                    placement: { from: from, align: align },
-                    offset: { x: 30, y: 30 },
-                    spacing: 10,
-                    z_index: 999999,
-                    delay: 2500,
-                    timer: 1000,
-                    url_target: '_blank',
-                    mouse_over: false,
-                    animate: { enter: animIn, exit: animOut },
-                    icon_type: 'class',
-                    template: '<div data-growl="container" class="alert" role="alert">' +
-                        '<button type="button" class="close" data-growl="dismiss">' +
-                        '<span aria-hidden="true">&times;</span>' +
-                        '<span class="sr-only">Close</span>' +
-                        '</button>' +
-                        '<span data-growl="icon"></span>' +
-                        '<span data-growl="title"></span>' +
-                        '<span data-growl="message"></span>' +
-                        '<a href="#" data-growl="url"></a>' +
-                        '</div>'
-                });
-        }; 
-        $('.notifications .btn').on('click', function (e)
-        {
-            e.preventDefault(); 
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = $(this).attr('data-type');
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out');
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-        });
-    });
-</script> -->
+
 <% if (errorMessage) { %>
 <script>
     'use strict'; $(window).on('load',
@@ -541,35 +502,83 @@
 </script>
 
 <script>
-    function validatePostForm() 
+    $(document).ready(function ()
     {
-        let location = document.forms["myPostForm"]["location"].value;
-        let description = document.forms["myPostForm"]["descrip"].value;
+        function notify(message) 
+        {
+            $.growl({ message: message, icon: $(this).attr('data-icon'), title: ' Error message is : ', },
+                {
+                    element: 'body',
+                    type: $(this).attr('data-type'),
+                    allow_dismiss: false,
+                    offset: { x: 30, y: 30 },
+                    spacing: 10,
+                    z_index: 999999,
+                    delay: 8500,
+                    timer: 1000,
+                    icon_type: 'class',
+                    placement: { from: $(this).attr('data-from'), align: $(this).attr('data-align') },
+                    animate: { enter: $(this).attr('data-animation-in'), exit: $(this).attr('data-animation-out') },
+                    template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                        '<button type="button" class="close" data-growl="dismiss">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '<span class="sr-only">Close</span>' +
+                        '</button>' +
+                        '<span data-growl="icon"></span>' +
+                        '<span data-growl="title" style="color:black;"></span>' +
+                        '<span data-growl="message" style="color:red;"></span>' +
+                        '</div>'
+                });
+        };
 
-        if (!location) 
+        $('#myPostForm').on('submit', function (event)
         {
-            document.getElementById('errorLocation').innerHTML = "Location is required.";
-            return false;
-        }
+            event.preventDefault(); // Prevent form submission
 
-        if (!description) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description is required.";
-            return false;
-        }
-        else if (description.toString().length < 5) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description minimum character limit is 5";
-            return false;
-        }
-        else if (description.toString().length > 1000) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description maximum character limit is 1000.";
-            return false;
-        }
+            let isValid = true;
 
-        return true;
-    }
+            // Validate Name
+            let location = $('#location').val();
+            let description = $('#descrip').val();
+            let imagesIds = $('#imageIds').val();
+
+            if (!location)
+            {
+                notify("Location is required");
+                isValid = false;
+            }
+
+            if (!imagesIds)
+            {
+                notify("please upload the image.");
+                isValid = false;
+            }
+
+            if (!description) 
+            {
+                notify("Description is required.");
+                isValid = false;
+               
+            }
+            else if (description.toString().length < 5) 
+            {
+                notify("Description minimum character limit is 5.");
+                isValid = false;
+            }
+            else if (description.toString().length > 1000) 
+            {
+                notify("Description maximum character limit is 1000.");
+                isValid = false;
+            }
+
+            // If the form is valid, submit it
+            if (isValid)
+            {
+                this.submit();
+            }
+        });
+
+    });
 
 </script>
 
