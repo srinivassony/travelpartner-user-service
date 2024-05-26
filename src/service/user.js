@@ -256,8 +256,6 @@ exports.userLogin = async (req, res) =>
 
         let userInfo = await db.updateUser(user.id, params);
 
-        console.log('userInfo',userInfo)
-
         req.session.isLoggedIn = true;
         req.session.name = user.userName;
         req.session.userId = user.id;

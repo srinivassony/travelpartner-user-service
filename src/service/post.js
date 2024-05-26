@@ -2,6 +2,7 @@ const db = require('../database/db/post');
 const postImageDb = require('../database/db/postImages');
 const common = require('../utils/utils');
 const Status = common.Status;
+const moment = require('moment');
 
 exports.createPost = async (req, res) =>
 {
@@ -108,7 +109,6 @@ exports.getPostList = async () =>
             let post = postList[postIndex];
 
             const truncatedLocation = truncateLocation(post.location, 30);
-            console.log(truncatedLocation);
 
             post.truncatedLocation = truncatedLocation;
 
@@ -201,7 +201,6 @@ exports.createFindPost = async (req, res) =>
         let location = req.body.tripLocation ? req.body.tripLocation : null;
         let date = req.body.tripDate ? req.body.tripDate : null;
         let description = req.body.TripDescrip ? req.body.TripDescrip : null;
-        console.log('date',date)
 
         if (!location)
         {
@@ -239,11 +238,9 @@ exports.createFindPost = async (req, res) =>
             createdBy: req.body.uuid
         }
 
-        console.log('params',params)
-
         let postData = await db.createFindPost(params);
 
-        req.flash('data', JSON.stringify(postData));
+        req.flash('postData', JSON.stringify(postData));
 
         res.redirect('/find-posts');
 
@@ -256,5 +253,43 @@ exports.createFindPost = async (req, res) =>
         res.redirect('/reset-password');
 
         return "";
+    }
+}
+
+exports.getFindPost = async (postInfo) =>
+{
+    try
+    {
+        // if (!postInfo)
+        // {
+        //     return {
+        //         status: Status.FAIL,
+        //         message: "Post is not found!"
+        //     }
+        // }
+
+        let location = postInfo && postInfo.tripLocation ? postInfo.tripLocation : null;
+
+        let findPostList = await db.getFindPost(location);
+
+        for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
+        {
+            let post = findPostList[postIndex];
+
+            const date = moment(post.tripDate);
+            post.tripDate = common.formatDate(date);
+        }
+
+        return {
+            status: Status.SUCCESS,
+            findPostList: findPostList
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }

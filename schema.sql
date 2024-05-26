@@ -2,7 +2,7 @@
 
 CREATE TABLE "tp_user" 
    (	"id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
-	"userName" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
+	"userName" VARCHAR2(1020 BYTE) NOT NULL ENABLE, 
 	"email" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 	"phone" NUMBER(10,0), 
 	"role" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
@@ -58,22 +58,6 @@ CREATE TABLE "tp_gallery"
 	"updatedBy" VARCHAR2(36 BYTE), 
 	PRIMARY KEY ("id"),
     CONSTRAINT "user_ID" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
-) ;
-
--- find a partner
-CREATE TABLE "tp_findAPartner" 
-   (	
-    "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
-	 "location" VARCHAR2(100 BYTE) not null,
-     "tripDate" VARCHAR2(36 BYTE) NOT NULL ENABLE,
-     "description" CLOB NOT NULL ENABLE,
-     "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
-	"createdAt" TIMESTAMP (8), 
-	"updatedAt" TIMESTAMP (8), 
-	"createdBy" VARCHAR2(36 BYTE), 
-	"updatedBy" VARCHAR2(36 BYTE), 
-	PRIMARY KEY ("id"),
-    CONSTRAINT "find_user_id" FOREIGN KEY ("userId") REFERENCES "tp_user" ("id")
 ) ;
 
 -- follow users
@@ -264,3 +248,150 @@ create table "tp_find_post" (
 primary key("id"),
 foreign key ("userId") references "tp_user" ("id")
 );
+
+--find post like table
+
+create table "tp_find_post_like" (
+"id" varchar2(36) not null,
+"findPostId" varchar2(36)not null,
+"isLike" NUMBER(1,0) default 0,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id"),
+foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE
+);
+
+--find post save table
+create table "tp_find_post_save" (
+"id" varchar2(36) not null,
+"findPostId" varchar2(36)not null,
+"isSave" NUMBER(1,0) default 0,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id"),
+foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE
+);
+
+
+--find post comment table
+
+create table "tp_find_post_comment" (
+"id" varchar2(36) not null,
+"findPostId" varchar2(36) not null,
+"comment" CLOB not null,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE,
+foreign key ("userId") references "tp_user" ("id") 
+);
+
+create or replace function "tp_function_fetch_find_posts_join"(
+    loc IN VARCHAR2
+)
+return "tp_function_fetch_find_posts_table" is findPosts "tp_function_fetch_find_posts_table";
+
+BEGIN
+select "tp_function_fetch_find_posts_data"(
+"id",
+"tripLocation",
+"tripDate",
+"tripDescription",
+"userName",
+"profilePicId",
+"profilePicName",
+"likesCount",
+"commentsCount",
+"createdAt"
+)
+
+bulk collect into findPosts from(
+
+select
+findPost."id",
+findPost."tripLocation",
+findPost."tripDate",
+findPost."tripDescription",
+findPost."createdAt",
+us."userName",
+img."profilePicId",
+img."profilePicName",
+(select count(plike."id") from "tp_find_post_like" plike where findPost."id" = plike."findPostId" and plike."isLike" = 1) "likesCount",
+(select count(pcomment."id") from "tp_find_post_comment" pcomment where findPost."id" = pcomment."findPostId") "commentsCount"
+from "tp_find_post" findPost
+left join "tp_user" us on us."id" = findPost."userId"
+left join "tp_image" img ON img."userId" = us."id"
+where findPost."tripLocation" = loc);
+
+return findPosts;
+
+END;
+
+create or replace NONEDITIONABLE type "tp_function_fetch_find_posts_data" as object(
+"id" VARCHAR2(36),
+"tripLocation" varchar2(1020),
+"tripDate" VARCHAR2(1020 BYTE),
+"tripDescription" clob,
+"userName" VARCHAR2(1020),
+"profilePicId" VARCHAR2(36),
+"profilePicName" clob,
+"likesCount" number,
+"commentsCount" number,
+"createdAt" TIMESTAMP(8)
+);
+
+create or replace type "tp_function_fetch_find_posts_table" as table of "tp_function_fetch_find_posts_data";
+
+-- to get the find post comments
+CREATE OR REPLACE  view "tp_view_fetch_find__post_comments" AS 
+select 
+    pc."id",
+    pc."findPostId",
+    us."userName",
+    pc."comment",
+    img."profilePicId",
+    img."profilePicName",
+    us."id" "userId",
+    pc."createdAt"
+from "tp_find_post_comment" pc
+LEFT JOIN 
+    "tp_user" us ON us."id" = pc."userId"
+LEFT JOIN 
+    "tp_image" img ON img."userId" = us."id"
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL;
+
+
+CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "TRAVELPARTNER"."tp_view_fetch_find_post" ("id", "tripLocation", "tripDate", "tripDescription", "createdAt", "userName", "profilePicId", "profilePicName", "likesCount", "commentsCount") AS 
+  select
+findPost."id",
+findPost."tripLocation",
+findPost."tripDate",
+findPost."tripDescription",
+findPost."createdAt",
+findPost."userId",
+us."userName",
+img."profilePicId",
+img."profilePicName",
+(select count(plike."id") from "tp_find_post_like" plike where findPost."id" = plike."findPostId" and plike."isLike" = 1) "likesCount",
+(select count(pcomment."id") from "tp_find_post_comment" pcomment where findPost."id" = pcomment."findPostId") "commentsCount"
+from "tp_find_post" findPost
+left join "tp_user" us on us."id" = findPost."userId"
+left join "tp_image" img ON img."userId" = us."id"
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL;
