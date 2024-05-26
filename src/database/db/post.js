@@ -1,7 +1,9 @@
 const Post = require('../../database/model/post');
 const PostView = require('../../database/model/postView');
 const findPost = require('../model/find-post');
-
+const { knex } = require('./db-config');
+const { FETCH_FIND_POSTS_JOINS } = require('../function/function');
+const findPostView = require('../../database/model/findPostView');
 
 let createPost = async (data) =>
 {
@@ -28,10 +30,21 @@ let createFindPost = async (data) =>
   return await findPost.query().insert(data);
 }
 
+// const getFindPost = async (location) =>
+// {
+//   return await knex.raw(`select * from ${FETCH_FIND_POSTS_JOINS}(?)`,[location])
+// }
+
+let getFindPost = async (location) =>
+{
+  return await findPostView.query().select().orderBy('createdAt','desc');
+}
+
 module.exports = {
   createPost: createPost,
   getPostList: getPostList,
   getUserPostList: getUserPostList,
   deletePost: deletePost,
-  createFindPost: createFindPost
+  createFindPost: createFindPost,
+  getFindPost: getFindPost
 }
