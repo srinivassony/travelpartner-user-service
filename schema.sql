@@ -297,63 +297,63 @@ foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE,
 foreign key ("userId") references "tp_user" ("id") 
 );
 
-create or replace function "tp_function_fetch_find_posts_join"(
-    loc IN VARCHAR2
-)
-return "tp_function_fetch_find_posts_table" is findPosts "tp_function_fetch_find_posts_table";
+-- create or replace function "tp_function_fetch_find_posts_join"(
+--     loc IN VARCHAR2
+-- )
+-- return "tp_function_fetch_find_posts_table" is findPosts "tp_function_fetch_find_posts_table";
 
-BEGIN
-select "tp_function_fetch_find_posts_data"(
-"id",
-"tripLocation",
-"tripDate",
-"tripDescription",
-"userName",
-"profilePicId",
-"profilePicName",
-"likesCount",
-"commentsCount",
-"createdAt"
-)
+-- BEGIN
+-- select "tp_function_fetch_find_posts_data"(
+-- "id",
+-- "tripLocation",
+-- "tripDate",
+-- "tripDescription",
+-- "userName",
+-- "profilePicId",
+-- "profilePicName",
+-- "likesCount",
+-- "commentsCount",
+-- "createdAt"
+-- )
 
-bulk collect into findPosts from(
+-- bulk collect into findPosts from(
 
-select
-findPost."id",
-findPost."tripLocation",
-findPost."tripDate",
-findPost."tripDescription",
-findPost."createdAt",
-us."userName",
-img."profilePicId",
-img."profilePicName",
-(select count(plike."id") from "tp_find_post_like" plike where findPost."id" = plike."findPostId" and plike."isLike" = 1) "likesCount",
-(select count(pcomment."id") from "tp_find_post_comment" pcomment where findPost."id" = pcomment."findPostId") "commentsCount"
-from "tp_find_post" findPost
-left join "tp_user" us on us."id" = findPost."userId"
-left join "tp_image" img ON img."userId" = us."id"
-where findPost."tripLocation" = loc);
+-- select
+-- findPost."id",
+-- findPost."tripLocation",
+-- findPost."tripDate",
+-- findPost."tripDescription",
+-- findPost."createdAt",
+-- us."userName",
+-- img."profilePicId",
+-- img."profilePicName",
+-- (select count(plike."id") from "tp_find_post_like" plike where findPost."id" = plike."findPostId" and plike."isLike" = 1) "likesCount",
+-- (select count(pcomment."id") from "tp_find_post_comment" pcomment where findPost."id" = pcomment."findPostId") "commentsCount"
+-- from "tp_find_post" findPost
+-- left join "tp_user" us on us."id" = findPost."userId"
+-- left join "tp_image" img ON img."userId" = us."id"
+-- where findPost."tripLocation" = loc);
 
-return findPosts;
+-- return findPosts;
 
-END;
+-- END;
 
-create or replace NONEDITIONABLE type "tp_function_fetch_find_posts_data" as object(
-"id" VARCHAR2(36),
-"tripLocation" varchar2(1020),
-"tripDate" VARCHAR2(1020 BYTE),
-"tripDescription" VARCHAR2(4000 BYTE),
-"userName" VARCHAR2(1020),
-"profilePicId" VARCHAR2(36),
-"profilePicName" clob,
-"likesCount" number,
-"commentsCount" number,
-"createdAt" TIMESTAMP(8),
-"requested" NUMBER(1,0),
-"isFollow" NUMBER(1,0)
-);
+-- create or replace NONEDITIONABLE type "tp_function_fetch_find_posts_data" as object(
+-- "id" VARCHAR2(36),
+-- "tripLocation" varchar2(1020),
+-- "tripDate" VARCHAR2(1020 BYTE),
+-- "tripDescription" VARCHAR2(4000 BYTE),
+-- "userName" VARCHAR2(1020),
+-- "profilePicId" VARCHAR2(36),
+-- "profilePicName" clob,
+-- "likesCount" number,
+-- "commentsCount" number,
+-- "createdAt" TIMESTAMP(8),
+-- "requested" NUMBER(1,0),
+-- "isFollow" NUMBER(1,0)
+-- );
 
-create or replace type "tp_function_fetch_find_posts_table" as table of "tp_function_fetch_find_posts_data";
+-- create or replace type "tp_function_fetch_find_posts_table" as table of "tp_function_fetch_find_posts_data";
 
 -- to get the find post comments
 CREATE OR REPLACE  view "tp_view_fetch_find__post_comments" AS 
