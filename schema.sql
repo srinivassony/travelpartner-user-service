@@ -179,7 +179,7 @@ foreign key ("userId") references "tp_user" ("id")
 );
 
 -- view posts
- CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "TRAVELPARTNER"."tp_view_fetch_posts" ("id", "userName", "location", "description", "profilePicId", "profilePicName", "userId", "postImages", "likesCount") AS 
+ CREATE OR REPLACE  VIEW "tp_view_fetch_posts"  AS 
   SELECT 
     post."id",
     us."userName",
@@ -377,7 +377,7 @@ WHERE
     AND us."inviteOn" IS NOT NULL;
 
 
-CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "TRAVELPARTNER"."tp_view_fetch_find_post" ("id", "tripLocation", "tripDate", "tripDescription", "createdAt", "userName", "profilePicId", "profilePicName", "likesCount", "commentsCount") AS 
+CREATE OR REPLACE  VIEW "tp_view_fetch_find_post"  AS 
 
  SELECT 
     findPost."id",
