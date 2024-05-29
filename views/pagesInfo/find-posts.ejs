@@ -365,12 +365,26 @@
                                                               <i class="fa fa-ellipsis-v"></i>
                                                             </div>
                                                             <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" style="padding: 10px;">
-                                                              <li>
-                                                                <a class="save-btn" id="saveButton" data-post-id="<%= post.id %>"><i class="fa fa-bookmark-o savebtn"></i> Save</a>
-                                                              </li>
+                                                             
+                                                              <% if(post && post.userId == id ) { %>
+                                                                <li>
+                                                                  <a href="/post-edit/<%= post.id %>"><i class="fa fa-edit"></i> Edit post</a>
+                                                                </li>
+                                                                <li>
+                                                                  <a href="/post-delete/<%= post.id %>"><i class="fa fa-trash"></i> Detele post</a>
+                                                                </li>
+                                                              <% } %> 
                                                               <li>
                                                                 <a href="/userprofile/<%= post.userId %>"><i class="fa fa-user"></i> User Profile</a>
                                                               </li>
+                                                              
+                                                              <% if(post && post.followUsers && post.followUsers.length > 0) { 
+                                                                post.followUsers.forEach(function(follow) { %>
+                                                                  <% if(follow && (follow.followerId == id || follow.followingId == id) && follow.requested == 1 && follow.isFollow == 1 ) { %>
+                                                                <li>
+                                                                  <a href="/userprofile/<%= post.userId %>" class="chatMessage"><i class="fa fa-wechat"></i> Chat message</a>
+                                                                </li>
+                                                                <%} }); } %>
                                                             </ul>
                                                           </div>
                                                         </div>
@@ -419,6 +433,8 @@
                                                             <button class="close-btn">Close</button>
                                                           </div>
                                                         </div>
+                                                        <a class="save-btn" id="saveButton" data-post-id="<%= post.id %>"><i class="fa fa-bookmark-o savebtn"></i> Save</a>
+
                                                       </div>
                                                     </div>
                                                   </div>
@@ -465,6 +481,41 @@
     </div>
 
 <%- include('scripts'); %>
+
+<script>
+   
+  document.addEventListener("DOMContentLoaded", function() {
+      // Get all user cards
+      const userCards = document.querySelectorAll('.card-container');
+  
+      // Loop through each user card
+      userCards.forEach(function(card) {
+          // Get buttons inside the current card
+        
+          const chatButtons = card.querySelectorAll('.chatMessage');
+
+          console.log('chatButtons',chatButtons)
+          console.log('chatButtons-length',chatButtons.length)
+
+
+          // Check if both follow and profile buttons exist
+          if (chatButtons.length > 1) // If there are multiple follow buttons, keep only the first one and remove the rest
+          {
+              console.log('here-1')
+
+              // Loop through follow buttons starting from the second one
+              for (let i = 1; i < chatButtons.length; i++)
+              {
+                  // Remove the follow button
+                  chatButtons[i].remove();
+              }
+          }
+          
+         
+
+      });
+  });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function ()

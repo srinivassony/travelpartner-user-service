@@ -32,7 +32,16 @@ let createFindPost = async (data) =>
 
 // const getFindPost = async (location) =>
 // {
-//   return await knex.raw(`select * from ${FETCH_FIND_POSTS_JOINS}(?)`,[location])
+//     let loc = `null`;
+
+//   if (location)
+//   {
+//     loc = location
+//   }
+
+//   console.log('loc',loc)
+
+//   return await knex.raw(`select * from ${FETCH_FIND_POSTS_JOINS}(?)`,[loc])
 // }
 
 let getFindPost = async (location) =>
