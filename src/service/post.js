@@ -256,15 +256,18 @@ exports.createFindPost = async (req, res) =>
     }
 }
 
-exports.getFindPost = async (postInfo) =>
+exports.getFindPost = async (postInfo, req, res) =>
 {
     try
     {
         // if (!postInfo)
         // {
+                // req.flash('error', 'Post details is not found!');
+
+                // res.redirect('/find-partner'); 
         //     return {
         //         status: Status.FAIL,
-        //         message: "Post is not found!"
+        //         message: "Post details is not found!"
         //     }
         // }
 
@@ -272,12 +275,18 @@ exports.getFindPost = async (postInfo) =>
 
         let findPostList = await db.getFindPost(location);
 
+        console.log('findPostList',findPostList)
+
         for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
         {
             let post = findPostList[postIndex];
 
             const date = moment(post.tripDate);
             post.tripDate = common.formatDate(date);
+
+            let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+
+            post.followUsers = followUsers;
         }
 
         return {

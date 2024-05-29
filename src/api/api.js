@@ -397,7 +397,7 @@ app.get('/find-posts', async (req, res) =>
 		postInfo = null;
 	}
 
-	let findPostInfo = await postService.getFindPost(postInfo);
+	let findPostInfo = await postService.getFindPost(postInfo, req, res);
 
 	res.render('pagesInfo/find-posts', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
