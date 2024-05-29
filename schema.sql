@@ -27,14 +27,14 @@ CREATE TABLE "tp_user"
 	PRIMARY KEY ("id")
 ) ;
 
+update  "tp_user" set "isInvited" = '1',"inviteOn" = '28-MAY-24', "isRegistered" = '1' where "email" = 'srinivas-3@gmail.com';
+
 -- image table
 CREATE TABLE "tp_image" 
    (	
     "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 	"profilePicId" VARCHAR2(36 BYTE),
-	"profilePicName" CLOB,
-	"bgPicId" VARCHAR2(36 BYTE),
-	"bgPicName" CLOB,
+	"profilePicName" VARCHAR2(4000 BYTE),
 	"userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
 	"path" CLOB,
 	"createdAt" TIMESTAMP (8), 
@@ -50,7 +50,7 @@ CREATE TABLE "tp_gallery"
    (	
     "id" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 	 "imageId" VARCHAR2(36 BYTE),
-     "fileName" CLOB,
+     "fileName" VARCHAR2(4000 BYTE),
      "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE,
 	"createdAt" TIMESTAMP (8), 
 	"updatedAt" TIMESTAMP (8), 
@@ -119,7 +119,7 @@ where us."isRegistered" = 1;
 create table "tp_post" (
 "id" varchar2(36) not null,
 "location" varchar2(1020) not null,
-"description" CLOB not null,
+"description" VARCHAR2(4000 BYTE) not null,
 "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
@@ -167,7 +167,7 @@ foreign key("postId") references "tp_post" ("id") ON DELETE CASCADE
 create table "tp_post_comment" (
 "id" varchar2(36) not null,
 "postId" varchar2(36) not null,
-"comment" CLOB not null,
+"comment" VARCHAR2(4000 BYTE) not null,
 "userId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
@@ -239,7 +239,7 @@ create table "tp_find_post" (
 "id" varchar2(36) not null,
 "tripLocation" varchar2(1020) not null,
 "tripDate" varchar2(1020) not null,
-"tripDescription" CLOB not null,
+"tripDescription" VARCHAR2(4000 BYTE) not null,
 "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
@@ -286,7 +286,7 @@ foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE
 create table "tp_find_post_comment" (
 "id" varchar2(36) not null,
 "findPostId" varchar2(36) not null,
-"comment" CLOB not null,
+"comment" VARCHAR2(4000 BYTE) not null,
 "userId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
 "createdBy" varchar2(36),
@@ -342,13 +342,15 @@ create or replace NONEDITIONABLE type "tp_function_fetch_find_posts_data" as obj
 "id" VARCHAR2(36),
 "tripLocation" varchar2(1020),
 "tripDate" VARCHAR2(1020 BYTE),
-"tripDescription" clob,
+"tripDescription" VARCHAR2(4000 BYTE),
 "userName" VARCHAR2(1020),
 "profilePicId" VARCHAR2(36),
 "profilePicName" clob,
 "likesCount" number,
 "commentsCount" number,
-"createdAt" TIMESTAMP(8)
+"createdAt" TIMESTAMP(8),
+"requested" NUMBER(1,0),
+"isFollow" NUMBER(1,0)
 );
 
 create or replace type "tp_function_fetch_find_posts_table" as table of "tp_function_fetch_find_posts_data";
@@ -376,21 +378,36 @@ WHERE
 
 
 CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "TRAVELPARTNER"."tp_view_fetch_find_post" ("id", "tripLocation", "tripDate", "tripDescription", "createdAt", "userName", "profilePicId", "profilePicName", "likesCount", "commentsCount") AS 
-  select
-findPost."id",
-findPost."tripLocation",
-findPost."tripDate",
-findPost."tripDescription",
-findPost."createdAt",
-findPost."userId",
-us."userName",
-img."profilePicId",
-img."profilePicName",
-(select count(plike."id") from "tp_find_post_like" plike where findPost."id" = plike."findPostId" and plike."isLike" = 1) "likesCount",
-(select count(pcomment."id") from "tp_find_post_comment" pcomment where findPost."id" = pcomment."findPostId") "commentsCount"
-from "tp_find_post" findPost
-left join "tp_user" us on us."id" = findPost."userId"
-left join "tp_image" img ON img."userId" = us."id"
+
+ SELECT 
+    findPost."id",
+    findPost."tripLocation",
+    findPost."tripDate",
+    findPost."tripDescription",
+    findPost."createdAt",
+    findPost."userId",
+    us."userName",
+    img."profilePicId",
+    img."profilePicName",
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'followerId' VALUE followUsers."followerId",
+          'followingId' VALUE followUsers."followingId",
+          'requested' value NVL(followUsers."requested", 0),
+          'isFollow' value  NVL(followUsers."isFollow", 0)
+            )
+        ) AS followUsers
+        FROM "tp_follow_users" followUsers 
+        WHERE (followUsers."followerId" = findPost."userId" OR followUsers."followingId" = findPost."userId")
+    AND followUsers."requested" = 1
+    AND followUsers."isFollow" = 1
+    ) AS "followUsers",
+    (SELECT COUNT(plike."id") FROM "tp_find_post_like" plike WHERE findPost."id" = plike."findPostId" AND plike."isLike" = 1) AS "likesCount",
+    (SELECT COUNT(pcomment."id") FROM "tp_find_post_comment" pcomment WHERE findPost."id" = pcomment."findPostId") AS "commentsCount"
+FROM "tp_find_post" findPost
+LEFT JOIN "tp_user" us ON us."id" = findPost."userId"
+LEFT JOIN "tp_image" img ON img."userId" = us."id"
 WHERE 
     us."isRegistered" = 1 
     AND us."isInvited" = 1 
