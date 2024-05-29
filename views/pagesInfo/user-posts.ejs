@@ -495,7 +495,7 @@
         {
             let postId = notify.dataset.postId;
             console.log('postId', postId)
-            var notice = new PNotify({ title: 'Are you sure you?', text: '<p>Once you delete the post, you will not be able to recover it.</p>', hide: false, type: 'warning', confirm: { confirm: true, buttons: [{ text: 'Yes', addClass: 'btn btn-sm btn-primary' }, { addClass: 'btn btn-sm btn-link' }] }, buttons: { closer: false, sticker: false }, history: { history: false } })
+            var notice = new PNotify({ title: 'Are you sure ?', text: '<p>Once you delete the post, you will not be able to recover it.</p>', hide: false, type: 'warning', confirm: { confirm: true, buttons: [{ text: 'Yes', addClass: 'btn btn-sm btn-primary' }, { addClass: 'btn btn-sm btn-link' }] }, buttons: { closer: false, sticker: false }, history: { history: false } })
             notice.get().on('pnotify.confirm', function ()
             {
                 fetch('/post-delete/'+ postId,{
