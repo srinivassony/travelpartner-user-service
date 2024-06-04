@@ -241,41 +241,34 @@
                                         <div class="main-body">
                                             <div class="page-wrapper">
 
-                                                <div class="page-header">
-                                                    <div class="row align-items-end">
-                                                        <div class="col-lg-4">
-                                                            <div class="page-header-title">
-                                                                <div class="d-inline">
-                                                                    <h4>User Profile</h4>
-                                                                    <span>User profile details</span>
-                                                                </div>
+                                                <% if (errorMessage) { %>
+                                                    <span style="color: red;font-weight:bold;">
+                                                        <%= errorMessage %>
+                                                    </span>
+                                                    <%} else if(sucessMessage){ %>
+                                                        <span
+                                                            style="color: green;font-weight:bold;">
+                                                            <%= sucessMessage %>
+                                                        </span>
+                                                        <%}%>
+
+                                                <div class="page-body breadcrumb-page">
+
+                                                    <div class="card borderless-card">
+                                                        <div class="card-block primary-breadcrumb">
+                                                            <div class="breadcrumb-header">
+                                                                <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
+                                                                <span>A dynamic individual with diverse interests and a passion for continuous growth</span>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="page-header-title">
-                                                                <div class="d-inline">
-                                                                    <% if (errorMessage) { %>
-                                                                        <span style="color: red;font-weight:bold;">
-                                                                            <%= errorMessage %>
-                                                                        </span>
-                                                                        <%} else if(sucessMessage){ %>
-                                                                            <span
-                                                                                style="color: green;font-weight:bold;">
-                                                                                <%= sucessMessage %>
-                                                                            </span>
-                                                                            <%}%>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4">
                                                             <div class="page-header-breadcrumb">
                                                                 <ul class="breadcrumb-title">
                                                                     <li class="breadcrumb-item" style="float: left;">
-                                                                        <a href="/"> <i class="feather icon-home"></i>
+                                                                        <a href="/">
+                                                                            <i class="icofont icofont-home"></i>
                                                                         </a>
                                                                     </li>
                                                                     <li class="breadcrumb-item" style="float: left;"><a
-                                                                            href="/user-profile">User Profile</a>
+                                                                            href="/user-profile">User profile</a>
                                                                     </li>
                                                                 </ul>
                                                             </div>

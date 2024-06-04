@@ -2,6 +2,7 @@ const db = require('../database/db/post');
 const postImageDb = require('../database/db/postImages');
 const common = require('../utils/utils');
 const Status = common.Status;
+const moment = require('moment');
 
 exports.createPost = async (req, res) =>
 {
@@ -10,11 +11,20 @@ exports.createPost = async (req, res) =>
         let location = req.body.location ? req.body.location : null;
         let description  = req.body.descrip ? req.body.descrip : null;
         let imageIds = req.body.imageIds ? req.body.imageIds : null;
-        let ids = imageIds.split(",");
+        let ids = imageIds ? imageIds.split(",") : [];
 
         if (!location)
         {
             req.flash('error', 'Location is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        if(ids && ids.length == 0)
+        {
+            req.flash('error', 'please upload the image.');
 
             res.redirect('/find-partner');
 
@@ -99,7 +109,6 @@ exports.getPostList = async () =>
             let post = postList[postIndex];
 
             const truncatedLocation = truncateLocation(post.location, 30);
-            console.log(truncatedLocation);
 
             post.truncatedLocation = truncatedLocation;
 
@@ -155,26 +164,85 @@ exports.getUserPostList = async (id) =>
     }
 }
 
-exports.deletePost = async (req, res) =>
+exports.deletePost = async (reqParams) =>
 {
     try 
     {
-        let postId = req.params.id ? req.params.id : null;
-        
+        let postId = reqParams.id ? reqParams.id : null;
+
         if (!postId)
         {
-            req.flash('error', 'Post id is requried.');
-
-            res.redirect('/user-posts');
-
-            return "";
+            return {
+                status: Status.FAIL,
+                message: "Post id is requried."
+            }
         }
 
         let postData = await db.deletePost(postId);
 
-        req.flash('success', 'Post Successfuly added!');
+        return {
+            status: Status.SUCCESS,
+            message: "Post deleted sucessfully"
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
 
-        res.redirect('/user-posts');
+exports.createFindPost = async (req, res) =>
+{
+    try 
+    {
+        let location = req.body.tripLocation ? req.body.tripLocation : null;
+        let date = req.body.tripDate ? req.body.tripDate : null;
+        let description = req.body.TripDescrip ? req.body.TripDescrip : null;
+
+        if (!location)
+        {
+            req.flash('error', 'Trip location is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        if (!date)
+        {
+            req.flash('error', 'Trip date is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        if (!description)
+        {
+            req.flash('error', 'Trip description is requried.');
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
+
+        let params = {
+            tripLocation: location.trim(),
+            tripDate: date,
+            tripDescription: description,
+            userId: req.body.userId,
+            createdAt: new Date(),
+            createdBy: req.body.uuid
+        }
+
+        let postData = await db.createFindPost(params);
+
+        req.flash('postData', JSON.stringify(postData));
+
+        res.redirect('/find-posts');
 
         return "";
     }
@@ -187,3 +255,85 @@ exports.deletePost = async (req, res) =>
         return "";
     }
 }
+
+exports.getFindPost = async (postInfo, req, res) =>
+{
+    try
+    {
+        if (!postInfo)
+        {
+                req.flash('error', 'Post details is not found!');
+
+                res.redirect('/find-partner'); 
+        }
+
+        let location = postInfo && postInfo.tripLocation ? postInfo.tripLocation : null;
+
+        let findPostList = await db.getFindPost(location);
+
+        console.log('findPostList',findPostList)
+
+        for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
+        {
+            let post = findPostList[postIndex];
+
+            const date = moment(post.tripDate);
+            post.tripDate = common.formatDate(date);
+
+            let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+
+            post.followUsers = followUsers;
+        }
+
+        return {
+            status: Status.SUCCESS,
+            findPostList: findPostList
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
+
+exports.getFindAllPost = async (req, res) =>
+    {
+        try
+        {
+            let findPostList = await db.getFindAllPost();
+    
+            if (findPostList.length == 0)
+            {
+                req.flash('error', 'Post details is not found!');
+
+                res.redirect('/travel-posts'); 
+            }
+    
+            for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
+            {
+                let post = findPostList[postIndex];
+    
+                const date = moment(post.tripDate);
+                post.tripDate = common.formatDate(date);
+    
+                let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+    
+                post.followUsers = followUsers;
+            }
+    
+            return {
+                status: Status.SUCCESS,
+                findPostList: findPostList
+            }
+        }
+        catch (error) 
+        {
+            return {
+                status: Status.FAIL,
+                message: error.message
+            }
+        }
+    }

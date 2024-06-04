@@ -100,7 +100,7 @@
                 width: calc(33.33% - 0.5em);
             }
         }
-
+        
         #suggestions-list {
             list-style: none;
             padding: 0;
@@ -122,6 +122,28 @@
         #suggestions-list li:hover {
             background-color: #f0f0f0;
         }
+
+        #tripSuggestions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            width: calc(100% - 2px); /* Adjust width to match the input box */
+            z-index: 999; /* Set a higher z-index */
+        }
+    
+        #tripSuggestions-list li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    
+        #tripSuggestions-list li:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -141,24 +163,24 @@
                             <div class="main-body">
                                 <div class="page-wrapper">
     
-                                    <div class="page-header">
-                                        <div class="row align-items-end">
-                                            <div class="col-lg-8">
-                                                <div class="page-header-title">
-                                                    <div class="d-inline">
-                                                        <h4>Travel-partner is a Social Travel Community & Experiences Marketplace</h4>
-                                                    </div>
+                                    <div class="page-body breadcrumb-page">
+
+                                        <div class="card borderless-card">
+                                            <div class="card-block primary-breadcrumb">
+                                                <div class="breadcrumb-header">
+                                                    <h5>Travel-partner is a Social Travel Community & Experiences Marketplace</h5>
+                                                    <span>Here we can find the buddy and you can share the post into the community.</span>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-4">
                                                 <div class="page-header-breadcrumb">
                                                     <ul class="breadcrumb-title">
                                                         <li class="breadcrumb-item" style="float: left;">
-                                                            <a href="/dashboard"> <i class="feather icon-home"></i>
+                                                            <a href="/">
+                                                                <i class="icofont icofont-home"></i>
                                                             </a>
                                                         </li>
                                                         <li class="breadcrumb-item" style="float: left;"><a
-                                                                href="/find-partner">Find a partner</a> </li>
+                                                            href="/find-partner">Find a partner</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -195,7 +217,6 @@
                                                 
                                                             </div>
                                                             <div class="card-block">
-                                                            
                                                                 <div>
                                                                     <div class="row">
                                                                         <div class="col-lg-12">
@@ -213,17 +234,17 @@
                                                                                     <div class="form-group row">
                                                                                         <label class="col-sm-4 col-form-label">Location</label>
                                                                                         <div class="col-sm-8">
-                                                                                            <input type="text" class="form-control" id="location" name="location" required>
+                                                                                            <input type="text" class="form-control" id="location" name="location" >
                                                                                             <ul id="suggestions-list"></ul>
                                                                                             <span id="errorLocation" style="color: red;"></span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group row">
-                                                                                        <label class="col-sm-4 col-form-label">Trip
-                                                                                            description
+                                                                                        <label class="col-sm-4 col-form-label">
+                                                                                            Description
                                                                                         </label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea class="col-sm-12" class="form-control" rows="8" id="descrip" name="descrip" required></textarea>
+                                                                                            <textarea class="form-control max-textarea" maxlength="255" rows="4" id="descrip" name="descrip" ></textarea>
                                                                                             <span id="errorDescription" style="color: red;"></span>
                                                                                         </div>
                                                                                     </div>
@@ -237,7 +258,7 @@
                                                                                     </div>
                                                                                 
                                                                                     <div class="text-center">
-                                                                                        <button  class="btn btn-primary waves-effect waves-light m-r-20" id="uploadButton">Save</button>
+                                                                                        <button type="submit" class="btn btn-primary waves-effect waves-light m-r-20" id="uploadButton">Save</button>
                                                                                         <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
                                                                                     </div>
                                                                                 
@@ -249,7 +270,6 @@
                                                                     </div>
                                                             
                                                                 </div>
-                                                            
                                                             </div>
                                                         </div>
                                                     </div>
@@ -258,15 +278,71 @@
                                                     <div class="tab-pane" id="findPartner" role="tabpanel">
                                                         <div class="page-body gallery-page">
                                                             <div class="row">
-                                                
                                                                 <div class="col-sm-12">
-                                                
                                                                     <div class="card">
                                                                         <div class="card-header">
-                                                                            <h5>Find a partnerto travel</h5>
+                                                                            <h5>Find a partner to travel</h5>
                                                                         </div>
                                                                         <div class="card-block">
-                                                                           
+                                                                            <div>
+                                                                                <div class="row">
+                                                                                    <div class="col-lg-12">
+                                                                                        <div class="general-info">
+                                                                                            <form action="/api/add/find/post" method="post" enctype="application/x-www-form-urlencoded" id="myFindPostForm" name="myFindPostForm" >
+                                                                                            
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-4 col-form-label">Trip location</label>
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <input type="text" class="form-control" id="tripLocation" name="tripLocation" >
+                                                                                                        <ul id="tripSuggestions-list"></ul>
+                                                                                                        <span id="errorTripLocation" style="color: red;"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-4 col-form-label">Trip Date</label>
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <input type="date" class="form-control" id="tripDate" name="tripDate" >
+                                                                                                        <span id="errorTripDate" style="color: red;"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group row">
+                                                                                                    <label class="col-sm-4 col-form-label">Trip
+                                                                                                        description
+                                                                                                    </label>
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <textarea class="form-control max-textarea" maxlength="255" rows="4" id="TripDescrip" name="TripDescrip" ></textarea>
+                                                                                                        <span id="errorTripDescription" style="color: red;"></span>
+                                                                                                    </div>
+                                                                                                </div>
+            
+                                                                                                <div class="form-group row">
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <input type="hidden" name="uuid" value="<%= uuid %>">
+                                                                                                        <input type="hidden" name="userId" value="<%= id %>">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            
+                                                                                                <div class="text-center">
+                                                                                                    <button  class="btn btn-primary waves-effect waves-light m-r-20" type ="submit">Save</button>
+                                                                                                    <a href="#!" id="edit-cancel" class="btn btn-default waves-effect">Cancel</a>
+                                                                                                </div>
+
+                                                                                                <div class="form-group row">
+
+                                                                                                </div>
+
+                                                                                                <div class="form-group row">
+                                                                                                    
+                                                                                                </div>
+                                                                                            
+                                                                                            </form>
+                                                                                        </div>
+                                                                        
+                                                                                    </div>
+                                                                        
+                                                                                </div>
+                                                                        
+                                                                            </div>
                                                                         </div>
                                                 
                                                                     </div>
@@ -293,36 +369,216 @@
 
 <%- include('scripts'); %>
 
+<% if (errorMessage) { %>
 <script>
-    function validatePostForm() 
+    'use strict'; $(window).on('load',
+        function ()
+        {
+            function notify(message) 
+            {
+                $.growl({ message: message, icon: $(this).attr('data-icon'), title: ' Error message is : ', },
+                    {
+                        element: 'body',
+                        type: $(this).attr('data-type'),
+                        allow_dismiss: false,
+                        offset: { x: 30, y: 30 },
+                        spacing: 10,
+                        z_index: 999999,
+                        delay: 8500,
+                        timer: 1000,
+                        icon_type: 'class',
+                        placement: { from: $(this).attr('data-from'), align: $(this).attr('data-align') },
+                        animate: { enter: $(this).attr('data-animation-in'), exit: $(this).attr('data-animation-out')},
+                        template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                            '<button type="button" class="close" data-growl="dismiss">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '<span class="sr-only">Close</span>' +
+                            '</button>' +
+                            '<span data-growl="icon"></span>' +
+                            '<span data-growl="title" style="color:black;"></span>' +
+                            '<span data-growl="message" style="color:red;"></span>' +
+                            '</div>'
+                    });
+            };
+           
+            notify( "<%= errorMessage %>");
+        });
+
+
+</script>
+<%}%>
+
+<script>
+
+    $(document).ready(function() {
+        // Get today's date in YYYY-MM-DD format
+        var today = new Date().toISOString().split('T')[0];
+        // Set the minimum date attribute of the date input to today
+        $('#tripDate').attr('min', today);
+    });
+   
+</script>
+
+<script>
+    $(document).ready(function ()
     {
-        let location = document.forms["myPostForm"]["location"].value;
-        let description = document.forms["myPostForm"]["descrip"].value;
+        function notify(message) 
+        {
+            $.growl({ message: message, icon: $(this).attr('data-icon'), title: ' Error message is : ', },
+                {
+                    element: 'body',
+                    type: $(this).attr('data-type'),
+                    allow_dismiss: false,
+                    offset: { x: 30, y: 30 },
+                    spacing: 10,
+                    z_index: 999999,
+                    delay: 8500,
+                    timer: 1000,
+                    icon_type: 'class',
+                    placement: { from: $(this).attr('data-from'), align: $(this).attr('data-align') },
+                    animate: { enter: $(this).attr('data-animation-in'), exit: $(this).attr('data-animation-out') },
+                    template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                        '<button type="button" class="close" data-growl="dismiss">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '<span class="sr-only">Close</span>' +
+                        '</button>' +
+                        '<span data-growl="icon"></span>' +
+                        '<span data-growl="title" style="color:black;"></span>' +
+                        '<span data-growl="message" style="color:red;"></span>' +
+                        '</div>'
+                });
+        };
 
-        if (!location) 
+        $('#myFindPostForm').on('submit', function (event)
         {
-            document.getElementById('errorLocation').innerHTML = "Location is required.";
-            return false;
-        }
+            event.preventDefault(); // Prevent form submission
 
-        if (!description) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description is required.";
-            return false;
-        }
-        else if (description.toString().length < 5) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description minimum character limit is 5";
-            return false;
-        }
-        else if (description.toString().length > 1000) 
-        {
-            document.getElementById('errorDescription').innerHTML = "Description maximum character limit is 1000.";
-            return false;
-        }
+            let isValid = true;
 
-        return true;
-    }
+            // Validate Name
+            let tripLocation = $('#tripLocation').val();
+            let tripDate = $('#tripDate').val();
+            let tripDescription = $('#TripDescrip').val();
+
+
+            if (!tripLocation)
+            {
+                notify("Trip Location is required");
+                isValid = false;
+            }
+
+            if (!tripDate)
+            {
+                notify("Trip Date is required");
+                isValid = false;
+            }
+
+            if (!tripDescription) 
+            {
+                notify("Trip Description is required.");
+                isValid = false;
+               
+            }
+            else if (tripDescription.toString().length < 5) 
+            {
+                notify("Trip Description minimum character limit is 5.");
+                isValid = false;
+            }
+            else if (tripDescription.toString().length > 1000) 
+            {
+                notify("Trip Description maximum character limit is 1000.");
+                isValid = false;
+            }
+
+            // If the form is valid, submit it
+            if (isValid)
+            {
+                this.submit();
+            }
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function ()
+    {
+        function notify(message) 
+        {
+            $.growl({ message: message, icon: $(this).attr('data-icon'), title: ' Error message is : ', },
+                {
+                    element: 'body',
+                    type: $(this).attr('data-type'),
+                    allow_dismiss: false,
+                    offset: { x: 30, y: 30 },
+                    spacing: 10,
+                    z_index: 999999,
+                    delay: 8500,
+                    timer: 1000,
+                    icon_type: 'class',
+                    placement: { from: $(this).attr('data-from'), align: $(this).attr('data-align') },
+                    animate: { enter: $(this).attr('data-animation-in'), exit: $(this).attr('data-animation-out') },
+                    template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                        '<button type="button" class="close" data-growl="dismiss">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '<span class="sr-only">Close</span>' +
+                        '</button>' +
+                        '<span data-growl="icon"></span>' +
+                        '<span data-growl="title" style="color:black;"></span>' +
+                        '<span data-growl="message" style="color:red;"></span>' +
+                        '</div>'
+                });
+        };
+
+        $('#myPostForm').on('submit', function (event)
+        {
+            event.preventDefault(); // Prevent form submission
+
+            let isValid = true;
+
+            // Validate Name
+            let location = $('#location').val();
+            let description = $('#descrip').val();
+            let imagesIds = $('#imageIds').val();
+
+            if (!location)
+            {
+                notify("Location is required");
+                isValid = false;
+            }
+
+            if (!imagesIds)
+            {
+                notify("please upload the image.");
+                isValid = false;
+            }
+
+            if (!description) 
+            {
+                notify("Description is required.");
+                isValid = false;
+               
+            }
+            else if (description.toString().length < 5) 
+            {
+                notify("Description minimum character limit is 5.");
+                isValid = false;
+            }
+            else if (description.toString().length > 1000) 
+            {
+                notify("Description maximum character limit is 1000.");
+                isValid = false;
+            }
+
+            // If the form is valid, submit it
+            if (isValid)
+            {
+                this.submit();
+            }
+        });
+
+    });
 
 </script>
 
@@ -336,7 +592,7 @@
     const pond = FilePond.create(fileInput, {
         allowMultiple: true,
         allowFileTypeValidation: true,
-        acceptedFileTypes: ['image/*', 'video/*'],
+        acceptedFileTypes: ['image/*'],
         labelFileTypeNotAllowed: 'File of invalid type',
         allowFileSizeValidation: true,
         maxFileSize: '10MB',
@@ -436,7 +692,7 @@
         $('.my-pond').filepond({
             allowMultiple: true,
             allowFileTypeValidation: true,
-            acceptedFileTypes: ['image/*', 'video/*'],
+            acceptedFileTypes: ['image/*'],
             labelFileTypeNotAllowed: 'File of invalid type',
             allowFileSizeValidation: true,
             maxFileSize: '10MB',
@@ -510,41 +766,51 @@
     input.addEventListener('input', handleInput);
     input.addEventListener('keyup', handleInput);
 
-    async function handleInput() {
+    async function handleInput()
+    {
         const userInput = input.value.trim().toLowerCase();
-        if (userInput.length > 0) {
+        if (userInput.length > 0)
+        {
             fetchLocations(userInput);
-        } else {
+        } else
+        {
             clearSuggestions();
         }
     }
 
-    async function fetchLocations(userInput) {
+    async function fetchLocations(userInput)
+    {
         const apiKey = '49ce4908b7ee4c9a84810d565963e661';
         const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${userInput}&key=${apiKey}`;
 
-        try {
+        try
+        {
             const response = await fetch(apiUrl);
-            if (!response.ok) {
+            if (!response.ok)
+            {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
             displaySuggestions(data.results);
-        } catch (error) {
+        } catch (error)
+        {
             console.error('Error fetching locations:', error);
         }
     }
 
-    function displaySuggestions(suggestions) {
+    function displaySuggestions(suggestions)
+    {
         suggestionsList.innerHTML = '';
 
-        suggestions.forEach(suggestion => {
+        suggestions.forEach(suggestion =>
+        {
             const listItem = document.createElement('li');
             listItem.textContent = suggestion.formatted;
             suggestionsList.appendChild(listItem);
 
             // Add click event listener to each suggestion item
-            listItem.addEventListener('click', function() {
+            listItem.addEventListener('click', function ()
+            {
                 input.value = suggestion.formatted;
                 clearSuggestions();
             });
@@ -553,12 +819,83 @@
         suggestionsList.style.display = 'block';
     }
 
-    function clearSuggestions() {
+    function clearSuggestions()
+    {
         suggestionsList.innerHTML = '';
         suggestionsList.style.display = 'none';
     }
 </script>
 
-</body>
+<script>
+    const tripLocation = document.getElementById('tripLocation');
+    const tripSuggestionsList = document.getElementById('tripSuggestions-list');
 
+    tripLocation.addEventListener('input', triphandleInput);
+    tripLocation.addEventListener('keyup', triphandleInput);
+
+    async function triphandleInput()
+    {
+        const userInput = tripLocation.value.trim().toLowerCase();
+        if (userInput.length > 0)
+        {
+            tripfetchLocations(userInput);
+        } 
+        else
+        {
+            cleartripSuggestions();
+        }
+    }
+
+    async function tripfetchLocations(userInput)
+    {
+        const apiKey = '49ce4908b7ee4c9a84810d565963e661';
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${userInput}&key=${apiKey}`;
+
+        try
+        {
+            const response = await fetch(apiUrl);
+
+            if (!response.ok)
+            {
+                throw new Error('Failed to fetch data');
+            }
+
+            const data = await response.json();
+            displaytripSuggestions(data.results);
+        } 
+        catch (error)
+        {
+            console.error('Error fetching locations:', error);
+        }
+    }
+
+    function displaytripSuggestions(suggestions)
+    {
+        tripSuggestionsList.innerHTML = '';
+
+        suggestions.forEach(suggestion =>
+        {
+            const listItem = document.createElement('li');
+            listItem.textContent = suggestion.formatted;
+            tripSuggestionsList.appendChild(listItem);
+
+            // Add click event listener to each suggestion item
+            listItem.addEventListener('click', function ()
+            {
+                tripLocation.value = suggestion.formatted;
+                cleartripSuggestions();
+            });
+        });
+
+        tripSuggestionsList.style.display = 'block';
+    }
+
+    function cleartripSuggestions()
+    {
+        tripSuggestionsList.innerHTML = '';
+        tripSuggestionsList.style.display = 'none';
+    }
+</script>
+
+</body>
 </html>
