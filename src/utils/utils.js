@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const moment = require('moment');
 
 function generateUUID() 
 {
@@ -22,9 +23,29 @@ const uuid = () =>
 	  });
 }
 
+const formatDate = (date) =>
+{
+    const day = date.date();
+    const suffix = (day) =>
+    {
+        if (day > 3 && day < 21) return 'th';
+        switch (day % 10)
+        {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    };
+
+    return moment(date).format(`D[${suffix(day)}] MMM, YYYY`);
+};
+
+
 module.exports = {
     generateUUID: generateUUID,
     Status: status,
     userType: userType,
-    uuid: uuid
+    uuid: uuid,
+    formatDate: formatDate
 }
