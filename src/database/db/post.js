@@ -30,23 +30,14 @@ let createFindPost = async (data) =>
   return await findPost.query().insert(data);
 }
 
-// const getFindPost = async (location) =>
-// {
-//     let loc = `null`;
-
-//   if (location)
-//   {
-//     loc = location
-//   }
-
-//   console.log('loc',loc)
-
-//   return await knex.raw(`select * from ${FETCH_FIND_POSTS_JOINS}(?)`,[loc])
-// }
-
 let getFindPost = async (location) =>
 {
-  return await findPostView.query().select().orderBy('createdAt','desc');
+  return await findPostView.query().select().where({tripLocation : location}).orderBy('createdAt','desc');
+}
+
+let getFindAllPost = async () =>
+{
+  return await findPostView.query().select().orderBy('createdAt', 'desc');
 }
 
 module.exports = {
@@ -55,5 +46,6 @@ module.exports = {
   getUserPostList: getUserPostList,
   deletePost: deletePost,
   createFindPost: createFindPost,
-  getFindPost: getFindPost
+  getFindPost: getFindPost,
+  getFindAllPost :getFindAllPost
 }

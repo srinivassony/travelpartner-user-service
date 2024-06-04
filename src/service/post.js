@@ -260,16 +260,12 @@ exports.getFindPost = async (postInfo, req, res) =>
 {
     try
     {
-        // if (!postInfo)
-        // {
-                // req.flash('error', 'Post details is not found!');
+        if (!postInfo)
+        {
+                req.flash('error', 'Post details is not found!');
 
-                // res.redirect('/find-partner'); 
-        //     return {
-        //         status: Status.FAIL,
-        //         message: "Post details is not found!"
-        //     }
-        // }
+                res.redirect('/find-partner'); 
+        }
 
         let location = postInfo && postInfo.tripLocation ? postInfo.tripLocation : null;
 
@@ -302,3 +298,42 @@ exports.getFindPost = async (postInfo, req, res) =>
         }
     }
 }
+
+exports.getFindAllPost = async (req, res) =>
+    {
+        try
+        {
+            let findPostList = await db.getFindAllPost();
+    
+            if (findPostList.length == 0)
+            {
+                req.flash('error', 'Post details is not found!');
+
+                res.redirect('/travel-posts'); 
+            }
+    
+            for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
+            {
+                let post = findPostList[postIndex];
+    
+                const date = moment(post.tripDate);
+                post.tripDate = common.formatDate(date);
+    
+                let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+    
+                post.followUsers = followUsers;
+            }
+    
+            return {
+                status: Status.SUCCESS,
+                findPostList: findPostList
+            }
+        }
+        catch (error) 
+        {
+            return {
+                status: Status.FAIL,
+                message: error.message
+            }
+        }
+    }

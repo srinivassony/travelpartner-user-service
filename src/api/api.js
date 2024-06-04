@@ -411,6 +411,43 @@ app.get('/find-posts', async (req, res) =>
 	});
 });
 
+app.get('/travel-posts', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let findPostInfo = await postService.getFindAllPost(req, res);
+
+	res.render('pagesInfo/find-all-posts', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		errorMessage: message,
+		profilePicId: profilePicId,
+		profilePicName: profilePicName,
+		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
+	});
+});
+
 app.get(`/userprofile/:id`, async (req, res) =>
 {
 	var id = req.session.userId;
