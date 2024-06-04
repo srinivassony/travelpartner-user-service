@@ -380,7 +380,7 @@
                                                               
                                                               <% if(post && post.followUsers && post.followUsers.length > 0) { 
                                                                 post.followUsers.forEach(function(follow) { %>
-                                                                  <% if(follow && (follow.followerId == id || follow.followingId == id) && follow.requested == 1 && follow.isFollow == 1 && (post && post.userId != id ) ) { %>
+                                                                  <% if(follow && (follow.followerId == id || follow.followingId == id) && follow.requested == 1 && follow.isFollow == 1 && (post && post.userId != id )) { %>
                                                                 <li>
                                                                   <a href="/userprofile/<%= post.userId %>" class="chatMessage"><i class="fa fa-wechat"></i> Chat message</a>
                                                                 </li>
