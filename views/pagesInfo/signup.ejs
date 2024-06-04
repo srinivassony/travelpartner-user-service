@@ -34,9 +34,9 @@
 
  
   <!-- Preloader -->
-  <!-- <div class="preloader">
+  <div class="preloader">
     <img src="images/Logo-small.png" alt="loader" class="lds-ripple img-fluid"/>
-  </div> -->
+  </div>
   <div id="main-wrapper" class="content">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
@@ -82,7 +82,7 @@
     
                   <div class="row">
                     <div class="col-12 mb-2 mb-sm-0">
-                      <p class="mb-7 fw-bolder"><%= errorMessage %></p>
+                      <p class="mb-7 fw-bolder" style="color: red;"><%= errorMessage %></p>
                     </div>
                   </div>
               
@@ -141,6 +141,8 @@
 
 <script src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/js/sidebarmenu.js"></script>
 <script src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/js/theme.js"></script>
+<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -217,8 +219,9 @@
                 $('#passwordError').text('Password is required');
                 isValid = false;
             }
-            else
+            else if(password)
             {
+              console.log('here')
                 var symbolRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
                 var numberRegex = /[0-9]/;
                 
