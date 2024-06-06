@@ -164,7 +164,7 @@ exports.getUserPostList = async (id) =>
     }
 }
 
-exports.deletePost = async (reqParams) =>
+exports.deletePost = async (reqParams, req, res) =>
 {
     try 
     {
@@ -172,25 +172,28 @@ exports.deletePost = async (reqParams) =>
 
         if (!postId)
         {
-            return {
-                status: Status.FAIL,
-                message: "Post id is requried."
-            }
+            req.flash('error', 'Post id is requried.');
+
+            res.redirect('/find-posts');
+
+            return "";
         }
 
         let postData = await db.deletePost(postId);
 
-        return {
-            status: Status.SUCCESS,
-            message: "Post deleted sucessfully"
-        }
+        req.flash('success', 'Post deleted!');
+
+        res.redirect('/find-posts');
+
+        return "";
     }
     catch (error) 
     {
-        return {
-            status: Status.FAIL,
-            message: error.message
-        }
+        req.flash('error', error);
+
+        res.redirect('/find-posts');
+
+        return "";
     }
 }
 
@@ -300,40 +303,75 @@ exports.getFindPost = async (postInfo, req, res) =>
 }
 
 exports.getFindAllPost = async (req, res) =>
+{
+    try
     {
-        try
-        {
-            let findPostList = await db.getFindAllPost();
-    
-            if (findPostList.length == 0)
-            {
-                req.flash('error', 'Post details is not found!');
+        let findPostList = await db.getFindAllPost();
 
-                res.redirect('/travel-posts'); 
-            }
-    
-            for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
-            {
-                let post = findPostList[postIndex];
-    
-                const date = moment(post.tripDate);
-                post.tripDate = common.formatDate(date);
-    
-                let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
-    
-                post.followUsers = followUsers;
-            }
-    
-            return {
-                status: Status.SUCCESS,
-                findPostList: findPostList
-            }
-        }
-        catch (error) 
+        if (findPostList.length == 0)
         {
-            return {
-                status: Status.FAIL,
-                message: error.message
-            }
+            req.flash('error', 'Post details is not found!');
+
+            res.redirect('/travel-posts');
+        }
+
+        for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
+        {
+            let post = findPostList[postIndex];
+
+            const date = moment(post.tripDate);
+            post.tripDate = common.formatDate(date);
+
+            let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+
+            post.followUsers = followUsers;
+        }
+
+        console.log('findPostList',JSON.stringify(findPostList))
+
+        return {
+            status: Status.SUCCESS,
+            findPostList: findPostList
         }
     }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
+
+exports.deleteFindPost = async (reqParams, req, res) =>
+{
+    try 
+    {
+        let postId = reqParams.id ? reqParams.id : null;
+
+        if (!postId)
+        {
+            req.flash('error', 'Post id is requried.');
+
+            res.redirect('/travel-posts');
+
+            return "";
+        }
+
+        let postData = await db.deleteFindPost(postId);
+
+        req.flash('success', 'Post deleted!');
+
+        res.redirect('/travel-posts');
+
+        return "";
+    }
+    catch (error) 
+    {
+        req.flash('error', error);
+
+        res.redirect('/travel-posts');
+
+        return "";
+    }
+}

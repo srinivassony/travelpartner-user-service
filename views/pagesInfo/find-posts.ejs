@@ -371,7 +371,7 @@
                                                                   <a href="/post-edit/<%= post.id %>"><i class="fa fa-edit"></i> Edit post</a>
                                                                 </li>
                                                                 <li>
-                                                                  <a href="/post-delete/<%= post.id %>"><i class="fa fa-trash"></i> Detele post</a>
+                                                                  <a href="/find-post-delete/<%= post.id %>"><i class="fa fa-trash"></i> Detele post</a>
                                                                 </li>
                                                               <% } %> 
                                                               <li>
@@ -481,6 +481,102 @@
     </div>
 
 <%- include('scripts'); %>
+
+<% if (errorMessage) { %>
+<script>
+  'use strict';
+  $(window).on('load',
+    function() {
+      function notify(message) {
+        $.growl({
+          message: message,
+          icon: $(this).attr('data-icon'),
+          title: ' Error message is : ',
+        }, {
+          element: 'body',
+          type: $(this).attr('data-type'),
+          allow_dismiss: false,
+          offset: {
+            x: 30,
+            y: 30
+          },
+          spacing: 10,
+          z_index: 999999,
+          delay: 8500,
+          timer: 1000,
+          icon_type: 'class',
+          placement: {
+            from: $(this).attr('data-from'),
+            align: $(this).attr('data-align')
+          },
+          animate: {
+            enter: $(this).attr('data-animation-in'),
+            exit: $(this).attr('data-animation-out')
+          },
+          template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+            '<button type="button" class="close" data-growl="dismiss">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '<span class="sr-only">Close</span>' +
+            '</button>' +
+            '<span data-growl="icon"></span>' +
+            '<span data-growl="title" style="color:black;"></span>' +
+            '<span data-growl="message" style="color:red;"></span>' +
+            '</div>'
+        });
+      };
+
+      notify("<%= errorMessage %>");
+    });
+</script>
+<%}%>
+
+<% if (sucessMessage) { %>
+<script>
+  'use strict';
+  $(window).on('load',
+    function() {
+      function notify(message) {
+        $.growl({
+          message: message,
+          icon: $(this).attr('data-icon'),
+          title: ' Success message is : ',
+        }, {
+          element: 'body',
+          type: $(this).attr('data-type'),
+          allow_dismiss: false,
+          offset: {
+            x: 30,
+            y: 30
+          },
+          spacing: 10,
+          z_index: 999999,
+          delay: 8500,
+          timer: 1000,
+          icon_type: 'class',
+          placement: {
+            from: $(this).attr('data-from'),
+            align: $(this).attr('data-align')
+          },
+          animate: {
+            enter: $(this).attr('data-animation-in'),
+            exit: $(this).attr('data-animation-out')
+          },
+          template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid green;width:30%;">' +
+            '<button type="button" class="close" data-growl="dismiss">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '<span class="sr-only">Close</span>' +
+            '</button>' +
+            '<span data-growl="icon"></span>' +
+            '<span data-growl="title" style="color:black;"></span>' +
+            '<span data-growl="message" style="color: black;"></span>' +
+            '</div>'
+        });
+      };
+
+      notify("<%= sucessMessage %>");
+    });
+</script>
+<%}%>
 
 <script>
    
