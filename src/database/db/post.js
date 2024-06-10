@@ -40,6 +40,11 @@ let getFindAllPost = async () =>
   return await findPostView.query().select().orderBy('createdAt', 'desc');
 }
 
+let deleteFindPost = async (id) =>
+{
+  return await findPost.query().delete().where({ id: id });
+}
+
 module.exports = {
   createPost: createPost,
   getPostList: getPostList,
@@ -47,5 +52,6 @@ module.exports = {
   deletePost: deletePost,
   createFindPost: createFindPost,
   getFindPost: getFindPost,
-  getFindAllPost :getFindAllPost
+  getFindAllPost :getFindAllPost,
+  deleteFindPost: deleteFindPost
 }
