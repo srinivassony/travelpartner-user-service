@@ -358,6 +358,32 @@ app.get('/user-posts', async (req, res) =>
 	});
 });
 
+app.get('/saved-posts', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let savedPostDetails = await postService.getUserSavedPostList(id, req, res);
+
+	res.render('pagesInfo/find-saved-posts', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		profilePicId: profilePicId,
+		profilePicName: profilePicName,
+		savedPostInfo: savedPostDetails && savedPostDetails.status == 1 && savedPostDetails.findSavedPostList.length > 0 ? savedPostDetails.findSavedPostList : savedPostDetails && savedPostDetails.status == 0 ? savedPostDetails : []
+	});
+});
+
 app.get("/post-delete/:id", async (req, res) => 
 {
 	return res.json(await postService.deletePost(req.params, req, res));
@@ -407,10 +433,16 @@ app.get('/find-posts', async (req, res) =>
 	{
 		postInfo = JSON.parse(postInfo[0]);
 	} 
+	else if(req.session.postInfo != null)
+	{
+		postInfo = JSON.parse(req.session.postInfo[0]);
+	}
 	else
 	{
 		postInfo = null;
 	}
+
+	console.log('postInfo',postInfo)
 
 	let findPostInfo = await postService.getFindPost(postInfo, req, res);
 
@@ -441,38 +473,16 @@ app.get('/travel-posts', async (req, res) =>
 		return res.redirect('/');
 	}
 
-	let message = req.flash('error');
-
-	if (message.length > 0)
-	{
-		message = message[0];
-	} else
-	{
-		message = null;
-	}
-
-	let message1 = req.flash('success');
-	if (message1.length > 0)
-	{
-		message1 = message1[0];
-	} 
-	else
-	{
-		message1 = null;
-	}
-
-	let findPostInfo = await postService.getFindAllPost(req, res);
+	let findPostInfo = await postService.getFindAllPost();
 
 	res.render('pagesInfo/find-all-posts', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		id: id,
 		uuid: uuid,
-		errorMessage: message,
-		sucessMessage: message1,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
-		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
+		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo : []
 	});
 });
 
@@ -657,7 +667,7 @@ app.post("/api/update/find/post/unlike", async (req, res) =>
 
 app.post("/api/add/find/post/comment", async (req, res) => 
 {
-	return res.json(await postCommentService.createFindPostComment(req.body));
+	return res.json(await postCommentService.createFindPostComment(req.body, req, res));
 });
 
 app.post("/api/find/post/comments", async (req, res) => 

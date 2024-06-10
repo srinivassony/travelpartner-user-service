@@ -412,3 +412,43 @@ WHERE
     us."isRegistered" = 1 
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL;
+
+-- view for saved travel posts
+
+CREATE OR REPLACE  VIEW "tp_view_fetch_find_saved_post"  AS 
+
+ SELECT 
+    findPost."id",
+    findPost."tripLocation",
+    findPost."tripDate",
+    findPost."tripDescription",
+    findPost."createdAt",
+    findPost."userId",
+    us."userName",
+    img."profilePicId",
+    img."profilePicName",
+    savePost."isSave",
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'followerId' VALUE followUsers."followerId",
+          'followingId' VALUE followUsers."followingId",
+          'requested' value NVL(followUsers."requested", 0),
+          'isFollow' value  NVL(followUsers."isFollow", 0)
+            )
+        ) AS followUsers
+        FROM "tp_follow_users" followUsers 
+        WHERE (followUsers."followerId" = findPost."userId" OR followUsers."followingId" = findPost."userId")
+    AND followUsers."requested" = 1
+    AND followUsers."isFollow" = 1
+    ) AS "followUsers",
+    (SELECT COUNT(plike."id") FROM "tp_find_post_like" plike WHERE findPost."id" = plike."findPostId" AND plike."isLike" = 1) AS "likesCount",
+    (SELECT COUNT(pcomment."id") FROM "tp_find_post_comment" pcomment WHERE findPost."id" = pcomment."findPostId") AS "commentsCount"
+FROM "tp_find_post" findPost
+LEFT JOIN "tp_user" us ON us."id" = findPost."userId"
+LEFT JOIN "tp_image" img ON img."userId" = us."id"
+LEFT JOIN "tp_find_post_save" savePost ON savePost."findPostId" = findPost."id" 
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL and savePost."isSave" = 1;
