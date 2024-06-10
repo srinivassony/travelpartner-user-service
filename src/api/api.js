@@ -360,7 +360,12 @@ app.get('/user-posts', async (req, res) =>
 
 app.get("/post-delete/:id", async (req, res) => 
 {
-	return res.json(await postService.deletePost(req.params));
+	return res.json(await postService.deletePost(req.params, req, res));
+});
+
+app.get("/find-post-delete/:id", async (req, res) => 
+{
+	return res.json(await postService.deleteFindPost(req.params, req, res));
 });
 
 app.get('/find-posts', async (req, res) =>
@@ -386,6 +391,16 @@ app.get('/find-posts', async (req, res) =>
 		message = null;
 	}
 
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	let postInfo = req.flash('postData');
 
 	if (postInfo.length > 0)
@@ -405,6 +420,7 @@ app.get('/find-posts', async (req, res) =>
 		id: id,
 		uuid: uuid,
 		errorMessage: message,
+		sucessMessage: message1,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
 		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
@@ -415,6 +431,7 @@ app.get('/travel-posts', async (req, res) =>
 {
 	var name = req.session.name;
 	var id = req.session.userId;
+	console.log('id',id)
 	var uuid = req.session.uuid;
 	var profilePicId = req.session.profilePicId;
 	var profilePicName = req.session.profilePicName;
@@ -434,6 +451,16 @@ app.get('/travel-posts', async (req, res) =>
 		message = null;
 	}
 
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	let findPostInfo = await postService.getFindAllPost(req, res);
 
 	res.render('pagesInfo/find-all-posts', {
@@ -442,6 +469,7 @@ app.get('/travel-posts', async (req, res) =>
 		id: id,
 		uuid: uuid,
 		errorMessage: message,
+		sucessMessage: message1,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
 		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
