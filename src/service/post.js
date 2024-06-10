@@ -302,7 +302,7 @@ exports.getFindPost = async (postInfo, req, res) =>
     }
 }
 
-exports.getFindAllPost = async (req, res) =>
+exports.getFindAllPost = async () =>
 {
     try
     {
@@ -310,9 +310,10 @@ exports.getFindAllPost = async (req, res) =>
 
         if (findPostList.length == 0)
         {
-            req.flash('error', 'Post details is not found!');
-
-            res.redirect('/travel-posts');
+            return {
+                status: Status.FAIL,
+                message: 'Post details not found!'
+            }
         }
 
         for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
@@ -326,8 +327,6 @@ exports.getFindAllPost = async (req, res) =>
 
             post.followUsers = followUsers;
         }
-
-        console.log('findPostList',JSON.stringify(findPostList))
 
         return {
             status: Status.SUCCESS,
@@ -373,5 +372,45 @@ exports.deleteFindPost = async (reqParams, req, res) =>
         res.redirect('/travel-posts');
 
         return "";
+    }
+}
+
+exports.getUserSavedPostList = async (id) =>
+{
+    try
+    {
+        let findSavedPostList = await db.getUserSavedPostList(id);
+
+        if (findSavedPostList.length == 0)
+        {
+            return {
+                status: Status.FAIL,
+                message: 'saved post details not found!'
+            }
+        }
+
+        for (let postIndex = 0; postIndex < findSavedPostList.length; postIndex++)
+        {
+            let post = findSavedPostList[postIndex];
+
+            const date = moment(post.tripDate);
+            post.tripDate = common.formatDate(date);
+
+            let followUsers = post && post.followUsers ? JSON.parse(post.followUsers) : [];
+
+            post.followUsers = followUsers;
+        }
+
+        return {
+            status: Status.SUCCESS,
+            findSavedPostList: findSavedPostList
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
     }
 }

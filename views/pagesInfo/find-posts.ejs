@@ -428,6 +428,8 @@
                                                               <input type="hidden" value="<%= post.id %>" id="postId" class="postId">
                                                               <input type="hidden" value="<%= profilePicId %>" id="profilePicId" class="profilePicId">
                                                               <input type="hidden" value="<%= profilePicName %>" id="profilePicName" class="profilePicName">
+                                                              <input type="hidden" value="<%= JSON.stringify(post) %>" id="postInfo" class="postInfo">
+                                                            
                                                               <button class="send-btn">Send</button>
                                                             </div>
                                                             <button class="close-btn">Close</button>
@@ -763,10 +765,11 @@
     var postId = card.querySelector('.postId').value;
     var profilePicId = card.querySelector('.profilePicId').value;
     var profilePicName = card.querySelector('.profilePicName').value;
+    var postInfo = card.querySelector('.postInfo').value;
 
     console.log('postId', postId)
     console.log('message', message)
-
+    console.log('postInfo',JSON.parse(postInfo))
 
     if (message !== "") {
       var chatMessages = card.querySelector('.chat-messages');
@@ -808,7 +811,8 @@
         id: "<%= id %>", // Example user ID, replace with your actual parameter
         postId: postId,
         message: message,
-        uuid: "<%= uuid %>"
+        uuid: "<%= uuid %>",
+        postInfo : [postInfo]
       };
 
       fetch('/api/add/find/post/comment', {
@@ -827,11 +831,14 @@
         .then(function(data) {
           console.log(data);
 
-          if (data.status === 1) {
-            alert('comment added')
-            location.reload();
-          } else {
+          if (data.status === 0) 
+          {
             alert('comment is not added', data)
+          }
+          else
+          {
+            alert('comment added');
+             location.reload();
           }
 
           // Handle success
