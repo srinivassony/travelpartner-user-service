@@ -21,7 +21,8 @@ const tables = {
     fetch_view_find_post: 'tp_view_fetch_find_post',
     fetch_view_find_post_comments: 'tp_view_fetch_find__post_comments',
     findPostSave : 'tp_find_post_save',
-    fetch_view_find_saved_posts : 'tp_view_fetch_find_saved_post'
+    fetch_view_find_saved_posts : 'tp_view_fetch_find_saved_post',
+    fetch_follow_users : 'tp_view_fetch_follow_users'
 };
 
 const rdsPrefix = config.rdsSql.owner;
