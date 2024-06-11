@@ -297,6 +297,21 @@ foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE,
 foreign key ("userId") references "tp_user" ("id") 
 );
 
+---chat table
+create table "tp_chat" (
+"id" varchar2(36) not null,
+"messageTo" varchar2(36) not null,
+"message" varchar2(4000) not null,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id")
+);
+
+
 -- create or replace function "tp_function_fetch_find_posts_join"(
 --     loc IN VARCHAR2
 -- )
