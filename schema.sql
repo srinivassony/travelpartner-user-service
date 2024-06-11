@@ -467,3 +467,23 @@ WHERE
     us."isRegistered" = 1 
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL and savePost."isSave" = 1;
+
+-- view to fetch the follow users
+CREATE OR REPLACE  VIEW "tp_view_fetch_follow_users"  AS 
+select 
+ userInfo."id",
+ userInfo."userName",
+    img."profilePicId",
+    img."profilePicName",
+    followUsers."followerId" ,
+    followUsers."followingId",
+    followUsers."requested",
+    followUsers."isFollow"
+from "tp_user" userInfo
+left join "tp_follow_users" followUsers  on (followUsers."followerId" = userInfo."id" OR followUsers."followingId" = userInfo."id")AND followUsers."requested" = 1
+    AND followUsers."isFollow" = 1
+LEFT JOIN "tp_image" img ON img."userId" = userInfo."id"
+WHERE 
+    userInfo."isRegistered" = 1 
+    AND userInfo."isInvited" = 1 
+    AND userInfo."inviteOn" IS NOT NULL;

@@ -507,6 +507,27 @@ app.get(`/userprofile/:id`, async (req, res) =>
 	});
 });
 
+app.get(`/chat`, async (req, res) =>
+{
+	var id = req.session.userId;
+	var name = req.session.name;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	res.render('pagesInfo/chat',
+		{
+			isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+			username: name,
+			userId: req.params.id,
+			uuid: uuid,
+			id: id
+		});
+});
+
 app.get('/logout', async function (req, res)
 {
 	var id = req.session.userId;
