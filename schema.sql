@@ -479,7 +479,9 @@ select
     followUsers."followerId" ,
     followUsers."followingId",
     followUsers."requested",
-    followUsers."isFollow"
+    followUsers."isFollow",
+    userInfo."login",
+    userInfo."logout"
 from "tp_user" userInfo
 left join "tp_follow_users" followUsers  on (followUsers."followerId" = userInfo."id" OR followUsers."followingId" = userInfo."id")AND followUsers."requested" = 1
     AND followUsers."isFollow" = 1

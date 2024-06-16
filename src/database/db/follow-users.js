@@ -2,6 +2,9 @@ const FollowUser = require("../../database/model/follow-users");
 
 const Notification = require("../../database/model/notification");
 
+const FollowUserView = require("../../database/model/followUsersView");
+
+
 let createFollow = async (data, NotificationParams) =>
 {
     const transaction = await FollowUser.startTransaction();
@@ -53,11 +56,11 @@ let updateRequestedForUnfollowUsers = async (ids, data, NotificationParams) =>
     {
         let notifications = null;
 
-        let followUsers = await FollowUser.query().update(data).whereIn('id', ids);
+        let followUsers = await FollowUser.query(transaction).update(data).whereIn('id', ids);
 
         if(NotificationParams)
         {
-            notifications =  await Notification.query().insert(NotificationParams);
+            notifications =  await Notification.query(transaction).insert(NotificationParams);
         }
 
         await transaction.commit();
@@ -81,9 +84,9 @@ let updateRequestedForFollowUsers = async (ids, Followparams, followingId, notif
     try 
     {
 
-        let followUsers = await FollowUser.query().update(Followparams).whereIn('id', ids);
+        let followUsers = await FollowUser.query(transaction).update(Followparams).whereIn('id', ids);
 
-        let notifications = await Notification.query().update(notificationParams).where('notificationTo', followingId);
+        let notifications = await Notification.query(transaction).update(notificationParams).where('notificationTo', followingId);
 
         await transaction.commit();
 
@@ -99,10 +102,22 @@ let updateRequestedForFollowUsers = async (ids, Followparams, followingId, notif
     } 
 }
 
+let getFollowUsers = async (id) => 
+    {
+      return await FollowUserView.query().select().where({
+        followerId: id
+    }).orWhere(
+        {
+            followingId : id
+        }
+    )
+    };
+
 module.exports ={
     createFollow: createFollow,
     createNotification: createNotification,
     getFollowDetails: getFollowDetails,
     updateRequestedForUnfollowUsers: updateRequestedForUnfollowUsers,
-    updateRequestedForFollowUsers: updateRequestedForFollowUsers
+    updateRequestedForFollowUsers: updateRequestedForFollowUsers,
+    getFollowUsers: getFollowUsers
   }

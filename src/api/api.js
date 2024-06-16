@@ -17,6 +17,7 @@ let postService = require('../service/post');
 let postImageService = require('../service/postImages');
 let postLikeService = require('../service/postLike');
 let postCommentService = require('../service/postComment');
+let chatService = require('../service/chat');
 
 
 //middelwares
@@ -442,8 +443,6 @@ app.get('/find-posts', async (req, res) =>
 		postInfo = null;
 	}
 
-	console.log('postInfo',postInfo)
-
 	let findPostInfo = await postService.getFindPost(postInfo, req, res);
 
 	res.render('pagesInfo/find-posts', {
@@ -512,11 +511,15 @@ app.get(`/chat`, async (req, res) =>
 	var id = req.session.userId;
 	var name = req.session.name;
 	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
 
 	if (!req.session.isLoggedIn)
 	{
 		return res.redirect('/');
 	}
+
+	let followUsers = await followUsersService.getFollowUsers(id);
 
 	res.render('pagesInfo/chat',
 		{
@@ -524,7 +527,10 @@ app.get(`/chat`, async (req, res) =>
 			username: name,
 			userId: req.params.id,
 			uuid: uuid,
-			id: id
+			id: id,
+			profilePicId: profilePicId,
+			profilePicName: profilePicName,
+			followUsersInfo : followUsers && followUsers.status == 1 && followUsers.followUsersList.length > 0 ? followUsers.followUsersList : followUsers && followUsers.status == 0 ? followUsers : []
 		});
 });
 
@@ -711,6 +717,11 @@ app.post("/api/update/find/post/unsave", async (req, res) =>
 	return res.json(await postLikeService.updateFindPostUnSave(req.body));
 });
 
+app.post("/api/add/message", async (req, res) => 
+{
+	return res.json(await chatService.createChat(req.body));
+});
+	
 app.all('*', (req, res, next) => 
 {
     res.status(404).render('pagesInfo/404',{
