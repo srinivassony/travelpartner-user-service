@@ -300,7 +300,8 @@ foreign key ("userId") references "tp_user" ("id")
 ---chat table
 create table "tp_chat" (
 "id" varchar2(36) not null,
-"messageTo" varchar2(36) not null,
+"sender" varchar2(36) not null,
+"receiver" varchar2(36) not null,
 "message" varchar2(4000) not null,
 "userId" varchar2(36) not null,
 "createdAt" TIMESTAMP(8),
