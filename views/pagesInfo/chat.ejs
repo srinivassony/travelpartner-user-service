@@ -8,254 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="description" content="#">
   <%- include('links'); %>
-  <style>
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-    }
 
-    .post-card {
-      width: 550px;
-      border: 1px solid #dbdbdb;
-      background-color: #fff;
-      border-radius: 5px;
-      margin: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .post-header {
-      align-items: center;
-      padding: 10px;
-    }
-
-    .profile-picture {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .username {
-      font-weight: bold;
-    }
-
-    .location {
-      width: 200px;
-      margin-left: 5px;
-      color: #8e8e8e;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .post-footer {
-      padding: 10px;
-      border-top: 1px solid #dbdbdb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .like-btn,
-    .comment-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #262626;
-    }
-
-    .hand,
-    .comment-icon {
-      margin-right: 5px;
-    }
-
-    .description {
-      padding: 10px;
-    }
-
-    .arrow-icon {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 24px;
-      cursor: pointer;
-      color: #262626;
-      padding: 5px;
-      border-radius: 50%;
-      z-index: 2;
-    }
-
-    .left-arrow {
-      left: 10px;
-    }
-
-    .right-arrow {
-      right: 10px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .dotsIcons {
-      padding: 10px;
-    }
-
-    /* Optional: Adjust for smaller screens */
-    @media screen and (max-width: 900px) {
-      .post-card {
-        width: calc(50% - 20px);
-        /* Adjust margin/padding accordingly */
-      }
-    }
-
-    @media screen and (max-width: 600px) {
-      .post-card {
-        width: calc(100% - 20px);
-        /* Adjust margin/padding accordingly */
-      }
-    }
-
-
-    .like-btn.liked .hand {
-      color: red;
-      /* When liked, turn red */
-    }
-
-
-    .save-btn.saved .savebtn {
-      color: red;
-      /* When liked, turn red */
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff;
-      border: 1px solid #ddd;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      width: 800px;
-      /* Limit maximum width */
-      z-index: 1000;
-      /* Adjust the z-index to ensure it appears above other content */
-    }
-
-    /* Responsive styles */
-    @media screen and (max-width: 600px) {
-      .popup {
-        width: 90%;
-        /* Adjust width for smaller screens */
-      }
-    }
-
-    @media screen and (max-width: 900px) {
-      .post-card {
-        width: 90%;
-        /* Adjust margin/padding accordingly */
-      }
-    }
-
-    @media screen and (max-width: 700px) {
-      .post-card {
-        width: 90%;
-        /* Adjust margin/padding accordingly */
-      }
-    }
-
-
-    .popup-content {
-      padding: 20px;
-    }
-
-    .popup-content {
-      max-height: 70vh;
-      /* Limit maximum height */
-      overflow-y: auto;
-      /* Enable vertical scroll if content exceeds the height */
-    }
-
-    .containerComment {
-      position: relative;
-    }
-
-    #comment-icon {
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-
-    .chat-messages {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-      padding-right: 10px;
-    }
-
-    .message {
-      background-color: #f1f0f0;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-
-    .chat-input {
-      display: flex;
-    }
-
-    .message-input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      margin-right: 10px;
-    }
-
-    .send-btn {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 15px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .close-btn {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      color: #333;
-      border-radius: 5px;
-      padding: 8px 15px;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .close-btn:hover {
-      background-color: #f9f9f9;
-    }
-
-    /* CSS styles remain unchanged from the previous version */
-    .user-photo {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      /* Make the photo round */
-      margin-right: 10px;
-      overflow: hidden;
-      /* Ensure the photo stays within the circle */
-    }
-  </style>
 </head>
 
 <body>
@@ -280,9 +33,8 @@
                         <div class="col-lg-8">
                           <div class="page-header-title">
                             <div class="d-inline">
-                              <h4>Chat API</h4>
-                              <span>lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit</span>
+                              <h4>Chat with friends</h4>
+                              <span></span>
                             </div>
                           </div>
                         </div>
@@ -293,141 +45,180 @@
                       <div class="row">
                         <div class="chat-box">
                           <ul class="text-right boxs">
-                            <!-- <li class="chat-single-box card-shadow bg-white active" data-id="1">
-                                              <div class="had-container">
-                                                <div class="chat-header p-10 bg-gray">
-                                                  <div class="user-info d-inline-block f-left">
-                                                    <div class="box-live-status bg-danger  d-inline-block m-r-10">
-                                                    </div>
-                                                    <a href="#">Josephin Doe</a>
-                                                  </div>
-                                                  <div class="box-tools d-inline-block">
-                                                    <a href="#" class="mini">
-                                                      <i class="icofont icofont-minus f-20 m-r-10"></i>
-                                                    </a>
-                                                    <a class="close" href="#">
-                                                      <i class="icofont icofont-close f-20"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                                <div class="chat-body p-10">
-                                                  <div class="message-scrooler">
-                                                    <div class="messages">
-                                                      <div class="message out no-avatar media">
-                                                        <div class="body media-body text-right p-l-50">
-                                                          <div class="content msg-reply f-12 bg-primary d-inline-block">
-                                                            Good morning..</div>
-                                                          <div class="seen"><i class="icon-clock f-12 m-r-5 txt-muted d-inline-block"></i><span>a
-                                                              few seconds ago </span>
-                                                            <div class="clear"></div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="sender media-right friend-box">
-                                                          <a href="javascript:void(0);" title="Me"><img src="../files/assets/images/avatar-1.jpg" class="  img-chat-profile" alt="Me"></a>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div class="chat-footer b-t-muted">
-                                                  <div class="input-group write-msg">
-                                                    <input type="text" class="form-control input-value" placeholder="Type a Message">
-                                                    <span class="input-group-btn">
-                                                      <button id="paper-btn" class="btn btn-primary" type="button" style="padding: 6px 12px;">
-                                                        <i class="icofont icofont-paper-plane"></i>
-                                                      </button>
-                                                    </span>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </li> -->
+
                           </ul>
                           <div id="sidebar" class="users p-chat-user">
                             <div class="had-container">
                               <div class="card card_main p-fixed users-main ">
                                 <div class="user-box">
                                   <div class="card-block">
-                                    <!-- <div class="right-icon-control">
-                                                      <input type="text" class="form-control  search-text" placeholder="Search Friend">
-                                                      <div class="form-icon">
-                                                        <i class="icofont icofont-search"></i>
-                                                      </div>
-                                                    </div> -->
+                                    <div class="right-icon-control">
+                                      <input type="text" class="form-control  search-text" placeholder="Search Friend">
+                                      <div class="form-icon">
+                                        <i class="icofont icofont-search"></i>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <!-- <div class="user-groups">
-                                                    <h6>Groups</h6>
-                                                    <ul>
-                                                      <li class="frnds">Friends</li>
-                                                      <li class="work">Work</li>
-                                                    </ul>
-                                                  </div> -->
+
                                   <div class="user-groups">
-                                    <h6>Favourites</h6>
-                                    <div class="media userlist-box" data-id="1" data-status="online" data-username="Josephin Doe" data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+                                    <h6>Friends</h6>
+                                  </div>
+
+                                  <div class="user-groups">
+                                    <% if(followUsersInfo && followUsersInfo.length > 0) {
+                                      followUsersInfo.forEach(function(followUser) { %>
+                                    <% if(followUser && followUser.login == 1) {%>
+                                    <div class="media userlist-box" data-id="<%= followUser.id %>" data-status="online" data-username="<%= followUser.userName %>" data-followerid="<%= followUser.followerId %>" data-followingid="<%= followUser.followingId %>" data-toggle="tooltip" data-placement="left" title="<%= followUser.userName %>">
                                       <a class="media-left" href="#!">
-                                        <img class="media-object  " src="../files/assets/images/avatar-1.jpg" alt="Generic placeholder image">
+                                        <% if(followUser && followUser.profilePicId && followUser.profilePicName ) {%>
+                                        <img class="media-object  " src="../images/uploads/<%= followUser.profilePicId %>/<%= followUser.profilePicName %>" alt="<%= followUser.profilePicName %>">
+                                        <% } else {%>
+                                        <img class="media-object  " src="../images/chat__person.png" alt="image" class="profile-picture">
+                                        <% } %>
                                         <div class="live-status bg-success"></div>
                                       </a>
                                       <div class="media-body">
-                                        <div class="f-13 chat-header">Josephin Doe
+                                        <div class="f-13 chat-header"><%= followUser.userName %>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div class="media userlist-box" data-id="1" data-status="online" data-username="Josephin Doe" data-toggle="tooltip" data-placement="left" title="Josephin Doe">
-                                    <a class="media-left" href="#!">
-                                      <img class="media-object  " src="../files/assets/images/avatar-1.jpg" alt="Generic placeholder image">
-                                      <div class="live-status bg-success"></div>
-                                    </a>
-                                    <div class="media-body">
-                                      <div class="f-13 chat-header">Josephin Doe
+                                    <% } else {%>
+                                    <div class="media userlist-box" data-id="<%= followUser.id %>" data-status="offline" data-username="<%= followUser.userName %>" data-toggle="tooltip" data-placement="left" title="<%= followUser.userName %>">
+                                      <a class="media-left" href="#!">
+                                        <% if(followUser && followUser.profilePicId && followUser.profilePicName ) {%>
+                                        <img class="media-object  " src="../images/uploads/<%= followUser.profilePicId %>/<%= followUser.profilePicName %>" alt="<%= followUser.profilePicName %>">
+                                        <% } else {%>
+                                        <img class="media-object  " src="../images/chat__person.png" alt="image" class="profile-picture">
+                                        <% } %>
+                                        <div class="live-status bg-danger"></div>
+                                      </a>
+                                      <div class="media-body">
+                                        <div class="f-13 chat-header"><%= followUser.userName %>
+                                        </div>
                                       </div>
                                     </div>
+                                    <% } %>
+                                    <% }); } %>
                                   </div>
-                                  <div class="media userlist-box" data-id="1" data-status="online" data-username="Josephin Doe" data-toggle="tooltip" data-placement="left" title="Josephin Doe">
-                                    <a class="media-left" href="#!">
-                                      <img class="media-object  " src="../files/assets/images/avatar-1.jpg" alt="Generic placeholder image">
-                                      <div class="live-status bg-success"></div>
-                                    </a>
-                                    <div class="media-body">
-                                      <div class="f-13 chat-header">Josephin Doe
-                                      </div>
-                                    </div>
-                                  </div>
-
-
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="page-error">
-                      <div class="card text-center">
-                        <div class="card-block">
-                          <div class="m-t-10">
-                            <i class="icofont icofont-warning text-white bg-c-yellow"></i>
-                            <h4 class="f-w-600 m-t-25">Not supported</h4>
-                            <p class="text-muted m-b-0">Chat not supported in this device
-                            </p>
+                      <div class="page-error">
+                        <div class="card text-center">
+                          <div class="card-block">
+                            <div class="m-t-10">
+                              <i class="icofont icofont-warning text-white bg-c-yellow"></i>
+                              <h4 class="f-w-600 m-t-25">Not supported</h4>
+                              <p class="text-muted m-b-0">Chat not supported in this device
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div id="styleSelector">
+                <div id="styleSelector">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <%- include('scripts'); %>
+    <%- include('scripts'); %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Get all user cards
+        const userCards = document.querySelectorAll('.media');
+
+        const userCardsArray = Array.from(userCards);
+        console.log('userCardsArray', userCardsArray)
+
+        // Use a Set to keep track of unique user IDs
+        const uniqueIds = new Set();
+        const uniqueUserCards = userCardsArray.filter(card => {
+          const userId = card.getAttribute('data-id');
+
+          if (uniqueIds.has(userId)) {
+            // If the ID is already in the Set, it's a duplicate
+            return false;
+          } else {
+            if (userId != "<%= id %>") {
+              // Otherwise, add the ID to the Set and keep the card
+              uniqueIds.add(userId);
+              return true;
+            }
+
+          }
+        });
+
+        // Log the unique user cards
+        console.log('uniqueUserCards', uniqueUserCards);
+
+
+        // Remove duplicates from the DOM
+        userCardsArray.forEach(card => {
+          if (!uniqueUserCards.includes(card)) {
+            card.remove();
+          }
+        });
+
+      });
+    </script>
+
+    <% if (followUsersInfo.status == 0) { %>
+    <script>
+      'use strict';
+      $(window).on('load',
+        function() {
+          function notify(message) {
+            $.growl({
+              message: message,
+              icon: $(this).attr('data-icon'),
+              title: ' Error message is : ',
+            }, {
+              element: 'body',
+              type: $(this).attr('data-type'),
+              allow_dismiss: false,
+              offset: {
+                x: 30,
+                y: 30
+              },
+              spacing: 10,
+              z_index: 999999,
+              delay: 8500,
+              timer: 1000,
+              icon_type: 'class',
+              placement: {
+                from: $(this).attr('data-from'),
+                align: $(this).attr('data-align')
+              },
+              animate: {
+                enter: $(this).attr('data-animation-in'),
+                exit: $(this).attr('data-animation-out')
+              },
+              template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                '<button type="button" class="close" data-growl="dismiss">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '<span class="sr-only">Close</span>' +
+                '</button>' +
+                '<span data-growl="icon"></span>' +
+                '<span data-growl="title" style="color:black;"></span>' +
+                '<span data-growl="message" style="color:red;"></span>' +
+                '</div>'
+            });
+          };
+
+          notify("<%= followUsersInfo.message %>");
+        });
+    </script>
+    <%}%>
 
   <script>
     "use strict";
@@ -444,11 +235,724 @@
         var g = $(this).val().toLowerCase();
         $(".userlist-box .media-body .chat-header").each(function() {
           var s = $(this).text().toLowerCase();
-          $(this).closest('.userlist-box')[s.indexOf(g) !== -1 ? 'hide' : 'hide']();
+          $(this).closest('.userlist-box')[s.indexOf(g) !== -1 ? 'show' : 'hide']();
         });
       });
     });
   </script>
+
+  <script>
+    'use strict';
+
+    function boxMinimizedCount() {
+      var _count = $('#main-chat .chat-single-box.minimized .chat-dropdown li').length;
+      $('#main-chat .chat-single-box.minimized .count span').html($('#main-chat .chat-single-box.minimized .chat-dropdown li').length);
+      if (_count == 0) {
+        $('#main-chat .chat-single-box.minimized').remove();
+      }
+    }
+
+    function boxMinimizedUserAdd() {
+      var _boxHidden = $('#main-chat .chat-single-box:not(".minimized"):not(".hidden")').eq(0);
+      _boxHidden.addClass('hidden');
+      var dataId = _boxHidden.data('id');
+      var hasItem = false;
+      $('#main-chat .chat-single-box.minimized .chat-dropdown li').each(function() {
+        if ($(this).data('id') == dataId) {
+          hasItem = true;
+        }
+      });
+      if (!hasItem) {
+        var dataUserName = _boxHidden.find('.user-info a').text();
+        $('#main-chat .chat-single-box.minimized .chat-dropdown').append(box_minimized_dropdownLi.format(dataId, dataUserName));
+      }
+    }
+    var box_minimized_dropdownLi = '<li data-id="{0}"><div class="username">{1}</div> <div class="remove">X</div></li>'
+
+    function boxMinimized() {
+      var _boxDefaultWidth = parseInt($('#main-chat .chat-single-box:not(".minimized")').css('width'));
+      var _boxCommonWidth = parseInt($('.chat-box').css('width').replace('px', ''), 10) + parseInt($('#sidebar').css('width').replace('px', ''), 10);
+      var _windowWidth = $(window).width();
+      var _hasMinimized = false;
+      $('#main-chat .boxs .chat-single-box').each(function(index) {
+        if ($(this).hasClass('minimized')) {
+          _hasMinimized = true;
+        }
+      });
+      if ((_windowWidth) > (_boxCommonWidth)) {
+        if (!_hasMinimized) {
+          if ((_windowWidth) < 768) {
+            $(".chat-box").css('margin-right', '70px');
+            return;
+          } else {
+            return;
+          }
+        }
+        var dataId = $('#main-chat .boxs .minimized .chat-dropdown li').last().data('id');
+        $('#main-chat .boxs .minimized .chat-dropdown li').last().remove();
+        $('#main-chat .boxs .chat-single-box').each(function(index) {
+          if ($(this).data('id') == dataId) {
+            $(this).removeClass('hidden');
+            return false;
+          }
+        });
+      } else {
+        if (!_hasMinimized) {
+          $('#main-chat .boxs').prepend('<li class="chat-single-box minimized"><div class="count"><span>0</span></div><ul class="chat-dropdown"></ul></li>');
+        }
+        boxMinimizedUserAdd();
+      }
+      boxMinimizedCount();
+    }
+    $(window).on('resize', function() {
+      boxMinimized();
+      sidebarClosed();
+    });
+    $(function() {
+      var waveEffect = $('.user-box').attr('wave-effect');
+      var waveColor = $('.user-box').attr('wave-color');
+      if (waveEffect == 'true') {
+        $('#sidebar .user-box .userlist-box').each(function(index) {
+          $(this).addClass('waves-effect ' + waveColor);
+        });
+      }
+      initialTooltip();
+      messageScroll();
+      generatePlaceholder();
+      boxMinimized();
+    });
+    $(document).on('click', '#main-chat .chat-single-box', function() {
+      if ($(this).hasClass('new-message')) {
+        $(this).removeClass('new-message');
+      }
+      //ActiveChatBox(this);
+    });
+    $(document).on('click', '#main-chat .chat-header .user-info', function() {
+      removeBoxCollapseClass($(this).parents('.chat-single-box'));
+      messageScroll();
+    });
+    $(document).on('click', '#main-chat .chat-single-box .mini', function() {
+      parent = $(this).parents('.chat-single-box');
+      if ($(parent.children()[0].children[0]).hasClass('custom-collapsed')) {
+        $(parent.children()[0].children[0]).removeClass('custom-collapsed');
+        $(parent.children()[0].children[1]).css('display', 'block');
+        $(parent.children()[0].children[2]).css('display', 'block');
+        parent.addClass('bg-white');
+        parent.addClass('card-shadow');
+        messageScroll();
+      } else {
+        parent.removeClass('bg-white');
+        parent.removeClass('card-shadow');
+        $(parent.children()[0].children[0]).addClass('custom-collapsed');
+        $(parent.children()[0].children[1]).css('display', 'none');
+        $(parent.children()[0].children[2]).css('display', 'none');
+      }
+    });
+    $(document).on('click', '#main-chat .chat-single-box .close', function() {
+      parent = $(this).parents('.chat-single-box');
+      if (parent.hasClass('active')) {
+        parent.remove();
+        setTimeout(function() {
+          $('#main-chat .boxs .chat-single-box:last-child').addClass('active');
+        }, 1);
+      }
+      parent.remove();
+      parent.find('.close_tooltip').tooltip('dispose');
+      boxMinimized();
+    });
+    $(document).on('click', '#main-chat #sidebar .user-box .userlist-box', function() {
+      var dataId = $(this).attr('data-id');
+      var dataStatus = $(this).data('status');
+      console.log('dataStatus',dataStatus)
+      let senderId = "<%= id %>"
+    console.log('senderId',senderId)
+    console.log('dataId',dataId)
+    var dataUserName = $(this).attr('data-username');
+    var _return = false;
+    $('#main-chat .chat-box .boxs .chat-single-box').each(function(index) {
+    if ($(this).attr('data-id') == dataId) {
+    removeBoxCollapseClass(this);
+    ActiveChatBox(this);
+    _return = true;
+    }
+    });
+    if (_return) {
+    return;
+    }
+    if (dataStatus == "online") {
+    var newBox = `<li class="chat-single-box card-shadow bg-white active" data-id="{0}">
+      <div class="had-container">
+        <div class="chat-header p-10 bg-gray">
+          <div class="user-info d-inline-block f-left">
+            <div class="box-live-status bg-success  d-inline-block m-r-10"></div>
+            <a href="#">{1}</a>
+          </div>
+          <div class="box-tools d-inline-block">
+            <a href="#" class="mini">
+              <i class="icofont icofont-minus f-20 m-r-10"></i>
+            </a>
+            <a class="close" href="#">
+              <i class="icofont icofont-close f-20"></i>
+            </a>
+          </div>
+        </div>
+        <div class="chat-body p-10">
+          <div class="message-scrooler">
+            <div class="messages" id="messages">
+
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer b-t-muted">
+          <div class="input-group write-msg">
+            <input type="text" class="form-control input-value" name="message" placeholder="Type a Message">
+            <input type="hidden" class="form-control input-sender-value" name="sender" value=${senderId} placeholder="Type a Message">
+            <input type="hidden" class="form-control input-receiver-value" name="receiver" value=${dataId} placeholder="Type a Message">
+            <span class="input-group-btn">
+              <button id="paper-btn" class="btn btn-primary " type="button">
+                <i class="icofont icofont-paper-plane"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </li>`;
+    } else {
+    var newBox = `<li class="chat-single-box card-shadow bg-white active" data-id="{0}">
+      <div class="had-container">
+        <div class="chat-header p-10 bg-gray">
+          <div class="user-info d-inline-block f-left">
+            <div class="box-live-status bg-danger  d-inline-block m-r-10">
+
+            </div>
+            <a href="#">{1}
+
+            </a>
+          </div>
+          <div class="box-tools d-inline-block">
+            <a href="#" class="mini">
+              <i class="icofont icofont-minus f-20 m-r-10"></i>
+            </a>
+            <a class="close" href="#">
+              <i class="icofont icofont-close f-20"></i>
+            </a>
+          </div>
+        </div>
+        <div class="chat-body p-10">
+          <div class="message-scrooler">
+            <div class="messages">
+
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer b-t-muted">
+          <div class="input-group write-msg">
+            <input type="text" class="form-control input-value" name="message" placeholder="Type a Message">
+            <input type="hidden" class="form-control input-sender-value" name="sender" value=${senderId} placeholder="Type a Message">
+            <input type="hidden" class="form-control input-receiver-value" name="receiver" value=${dataId} placeholder="Type a Message">
+            <span class="input-group-btn">
+              <button id="paper-btn" class="btn btn-primary " type="button">
+                <i class="icofont icofont-paper-plane"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </li>`;
+    }
+    $('#main-chat .chat-single-box').removeClass('active');
+    $('#main-chat .chat-box .boxs').append(newBox.format(dataId, dataUserName, dataStatus));
+    generatePlaceholder();
+    messageScroll();
+    boxMinimized();
+    initialTooltip();
+    });
+    $(document).on('focus', '#main-chat .textarea', function() {
+    if ($(this).html() == '<span class="placeholder">{0}</span>'.format($(this).data('placeholder'))) {
+    $(this).html('');
+    }
+    });
+    $(document).on('blur', ' #main-chat .textarea', function() {
+    if ($(this).html() == '') {
+    $(this).html('<span class="placeholder">{0}</span>'.format($(this).data('placeholder')));
+    }
+    });
+    $(document).on('click', '#main-chat .sidebar-collapse', function() {
+    if ($('#main-chat').hasClass('sidebar-closed')) {
+    $('#main-chat').removeClass('sidebar-closed');
+    $('#main-chat .search input').attr('placeholder', '');
+    $('#main-chat .search').css('display', 'block');
+    deinitialTooltipSiderbarUserList();
+    } else {
+    $('#main-chat').addClass('sidebar-closed');
+    $('#main-chat .search input').attr('placeholder', $('.search input').data('placeholder'));
+    $('#main-chat .search').css('display', 'none');
+    $('#main-chat .search').removeAttr('style');
+    $('#main-chat .searchbar-closed').removeAttr('style');
+    initialTooltipSiderbarUserList();
+    }
+    });
+    $(document).on('click', '#main-chat .searchbar-closed', function() {
+    $('#main-chat .sidebar-collapse').click();
+    setTimeout(function() {
+    $('#main-chat .searchbar input').focus();
+    }, 50);
+    return false;
+    });
+    $(document).on('click', '#main-chat .chat-single-box .maximize', function() {
+    parent = $(this).parents('.chat-single-box');
+    $(parent.children()[0].children[0]).removeClass('custom-collapsed');
+    $(parent.children()[0].children[1]).css('display', 'block');
+    $(parent.children()[0].children[2]).css('display', 'block');
+    parent.addClass('bg-white');
+    parent.addClass('card-shadow');
+    messageScroll();
+    return false;
+    });
+    $(document).on('click', '#main-chat .boxs .minimized .count', function(e) {
+    e.stopPropagation();
+    hideStickerBox();
+    var _parent = $(this).parents('.minimized');
+    if (_parent.hasClass('show')) {
+    hideMinimizedBox();
+    } else {
+    _parent.addClass('show');
+    var _bottom = parseInt(_parent.css('height').replace('px', ''), 0) + 10;
+    _parent.find('.chat-dropdown').css({
+    'display': 'block',
+    'bottom': _bottom
+    });
+    }
+    });
+    $(document).on('click', '#main-chat .boxs .minimized .chat-dropdown .username', function(e) {
+    e.stopPropagation();
+    var selectedDataId = $(this).parent().data('id');
+    $(this).parent().remove();
+    boxMinimizedUserAdd();
+    $('#main-chat .boxs .chat-single-box').each(function(index) {
+    if ($(this).data('id') == selectedDataId) {
+    $(this).removeClass('hidden').removeClass('custom-collapsed');
+    ActiveChatBox($(this));
+    }
+    });
+    });
+    $(document).on('click', '#main-chat .boxs .minimized .chat-dropdown .remove', function(e) {
+    e.stopPropagation();
+    var _parent = $(this).parents('.chat-dropdown li');
+    dataId = _parent.data('id');
+    $('#main-chat .chat-single-box').each(function() {
+    if ($(this).data('id') == dataId) {
+    $(this).remove();
+    }
+    });
+    _parent.remove();
+    boxMinimizedCount();
+    });
+    </script>
+
+    <script>
+      'use strict';
+      var placeholder = '<span class="placeholder">{0}</span>';
+
+      function ActiveChatBox(selector) {
+        $('#main-chat .chat-single-box').removeClass('active');
+        $(selector).addClass('active');
+      }
+
+      function removeBoxCollapseClass(selector) {
+        if ($(selector).hasClass('collapsed')) {
+          $(selector).removeClass('collapsed');
+        }
+      }
+
+      function messageScroll() {
+        setTimeout(function() {
+          if ($('.messages div').length == 0) {
+            return;
+          }
+          $('.message-scrooler').animate({
+            scrollTop: $('.messages div:last').offset().top
+          }, 0);
+        }, 100);
+      }
+
+      function initialTooltip() {
+        $('[data-toggle="tooltip"]').tooltip({
+          delay: 50
+        });
+        $('[data-toggle="tooltip"]').tooltip({
+          delay: 50
+        });
+      }
+
+      function initialTooltipSiderbarUserList() {
+        $('[data-toggle="tooltip"]').tooltip({
+          delay: 50
+        });
+      }
+
+      function deinitialTooltipSiderbarUserList() {
+        $('[data-toggle="tooltip"]').tooltip('dispose');
+      }
+
+      function stickersTab() {
+        setTimeout(function() {
+          $('.stickers ul.tabs').tabs();
+          $('.stickers ul.tabs').css({
+            'height': '55px'
+          });
+        }, 1);
+      }
+
+      function hideStickerBox() {
+        $('#main-chat .chat-single-box .icons').removeClass('show');
+        $('#main-chat .chat-single-box .icons').find('.smiles-set').removeAttr('style');
+      }
+
+      function hideMinimizedBox() {
+        if ($('#main-chat .boxs .minimized').hasClass('show')) {
+          $('#main-chat .boxs .minimized').removeClass('show');
+          $('#main-chat .boxs .minimized').find('.dropdown').removeAttr('style');
+        }
+      }
+
+      function NewMessage(dataId) {
+        $('#main-chat .chat-box .boxs .chat-single-box').each(function() {
+          if ($(this).data('id') == dataId) {
+            $(this).addClass('new-message');
+          }
+        });
+      }
+
+      function generatePlaceholder() {
+        setTimeout(function() {
+          $("#main-chat .textarea").each(function() {
+            $(this).html(placeholder.format($(this).data('placeholder')));
+          });
+        }, 10);
+      }
+
+      function sidebarClosed() {
+        var windowWidth = $(window).width();
+        if (windowWidth < 1100) {
+          $('#main-chat').addClass('sidebar-closed');
+        } else {
+          $('#main-chat').removeClass('sidebar-closed');
+        }
+      }
+      String.prototype.format = String.prototype.f = function() {
+        var s = this,
+          i = arguments.length;
+        while (i--) {
+          s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+        }
+        return s;
+      };
+      $(document).on('click', '#main-chat .chat-single-box .smile-ico', function(e) {
+        e.stopPropagation();
+        hideMinimizedBox();
+        _parent = $(this).parents('.icons');
+        if (_parent.hasClass('show')) {
+          hideStickerBox(_parent);
+        } else {
+          _bottom = parseInt(_parent.css('height').replace('px', ''), 0) + 10;
+          _source = _parent.data('source');
+          _parent.find('.smiles-set').html($('.' + _source).html());
+          _parent.find('.smiles-set').css({
+            'bottom': _bottom,
+            'display': 'block'
+          });
+          _parent.addClass('show');
+          stickersTab();
+        }
+      });
+      $(document).on('click', '#main-chat .chat-single-box .stickers', function(e) {
+        e.stopPropagation();
+      });
+      $(document).on('click', '#main-chat .preview-image', function() {
+        preview = `<div class="preview-overlay">
+      <div class="preview-placeholder">
+        <img class="preview-image" src="{0}"/>
+        <div class="preview-caption">{1}
+
+        </div>
+      </div>
+    </div>`;
+        imgSrc = $(this).attr('src');
+        caption = $(this).data('caption');
+        imgWidth = $(this).css('width');
+        imgHeight = $(this).css('height');
+        if ($('#main-chat').hasClass('preview-placeholder')) {
+          return;
+        }
+        $('#main-chat').prepend(preview.format(imgSrc, caption));
+        var origin = $('.preview-placeholder .preview-image');
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var originalWidth = origin.width();
+        var originalHeight = origin.height();
+        var ratio = 0;
+        var widthPercent = originalWidth / windowWidth;
+        var heightPercent = originalHeight / windowHeight;
+        var newWidth = 0;
+        var newHeight = 0;
+        if (widthPercent > heightPercent) {
+          ratio = originalHeight / originalWidth;
+          newWidth = windowWidth * 0.9;
+          newHeight = windowWidth * 0.9 * ratio;
+        } else {
+          ratio = originalWidth / originalHeight;
+          newWidth = (windowHeight * 0.9) * ratio;
+          newHeight = windowHeight * 0.9;
+        }
+        var _left = $(document).scrollLeft() + windowWidth / 2 - origin.parent('.preview-placeholder').offset().left - newWidth / 2;
+        var _top = $(document).scrollTop() + windowHeight / 2 - origin.parent('.preview-placeholder').offset().top - newHeight / 2;
+        $('.preview-placeholder').css({
+          'max-width': newWidth,
+          'width': originalWidth,
+          'top': _top
+        });
+        $('.preview-caption').css({
+          'top': (newHeight)
+        });
+      });
+      $(document).on('click', '#main-chat .preview-overlay:not(".preview-placeholder")', function() {
+        $('.preview-overlay').remove();
+      });
+      $(document).on('click', '#main-chat .chat-single-box .stickers .tab-content li', function() {
+        _sendMsg = $(this).parents('.chat-footer').find('.send-message div');
+        _img = $(this).html();
+        if ($(this).parents('.chat-footer').find('.send-message div').html() == '<span class="placeholder">{0}</span>'.format(_sendMsg.data('placeholder'))) {
+          _sendMsg.html(_img);
+        } else {
+          _str = _sendMsg.html();
+          _sendMsg.html(_str + ' ' + _img);
+        }
+      });
+
+      $(document).on('click', '#main-chat #sidebar .user-box .userlist-box', function() {
+        var userId = $(this).attr('data-id');
+        console.log('userId', userId)
+
+        var requestData = {
+          sender: "<%= id %>", // Example user ID, replace with your actual parameter
+          receiver: userId
+        };
+
+        // Make an initial API call to check if the post is liked
+        fetch('api/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData) // Send post ID in the request body
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+            if (data && data.status === 1) {
+              let chatDetails = data && data.chatList.length > 0 ? data.chatList : [];
+
+              chatDetails.forEach((chat) => {
+
+                if (chat.id == chat.sender) {
+                  // $(document).on('click','#main-chat', function(e) {
+                  console.log('chat', chat)
+
+                  var _box_message = $('.messages');
+
+                  let profilePicIdInfo = chat && chat.profilePicId ? chat.profilePicId : null;
+                  let profilePicNameInfo = chat && chat.profilePicName ? chat.profilePicName : null;
+
+                  function convertToAMPM(timestamp) {
+                    const date = new Date(timestamp);
+                    let hours = date.getHours();
+                    const minutes = date.getMinutes();
+                    const seconds = date.getSeconds();
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+
+                    const strMinutes = minutes < 10 ? '0' + minutes : minutes;
+                    const strSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+                    return hours + ':' + strMinutes + ' ' + ampm;
+                  }
+
+                  const timestamp = chat.createdAt;
+                  const timeWithAMPM = convertToAMPM(timestamp);
+                  console.log(timeWithAMPM);
+
+
+                  if (profilePicIdInfo && profilePicNameInfo) {
+                    _box_message.append(`
+                      <div class="message out no-avatar media">
+                        <div class="body media-body text-right p-l-50">
+                          <div class="content msg-reply f-12 bg-primary d-inline-block">
+                            ${chat.message}
+                          </div>
+                          <div class="seen">
+                            <span>
+                              <p class="d-inline-block">${timeWithAMPM}</p>
+                            </span>
+                            <div class="clear">
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="sender media-right friend-box">
+                          <a href="javascript:void(0);" title="Me">
+                            <img src="../images/uploads/${profilePicIdInfo}/${profilePicNameInfo}" class=" img-chat-profile" alt="Me-1">
+                          </a>
+                        </div>
+                      </div>`);
+                  } else {
+                    _box_message.append(`
+                      <div class="message out no-avatar media">
+                        <div class="body media-body text-right p-l-50">
+                          <div class="content msg-reply f-12 bg-primary d-inline-block">
+                            ${chat.message}
+                          </div>
+                          <div class="seen">
+                            <span>
+                              <p class="d-inline-block">${timeWithAMPM}</p>
+                            </span>
+                            <div class="clear">
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="sender media-right friend-box">
+                          <a href="javascript:void(0);" title="Me">
+                            <img src="../images/chat__person.png" alt="Me-2" class="img-chat-profile">
+                          </a>
+                        </div>
+                      </div>`);
+                  }
+
+
+                }
+              })
+            }
+          })
+          .catch(error => {
+            alert(`There was an ${error}`)
+
+            console.log('There was an', error);
+          });
+
+          ActiveChatBox()
+          hideStickerBox();
+          messageScroll();
+          return false;
+      });
+
+      $(document).on('click', '#main-chat #paper-btn ', function(e) {
+        var _box_message = $(this).parents('.chat-single-box').find('.messages');
+        var text = $($(e.currentTarget).parent().parent().parent()).find(".input-value").val();
+        var senderId = $($(e.currentTarget).parent().parent().parent()).find(".input-sender-value").val();
+        var receiverId = $($(e.currentTarget).parent().parent().parent()).find(".input-receiver-value").val();
+
+        var requestData = {
+          sender: senderId, // Example user ID, replace with your actual parameter
+          receiver: receiverId,
+          userId: senderId,
+          message: text,
+          uuid: "<%= uuid %>"
+        };
+
+        console.log('requestData', requestData)
+
+
+        // add message call
+        fetch('/api/add/message', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData) // Send post ID in the request body
+          })
+          .then(response => {
+            console.log('response', response)
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+            if (data && data.status === 1) {
+              function convertToAMPM(timestamp) {
+                const date = new Date(timestamp);
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+
+                const strMinutes = minutes < 10 ? '0' + minutes : minutes;
+                const strSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+                return hours + ':' + strMinutes + ' ' + ampm;
+              }
+
+              const timestamp = data.chatData.createdAt;
+              const timeWithAMPM = convertToAMPM(timestamp);
+              console.log(timeWithAMPM);
+
+              // If post is liked, turn the like button red
+              _box_message.append(`
+              <div class="message out no-avatar media">
+                <div class="body media-body text-right p-l-50">
+                  <div class="content msg-reply f-12 bg-primary d-inline-block">
+                    ${text}
+                  </div>
+                  <div class="seen">
+                    <span>
+                      <p class="d-inline-block">${timeWithAMPM}</p>
+                    </span>
+                    <div class="clear">
+
+                    </div> 
+                  </div>
+                </div>
+                <div class="sender media-right friend-box">
+                  <a href="javascript:void(0);" title="Me">
+                    <% if(profilePicId && profilePicName && profilePicId != null) {%>
+                    <img src="../images/uploads/<%= profilePicId %>/<%= profilePicName %>" class=" img-chat-profile" alt="Me-1">
+                    <% } else {%>
+                      <img src="../images/chat__person.png" alt="Me-2" class="img-chat-profile">
+                    <% } %>
+                  </a>
+                </div>
+              </div>`);
+
+            }
+          })
+          .catch(error => {
+            alert(`There was an ${error}`)
+            console.log('Error:', error);
+          });
+
+        hideStickerBox();
+        messageScroll();
+        $($(e.currentTarget).parent().parent().parent()).find(".input-value").val('');
+        return false;
+
+
+      });
+      $(document).on('click', function() {
+        hideStickerBox();
+        hideMinimizedBox();
+      });
+    </script>
+
 
 </body>
 

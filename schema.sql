@@ -479,10 +479,34 @@ select
     followUsers."followerId" ,
     followUsers."followingId",
     followUsers."requested",
-    followUsers."isFollow"
+    followUsers."isFollow",
+    userInfo."login",
+    userInfo."logout"
 from "tp_user" userInfo
 left join "tp_follow_users" followUsers  on (followUsers."followerId" = userInfo."id" OR followUsers."followingId" = userInfo."id")AND followUsers."requested" = 1
     AND followUsers."isFollow" = 1
+LEFT JOIN "tp_image" img ON img."userId" = userInfo."id"
+WHERE 
+    userInfo."isRegistered" = 1 
+    AND userInfo."isInvited" = 1 
+    AND userInfo."inviteOn" IS NOT NULL;
+
+-- view to fetch the chat users
+CREATE OR REPLACE  VIEW "tp_view_fetch_chat"  AS 
+select 
+ userInfo."id",
+ userInfo."userName",
+    img."profilePicId",
+    img."profilePicName",
+    chat."sender",
+    chat."receiver",
+    chat."userId",
+    chat."createdAt",
+    userInfo."login",
+    userInfo."logout",
+    chat."message"
+from "tp_user" userInfo
+left join "tp_chat" chat  on (chat."sender" = userInfo."id" OR chat."receiver" = userInfo."id")
 LEFT JOIN "tp_image" img ON img."userId" = userInfo."id"
 WHERE 
     userInfo."isRegistered" = 1 
