@@ -511,8 +511,8 @@ app.get(`/chat`, async (req, res) =>
 	var id = req.session.userId;
 	var name = req.session.name;
 	var uuid = req.session.uuid;
-	var profilePicId = req.session.profilePicId;
-	var profilePicName = req.session.profilePicName;
+	var profilePicId = req.session.profilePicId ? req.session.profilePicId : null;
+	var profilePicName = req.session.profilePicName ? req.session.profilePicName : null;
 
 	if (!req.session.isLoggedIn)
 	{
@@ -720,6 +720,11 @@ app.post("/api/update/find/post/unsave", async (req, res) =>
 app.post("/api/add/message", async (req, res) => 
 {
 	return res.json(await chatService.createChat(req.body));
+});
+
+app.post("/api/messages", async (req, res) => 
+{
+	return res.json(await chatService.getMessages(req.body));
 });
 	
 app.all('*', (req, res, next) => 

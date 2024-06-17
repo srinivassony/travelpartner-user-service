@@ -34,3 +34,28 @@ exports.createChat = async (reqParams) =>
         }
     }
 }
+
+exports.getMessages = async (reqParams) =>
+{
+    try
+    {
+        let sender = reqParams.sender ? reqParams.sender : null;
+        let receiver = reqParams.receiver ? reqParams.receiver : null;
+
+        let chatList = await db.getMessages(sender, receiver);
+
+        console.log('chatList',chatList)
+
+        return {
+            status: Status.SUCCESS,
+            chatList: chatList
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
