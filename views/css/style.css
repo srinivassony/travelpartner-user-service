@@ -17724,7 +17724,8 @@ table.footable-paging-center>tfoot>tr.footable-paging>td {
 
 .img-chat-profile {
     height: 45px;
-    width: 45px
+    width: 45px;
+    border-radius: 25%;
 }
 
 .chat-minimize .chat-body,
@@ -20687,7 +20688,7 @@ table.footable-paging-center>tfoot>tr.footable-paging>td {
     right: 17px;
     border-radius: 100%;
     border: 1px solid;
-    top: 5px
+    top: 20px
 }
 
 .tab-timeline .slide {
