@@ -444,6 +444,7 @@ CREATE OR REPLACE  VIEW "tp_view_fetch_find_saved_post"  AS
     img."profilePicId",
     img."profilePicName",
     savePost."isSave",
+    savePost."userId" "savedUserId",
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
