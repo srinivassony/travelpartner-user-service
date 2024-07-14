@@ -17,6 +17,7 @@ let postService = require('../service/post');
 let postImageService = require('../service/postImages');
 let postLikeService = require('../service/postLike');
 let postCommentService = require('../service/postComment');
+let chatService = require('../service/chat');
 
 
 //middelwares
@@ -358,9 +359,40 @@ app.get('/user-posts', async (req, res) =>
 	});
 });
 
+app.get('/saved-posts', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId;
+	var profilePicName = req.session.profilePicName;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let savedPostDetails = await postService.getUserSavedPostList(id, req, res);
+
+	res.render('pagesInfo/find-saved-posts', {
+		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+		username: name,
+		id: id,
+		uuid: uuid,
+		profilePicId: profilePicId,
+		profilePicName: profilePicName,
+		savedPostInfo: savedPostDetails && savedPostDetails.status == 1 && savedPostDetails.findSavedPostList.length > 0 ? savedPostDetails.findSavedPostList : savedPostDetails && savedPostDetails.status == 0 ? savedPostDetails : []
+	});
+});
+
 app.get("/post-delete/:id", async (req, res) => 
 {
-	return res.json(await postService.deletePost(req.params));
+	return res.json(await postService.deletePost(req.params, req, res));
+});
+
+app.get("/find-post-delete/:id", async (req, res) => 
+{
+	return res.json(await postService.deleteFindPost(req.params, req, res));
 });
 
 app.get('/find-posts', async (req, res) =>
@@ -386,12 +418,26 @@ app.get('/find-posts', async (req, res) =>
 		message = null;
 	}
 
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	let postInfo = req.flash('postData');
 
 	if (postInfo.length > 0)
 	{
 		postInfo = JSON.parse(postInfo[0]);
 	} 
+	else if(req.session.postInfo != null)
+	{
+		postInfo = JSON.parse(req.session.postInfo[0]);
+	}
 	else
 	{
 		postInfo = null;
@@ -405,6 +451,7 @@ app.get('/find-posts', async (req, res) =>
 		id: id,
 		uuid: uuid,
 		errorMessage: message,
+		sucessMessage: message1,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
 		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
@@ -415,6 +462,7 @@ app.get('/travel-posts', async (req, res) =>
 {
 	var name = req.session.name;
 	var id = req.session.userId;
+	console.log('id',id)
 	var uuid = req.session.uuid;
 	var profilePicId = req.session.profilePicId;
 	var profilePicName = req.session.profilePicName;
@@ -424,27 +472,16 @@ app.get('/travel-posts', async (req, res) =>
 		return res.redirect('/');
 	}
 
-	let message = req.flash('error');
-
-	if (message.length > 0)
-	{
-		message = message[0];
-	} else
-	{
-		message = null;
-	}
-
-	let findPostInfo = await postService.getFindAllPost(req, res);
+	let findPostInfo = await postService.getFindAllPost();
 
 	res.render('pagesInfo/find-all-posts', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		id: id,
 		uuid: uuid,
-		errorMessage: message,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
-		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo.message : []
+		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo : []
 	});
 });
 
@@ -467,6 +504,34 @@ app.get(`/userprofile/:id`, async (req, res) =>
 		uuid: uuid,
 		id: id
 	});
+});
+
+app.get(`/chat`, async (req, res) =>
+{
+	var id = req.session.userId;
+	var name = req.session.name;
+	var uuid = req.session.uuid;
+	var profilePicId = req.session.profilePicId ? req.session.profilePicId : null;
+	var profilePicName = req.session.profilePicName ? req.session.profilePicName : null;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let followUsers = await followUsersService.getFollowUsers(id);
+
+	res.render('pagesInfo/chat',
+		{
+			isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
+			username: name,
+			userId: req.params.id,
+			uuid: uuid,
+			id: id,
+			profilePicId: profilePicId,
+			profilePicName: profilePicName,
+			followUsersInfo : followUsers && followUsers.status == 1 && followUsers.followUsersList.length > 0 ? followUsers.followUsersList : followUsers && followUsers.status == 0 ? followUsers : []
+		});
 });
 
 app.get('/logout', async function (req, res)
@@ -629,7 +694,7 @@ app.post("/api/update/find/post/unlike", async (req, res) =>
 
 app.post("/api/add/find/post/comment", async (req, res) => 
 {
-	return res.json(await postCommentService.createFindPostComment(req.body));
+	return res.json(await postCommentService.createFindPostComment(req.body, req, res));
 });
 
 app.post("/api/find/post/comments", async (req, res) => 
@@ -652,6 +717,16 @@ app.post("/api/update/find/post/unsave", async (req, res) =>
 	return res.json(await postLikeService.updateFindPostUnSave(req.body));
 });
 
+app.post("/api/add/message", async (req, res) => 
+{
+	return res.json(await chatService.createChat(req.body));
+});
+
+app.post("/api/messages", async (req, res) => 
+{
+	return res.json(await chatService.getMessages(req.body));
+});
+	
 app.all('*', (req, res, next) => 
 {
     res.status(404).render('pagesInfo/404',{

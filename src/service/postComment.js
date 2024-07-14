@@ -59,14 +59,14 @@ exports.postCommentsList = async (reqParams) =>
     }
 }
 
-exports.createFindPostComment = async (reqParams) =>
+exports.createFindPostComment = async (reqParams, req) =>
 {
     try
     {
         let userId = reqParams.id ? reqParams.id : null;
         let postId = reqParams.postId ? reqParams.postId : null;
         let message = reqParams.message ? reqParams.message : null;
-
+        let postInfo = reqParams.postInfo ? reqParams.postInfo : null;
 
         let messageParams = {
             userId: userId,
@@ -78,6 +78,9 @@ exports.createFindPostComment = async (reqParams) =>
 
         let findPostComment = await db.createFindPostComment(messageParams);
 
+        req.session.postInfo = postInfo;
+        req.session.save();
+        
         return {
             status: Status.SUCCESS,
             findPostComment: findPostComment
