@@ -4,6 +4,8 @@ const findPost = require('../model/find-post');
 const { knex } = require('./db-config');
 const { FETCH_FIND_POSTS_JOINS } = require('../function/function');
 const findPostView = require('../../database/model/findPostView');
+const findSavedPostView = require('../../database/model/savedPostView');
+
 
 let createPost = async (data) =>
 {
@@ -40,6 +42,16 @@ let getFindAllPost = async () =>
   return await findPostView.query().select().orderBy('createdAt', 'desc');
 }
 
+let deleteFindPost = async (id) =>
+{
+  return await findPost.query().delete().where({ id: id });
+}
+
+let getUserSavedPostList = async (id) =>
+{
+  return await findSavedPostView.query().select().where({ savedUserId: id });
+}
+
 module.exports = {
   createPost: createPost,
   getPostList: getPostList,
@@ -47,5 +59,7 @@ module.exports = {
   deletePost: deletePost,
   createFindPost: createFindPost,
   getFindPost: getFindPost,
-  getFindAllPost :getFindAllPost
+  getFindAllPost :getFindAllPost,
+  deleteFindPost: deleteFindPost,
+  getUserSavedPostList: getUserSavedPostList
 }

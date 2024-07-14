@@ -182,3 +182,24 @@ exports.requestedForfollowUsers = async (reqParams) =>
         }
     }
 }
+
+exports.getFollowUsers = async (id) =>
+{
+    try
+    {
+
+        let followUsersList = await db.getFollowUsers(id);
+
+        return {
+            status: Status.SUCCESS,
+            followUsersList: followUsersList
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}

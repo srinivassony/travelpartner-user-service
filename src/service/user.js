@@ -99,7 +99,7 @@ exports.createUser = async (req, res) =>
         let uuid = common.generateUUID();
 
         let params = {
-            userName: userName,
+            userName: userName.trim(),
             uuid: uuid,
             email: email,
             role: common.userType.USER,

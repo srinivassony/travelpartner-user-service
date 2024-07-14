@@ -297,6 +297,22 @@ foreign key("findPostId") references "tp_find_post" ("id") ON DELETE CASCADE,
 foreign key ("userId") references "tp_user" ("id") 
 );
 
+---chat table
+create table "tp_chat" (
+"id" varchar2(36) not null,
+"sender" varchar2(36) not null,
+"receiver" varchar2(36) not null,
+"message" varchar2(4000) not null,
+"userId" varchar2(36) not null,
+"createdAt" TIMESTAMP(8),
+"createdBy" varchar2(36),
+"updatedAt" TIMESTAMP(8),
+"updatedBy" varchar2(36),
+primary key("id"),
+foreign key ("userId") references "tp_user" ("id")
+);
+
+
 -- create or replace function "tp_function_fetch_find_posts_join"(
 --     loc IN VARCHAR2
 -- )
@@ -412,3 +428,88 @@ WHERE
     us."isRegistered" = 1 
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL;
+
+-- view for saved travel posts
+
+CREATE OR REPLACE  VIEW "tp_view_fetch_find_saved_post"  AS 
+
+ SELECT 
+    findPost."id",
+    findPost."tripLocation",
+    findPost."tripDate",
+    findPost."tripDescription",
+    findPost."createdAt",
+    findPost."userId",
+    us."userName",
+    img."profilePicId",
+    img."profilePicName",
+    savePost."isSave",
+    savePost."userId" "savedUserId",
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'followerId' VALUE followUsers."followerId",
+          'followingId' VALUE followUsers."followingId",
+          'requested' value NVL(followUsers."requested", 0),
+          'isFollow' value  NVL(followUsers."isFollow", 0)
+            )
+        ) AS followUsers
+        FROM "tp_follow_users" followUsers 
+        WHERE (followUsers."followerId" = findPost."userId" OR followUsers."followingId" = findPost."userId")
+    AND followUsers."requested" = 1
+    AND followUsers."isFollow" = 1
+    ) AS "followUsers",
+    (SELECT COUNT(plike."id") FROM "tp_find_post_like" plike WHERE findPost."id" = plike."findPostId" AND plike."isLike" = 1) AS "likesCount",
+    (SELECT COUNT(pcomment."id") FROM "tp_find_post_comment" pcomment WHERE findPost."id" = pcomment."findPostId") AS "commentsCount"
+FROM "tp_find_post" findPost
+LEFT JOIN "tp_user" us ON us."id" = findPost."userId"
+LEFT JOIN "tp_image" img ON img."userId" = us."id"
+LEFT JOIN "tp_find_post_save" savePost ON savePost."findPostId" = findPost."id" 
+WHERE 
+    us."isRegistered" = 1 
+    AND us."isInvited" = 1 
+    AND us."inviteOn" IS NOT NULL and savePost."isSave" = 1;
+
+-- view to fetch the follow users
+CREATE OR REPLACE  VIEW "tp_view_fetch_follow_users"  AS 
+select 
+ userInfo."id",
+ userInfo."userName",
+    img."profilePicId",
+    img."profilePicName",
+    followUsers."followerId" ,
+    followUsers."followingId",
+    followUsers."requested",
+    followUsers."isFollow",
+    userInfo."login",
+    userInfo."logout"
+from "tp_user" userInfo
+left join "tp_follow_users" followUsers  on (followUsers."followerId" = userInfo."id" OR followUsers."followingId" = userInfo."id")AND followUsers."requested" = 1
+    AND followUsers."isFollow" = 1
+LEFT JOIN "tp_image" img ON img."userId" = userInfo."id"
+WHERE 
+    userInfo."isRegistered" = 1 
+    AND userInfo."isInvited" = 1 
+    AND userInfo."inviteOn" IS NOT NULL;
+
+-- view to fetch the chat users
+CREATE OR REPLACE  VIEW "tp_view_fetch_chat"  AS 
+select 
+ userInfo."id",
+ userInfo."userName",
+    img."profilePicId",
+    img."profilePicName",
+    chat."sender",
+    chat."receiver",
+    chat."userId",
+    chat."createdAt",
+    userInfo."login",
+    userInfo."logout",
+    chat."message"
+from "tp_user" userInfo
+left join "tp_chat" chat  on (chat."sender" = userInfo."id" OR chat."receiver" = userInfo."id")
+LEFT JOIN "tp_image" img ON img."userId" = userInfo."id"
+WHERE 
+    userInfo."isRegistered" = 1 
+    AND userInfo."isInvited" = 1 
+    AND userInfo."inviteOn" IS NOT NULL;
