@@ -208,6 +208,8 @@ exports.userLogin = async (req, res) =>
 
         let user = await db.getUserLoginDetails(email);
 
+        console.log('user',user)
+
         if (!user) 
         {
             req.flash('error', 'User details not found.');
@@ -229,6 +231,8 @@ exports.userLogin = async (req, res) =>
         try
         {
             let byCryptingPassword = await bcrypt.compare(password, user.password);
+
+            console.log('byCryptingPassword',byCryptingPassword)
 
             if (!byCryptingPassword)
             {

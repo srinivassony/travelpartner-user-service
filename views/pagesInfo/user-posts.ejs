@@ -510,6 +510,7 @@
                         {
                             return response.json();
                         }
+
                         throw new Error('Network response was not ok.');
                     })
                     .then(data =>
@@ -519,7 +520,6 @@
                     .catch(error =>
                     {
                         console.error('Error checking ', error);
-                        alert(error)
                     });
                     
                     location.reload();
