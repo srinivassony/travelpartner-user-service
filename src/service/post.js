@@ -253,7 +253,7 @@ exports.createFindPost = async (req, res) =>
     {
         req.flash('error', error.message);
 
-        res.redirect('/reset-password');
+        res.redirect('/find-partner');
 
         return "";
     }
@@ -265,9 +265,9 @@ exports.getFindPost = async (postInfo, req, res) =>
     {
         if (!postInfo)
         {
-                req.flash('error', 'Post details is not found!');
+            req.flash('error', 'Post details is not found!');
 
-                res.redirect('/find-partner'); 
+            res.redirect('/find-partner');
         }
 
         let location = postInfo && postInfo.tripLocation ? postInfo.tripLocation : null;
@@ -412,5 +412,100 @@ exports.getUserSavedPostList = async (id) =>
             status: Status.FAIL,
             message: error.message
         }
+    }
+}
+
+exports.getFindAllPostById = async (id) =>
+{
+    try
+    {
+        console.log('id-1',id)
+        let findPostInfo = await db.getFindAllPostById(id);
+
+        if (!findPostInfo)
+        {
+            return {
+                status: Status.FAIL,
+                message: 'Post details not found!'
+            }
+        }
+        
+        let followUsers = findPostInfo && findPostInfo.followUsers ? JSON.parse(findPostInfo.followUsers) : [];
+
+        findPostInfo.followUsers = followUsers;
+
+        return {
+            status: Status.SUCCESS,
+            findPostInfo: findPostInfo
+        }
+    }
+    catch (error) 
+    {
+        return {
+            status: Status.FAIL,
+            message: error.message
+        }
+    }
+}
+
+exports.updateFindPost = async (req, res) =>
+{
+    try 
+    {
+        let location = req.body.tripLocation ? req.body.tripLocation : null;
+        let date = req.body.tripDate ? req.body.tripDate : null;
+        let description = req.body.TripDescrip ? req.body.TripDescrip : null;
+        let findPostId = req.body.findPostId ? req.body.findPostId : null;
+
+        if (!location)
+        {
+            req.flash('error', 'Trip location is requried.');
+
+            res.redirect(`/find-post-edit/${findPostId}`);
+
+            return "";
+        }
+
+        if (!date)
+        {
+            req.flash('error', 'Trip date is requried.');
+
+            res.redirect(`/find-post-edit/${findPostId}`);
+
+            return "";
+        }
+
+        if (!description)
+        {
+            req.flash('error', 'Trip description is requried.');
+
+            res.redirect(`/find-post-edit/${findPostId}`);
+
+            return "";
+        }
+
+        let updateParams = {
+            tripLocation: location.trim(),
+            tripDate: date,
+            tripDescription: description,
+            updatedAt: new Date(),
+            updatedBy: req.body.uuid
+        }
+
+        let postData = await db.updateFindPost(findPostId, updateParams);
+
+        req.flash('postData', JSON.stringify(postData));
+
+        res.redirect('/find-posts');
+
+        return "";
+    }
+    catch (error) 
+    {
+        req.flash('error', error.message);
+
+        res.redirect(`/find-post-edit/${findPostId}`);
+
+        return "";
     }
 }
