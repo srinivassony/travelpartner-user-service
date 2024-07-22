@@ -518,13 +518,27 @@ app.get(`/userprofile/:id`, async (req, res) =>
 		return res.redirect('/');
 	}
 
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let userInfo = await userService.getUserById(req.params, req, res)
+
 	res.render('pagesInfo/singleUserProfile',
 	{
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		userId: req.params.id,
 		uuid: uuid,
-		id: id
+		id: id,
+		errorMessage: message,
+		userInfo: userInfo && userInfo.status == 1 && userInfo.userDetails ? userInfo.userDetails : userInfo && userInfo.status == 0 ? userInfo : null
 	});
 });
 
@@ -599,7 +613,7 @@ app.post('/api/update/user', userService.updateUser);
 
 app.post('/api/user/id',async (req, res) =>
 {
-	let result =  res.json(await userService.getUserById(req.body));
+	let result = res.json(await userService.getUserById(req.body, req, res));
 
 	return result;
 })
