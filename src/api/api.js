@@ -472,6 +472,26 @@ app.get('/travel-posts', async (req, res) =>
 		return res.redirect('/');
 	}
 
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let message1 = req.flash('success');
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	} 
+	else
+	{
+		message1 = null;
+	}
+
 	let findPostInfo = await postService.getFindAllPost();
 
 	res.render('pagesInfo/find-all-posts', {
@@ -481,6 +501,8 @@ app.get('/travel-posts', async (req, res) =>
 		uuid: uuid,
 		profilePicId: profilePicId,
 		profilePicName: profilePicName,
+		errorMessage: message,
+		sucessMessage: message1,
 		findPostDeatils: findPostInfo && findPostInfo.status == 1 && findPostInfo.findPostList.length > 0 ? findPostInfo.findPostList : findPostInfo && findPostInfo.status == 0 ? findPostInfo : []
 	});
 });
@@ -496,13 +518,27 @@ app.get(`/userprofile/:id`, async (req, res) =>
 		return res.redirect('/');
 	}
 
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let userInfo = await userService.getUserById(req.params, req, res)
+
 	res.render('pagesInfo/singleUserProfile',
 	{
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,
 		username: name,
 		userId: req.params.id,
 		uuid: uuid,
-		id: id
+		id: id,
+		errorMessage: message,
+		userInfo: userInfo && userInfo.status == 1 && userInfo.userDetails ? userInfo.userDetails : userInfo && userInfo.status == 0 ? userInfo : null
 	});
 });
 
@@ -577,7 +613,7 @@ app.post('/api/update/user', userService.updateUser);
 
 app.post('/api/user/id',async (req, res) =>
 {
-	let result =  res.json(await userService.getUserById(req.body));
+	let result = res.json(await userService.getUserById(req.body, req, res));
 
 	return result;
 })
@@ -677,6 +713,8 @@ app.post("/api/comments", async (req, res) =>
 
 app.post('/api/add/find/post', postService.createFindPost);
 
+app.post('/api/edit/find/post', postService.updateFindPost);
+
 app.post("/api/find/post/like", async (req, res) => 
 {
 	return res.json(await postLikeService.getFindPostLikeList(req.body));
@@ -725,6 +763,53 @@ app.post("/api/add/message", async (req, res) =>
 app.post("/api/messages", async (req, res) => 
 {
 	return res.json(await chatService.getMessages(req.body));
+});
+
+app.get('/find-post-edit/:id', async (req, res) =>
+{
+	var name = req.session.name;
+	var id = req.session.userId;
+	var uuid = req.session.uuid;
+
+	if (!req.session.isLoggedIn)
+	{
+		return res.redirect('/');
+	}
+
+	let message = req.flash('error');
+
+	if (message.length > 0)
+	{
+		message = message[0];
+	} else
+	{
+		message = null;
+	}
+
+	let message1 = req.flash('success');
+
+	if (message1.length > 0)
+	{
+		message1 = message1[0];
+	}
+	else
+	{
+		message1 = null;
+	}
+
+	let postData = await postService.getFindAllPostById(req.params.id);
+
+	console.log('postData', postData)
+
+	res.render('pagesInfo/edit-find-post', {
+		isAuthenticated: req.session.isLoggedIn,
+		errorMessage: message,
+		sucessMessage: message1,
+		username: name,
+		id: id,
+		uuid: uuid,
+		postInfo: postData && postData.status == 1 && postData.findPostInfo ? postData.findPostInfo : postData && postData.status == 0 ? postData.message : null
+	});
 });
 	
 app.all('*', (req, res, next) => 

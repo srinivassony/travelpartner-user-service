@@ -52,6 +52,16 @@ let getUserSavedPostList = async (id) =>
   return await findSavedPostView.query().select().where({ savedUserId: id });
 }
 
+let getFindAllPostById = async (id) =>
+{
+  return await findPostView.query().select().where({ id: id }).first();
+}
+
+let updateFindPost = async (id, data) =>
+{
+  return await findPost.query().patchAndFetchById(id, data);
+}
+
 module.exports = {
   createPost: createPost,
   getPostList: getPostList,
@@ -61,5 +71,7 @@ module.exports = {
   getFindPost: getFindPost,
   getFindAllPost :getFindAllPost,
   deleteFindPost: deleteFindPost,
-  getUserSavedPostList: getUserSavedPostList
+  getUserSavedPostList: getUserSavedPostList,
+  getFindAllPostById: getFindAllPostById,
+  updateFindPost: updateFindPost
 }
