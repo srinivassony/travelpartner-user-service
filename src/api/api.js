@@ -492,7 +492,7 @@ app.get('/travel-posts', async (req, res) =>
 		message1 = null;
 	}
 
-	let findPostInfo = await postService.getFindAllPost();
+	let findPostInfo = await postService.getFindAllPost(req.query);
 
 	res.render('pagesInfo/find-all-posts', {
 		isAuthenticated: req.session.isLoggedIn ? req.session.isLoggedIn : false,

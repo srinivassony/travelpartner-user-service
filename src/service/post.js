@@ -234,7 +234,7 @@ exports.createFindPost = async (req, res) =>
 
         let params = {
             tripLocation: location.trim(),
-            tripDate: date,
+            tripDate: new Date(date),
             tripDescription: description,
             userId: req.body.userId,
             createdAt: new Date(),
@@ -242,6 +242,15 @@ exports.createFindPost = async (req, res) =>
         }
 
         let postData = await db.createFindPost(params);
+
+        if(postData.status == 0)
+        {
+            req.flash('error', postData.message);
+
+            res.redirect('/find-partner');
+
+            return "";
+        }
 
         req.flash('postData', JSON.stringify(postData));
 
@@ -274,8 +283,6 @@ exports.getFindPost = async (postInfo, req, res) =>
 
         let findPostList = await db.getFindPost(location);
 
-        console.log('findPostList',findPostList)
-
         for (let postIndex = 0; postIndex < findPostList.length; postIndex++)
         {
             let post = findPostList[postIndex];
@@ -302,17 +309,23 @@ exports.getFindPost = async (postInfo, req, res) =>
     }
 }
 
-exports.getFindAllPost = async () =>
+exports.getFindAllPost = async (reqParams) =>
 {
     try
     {
-        let findPostList = await db.getFindAllPost();
+        let searchKey = reqParams.searchKey ? reqParams.searchKey : null;
+
+        console.log('searchKey',searchKey)
+
+        let findPostList = await db.getFindAllPost(searchKey);
+
+        console.log('findPostList',findPostList)
 
         if (findPostList.length == 0)
         {
             return {
                 status: Status.FAIL,
-                message: 'Post details not found!'
+                message: 'There are no posts to see!'
             }
         }
 

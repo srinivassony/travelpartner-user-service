@@ -212,7 +212,7 @@ WHERE
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL;
 
--- view comments
+-- view post comments
 
        CREATE OR REPLACE  view "tp_view_fetch_post_comments" AS 
 select 
@@ -238,7 +238,7 @@ WHERE
 create table "tp_find_post" (
 "id" varchar2(36) not null,
 "tripLocation" varchar2(1020) not null,
-"tripDate" varchar2(1020) not null,
+"tripDate" date not null,
 "tripDescription" VARCHAR2(4000 BYTE) not null,
 "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 "createdAt" TIMESTAMP(8),
@@ -392,7 +392,7 @@ WHERE
     AND us."isInvited" = 1 
     AND us."inviteOn" IS NOT NULL;
 
-
+-- view to fetch the find posts
 CREATE OR REPLACE  VIEW "tp_view_fetch_find_post"  AS 
 
  SELECT 
