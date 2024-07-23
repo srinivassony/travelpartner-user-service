@@ -238,7 +238,7 @@ WHERE
 create table "tp_find_post" (
 "id" varchar2(36) not null,
 "tripLocation" varchar2(1020) not null,
-"tripDate" varchar2(1020) not null,
+"tripDate" date not null,
 "tripDescription" VARCHAR2(4000 BYTE) not null,
 "userId" VARCHAR2(36 BYTE) NOT NULL ENABLE, 
 "createdAt" TIMESTAMP(8),
