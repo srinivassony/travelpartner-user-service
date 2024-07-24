@@ -276,11 +276,26 @@
                                                                                     <div>
                                                                                         <div
                                                                                             class=" cover-btn">
-                                                                                            <button type="button"
-                                                                                                class="btn btn-primary m-r-10 m-b-5"><i
-                                                                                                    class="icofont icofont-plus"></i>
-                                                                                                Follow</button>
-
+                                                                                            <% if(userInfo && userInfo.followUsers.length > 0) {
+                                                                                                userInfo.followUsers.forEach(function(followUser) {  %>
+                                                                                                    <% if(followUser.followerId == id && followUser.followingId == userId && followUser.userId == id && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                                                        <button type="button" id="requestedForUnfollowUsers"
+                                                                                                        class="btn btn-primary m-r-10 m-b-5 requestedForUnfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-times"></i>Remove</button>
+                                                                                                    <% } else if (followUser.followerId == id && followUser.followingId == userId && followUser.userId != id && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                                                        <button type="button" id="requestedForfollowUsers"
+                                                                                                        class="btn btn-primary m-r-10 m-b-5 requestedForfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-thumbs-up"></i>Requested</button>
+                                                                                                    <% } else if(followUser.followerId == id && followUser.isFollow == 1) { %>
+                                                                                                        <button type="button" id="requestedForUnfollowUsers"
+                                                                                                        class="btn btn-primary m-r-10 m-b-5 requestedForUnfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
+                                                                                                    <% } else { %>
+                                                                                                        <button type="button" id="followUsers"
+                                                                                                        class="btn btn-primary m-r-10 m-b-5 followUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                                                    <% }%>
+                                                                                            <%  }); } else { %>
+                                                                                                <button type="button" id="followUsers"
+                                                                                                class="btn btn-primary m-r-10 m-b-5 followUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-user-plus"></i>Follow</button>
+                                                                                            <% }%>
+                                    
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -489,174 +504,463 @@
         </div>
 
 
-        <%- include('scripts'); %>
+    <%- include('scripts'); %>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function ()
-            {
-                // Prepare data to be sent in the request body
-                var requestData = {
-                    id: "<%= userId %>" // Example user ID, replace with your actual parameter
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Prepare data to be sent in the request body
+        var requestData = {
+          id: "<%= userId %>" // Example user ID, replace with your actual parameter
+        };
+        // Fetch user data from the backend when the page loads
+        fetch('/api/user/id', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+            // Populate input boxes with fetched data
+            let user = data && data.userDetails ? data.userDetails : null;
+            let image = user && user.image ? user.image : null;
+            let galleryImages = user && user.gallerys ? user.gallerys : [];
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            var text = document.getElementById('textInfo');
+            let currentImageIndex = 0;
+            let gallerys = [];
+
+            document.getElementById('name').textContent = user.userName;
+
+            document.getElementById('emailInfo').textContent = user.email;
+
+            document.getElementById('phone').textContent = user.phone;
+
+            document.getElementById('dob').textContent = user.dob;
+
+            document.getElementById('country').textContent = user.country;
+
+            document.getElementById('state').textContent = user.state;
+
+            document.getElementById('gender').textContent = user.gender;
+
+            if (image) {
+              const uploadedImage = document.getElementById('myImage');
+              uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
+              uploadedImage.style.display = 'block'; // Show the image element
+            } else {
+              const uploadedImage = document.getElementById('myImage');
+              uploadedImage.src = `../images/human.png`;
+              uploadedImage.style.display = 'block'; // Show the image element
+            }
+
+            let userName = document.getElementById('userName');
+            userName.textContent = user.userName;
+
+            if (galleryImages && galleryImages.length > 0) {
+              const container = document.getElementById('imageContainer');
+
+              // Clear existing images in the container
+              container.innerHTML = '';
+
+              // Loop through the array and create img elements
+              galleryImages.forEach((imageUrl, index) => {
+
+                gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName);
+
+              });
+
+              gallerys.forEach((imageUrl, index) => {
+                const img = document.createElement('img');
+                img.src = imageUrl
+                img.className = "img-fluid img-thumbnail";
+                img.alt = 'Image';
+                img.addEventListener('click', () => openModal(index));
+                container.appendChild(img);
+
+              });
+
+
+
+              // Open the modal with the selected image
+              function openModal(index) {
+                currentImageIndex = index;
+                modalImage.src = gallerys[currentImageIndex];
+                modal.style.display = 'block';
+
+                // Close modal when close button or outside modal is clicked
+                const closeBtn = document.querySelector('.close');
+                closeBtn.onclick = closeModal;
+                window.onclick = function(event) {
+                  if (event.target === modal) {
+                    closeModal();
+                  }
                 };
-                // Fetch user data from the backend when the page loads
-                fetch('/api/user/id', {
+
+                // Update navigation buttons visibility
+
+                updateNavButtons();
+              }
+
+              // Function to close the modal
+              function closeModal() {
+                modal.style.display = 'none';
+              }
+              // Function to update navigation buttons visibility
+              function updateNavButtons() {
+                const prevBtn = document.getElementById('prevButton');
+                const nextBtn = document.getElementById('nextButton');
+
+                prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+                nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
+              }
+
+              // Event listeners for navigation buttons
+              document.getElementById('prevButton').addEventListener('click', () => {
+                if (currentImageIndex > 0) {
+                  currentImageIndex--;
+                  modalImage.src = gallerys[currentImageIndex];
+                  updateNavButtons();
+                }
+              });
+
+              document.getElementById('nextButton').addEventListener('click', () => {
+                if (currentImageIndex < gallerys.length - 1) {
+                  currentImageIndex++;
+                  modalImage.src = gallerys[currentImageIndex];
+                  updateNavButtons();
+                }
+              });
+
+            } else {
+              text.style.display = 'block';
+            }
+
+          })
+          .catch(error => {
+            console.error('Error fetching user data:', error);
+          });
+
+      });
+    </script>
+
+    <% if (errorMessage) { %>
+        <script>
+        'use strict';
+        $(window).on('load',
+            function() {
+            function notify(message) {
+                $.growl({
+                message: message,
+                icon: $(this).attr('data-icon'),
+                title: ' Error message is : ',
+                }, {
+                element: 'body',
+                type: $(this).attr('data-type'),
+                allow_dismiss: false,
+                offset: {
+                    x: 30,
+                    y: 30
+                },
+                spacing: 10,
+                z_index: 999999,
+                delay: 8500,
+                timer: 1000,
+                icon_type: 'class',
+                placement: {
+                    from: $(this).attr('data-from'),
+                    align: $(this).attr('data-align')
+                },
+                animate: {
+                    enter: $(this).attr('data-animation-in'),
+                    exit: $(this).attr('data-animation-out')
+                },
+                template: '<div data-growl="container" class="alert" role="alert" style="border:3px solid red;width:30%;">' +
+                    '<button type="button" class="close" data-growl="dismiss">' +
+                    '<span aria-hidden="true">&times;</span>' +
+                    '<span class="sr-only">Close</span>' +
+                    '</button>' +
+                    '<span data-growl="icon"></span>' +
+                    '<span data-growl="title" style="color:black;"></span>' +
+                    '<span data-growl="message" style="color:red;"></span>' +
+                    '</div>'
+                });
+            };
+
+            notify("<%= errorMessage %>");
+            });
+        </script>
+    <%}%>
+
+    <script>
+   
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all user cards
+            const userCards = document.querySelectorAll('.cover-btn');
+        
+            // Loop through each user card
+            userCards.forEach(function(card) {
+                // Get buttons inside the current card
+                const followButton = card.querySelector('.followUsers');
+                const requestedButton = card.querySelector('.requestedForfollowUsers');
+                const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
+                const followButtons = card.querySelectorAll('.followUsers');
+    
+                console.log('followButtons',followButtons)
+                console.log('followButtons-length',followButtons.length)
+    
+    
+                // Check if both follow and profile buttons exist
+                if (followButtons.length > 0 && requestedButton ) // If there are multiple follow buttons, keep only the first one and remove the rest
+                {
+                    console.log('here-1')
+    
+                    // Loop through follow buttons starting from the second one
+                    for (let i = 0; i < followButtons.length; i++)
+                    {
+                        // Remove the follow button
+                        followButtons[i].remove();
+                    }
+                }
+                else if (followButtons.length > 0 && unFollowButton ) // If there are multiple follow buttons, keep only the first one and remove the rest
+                {
+                    console.log('here-1')
+    
+                    // Loop through follow buttons starting from the second one
+                    for (let i = 0; i < followButtons.length; i++)
+                    {
+                        // Remove the follow button
+                        followButtons[i].remove();
+                    }
+                }
+                else if (followButton && requestedButton )
+                {
+                    console.log('here-2')
+                    // If both follow and profile buttons exist, remove the follow button
+                    followButton.remove();
+                }
+                else if (followButton && unFollowButton )
+                {
+                    console.log('here-3')
+    
+                    followButton.remove();
+                }
+               
+                else if (followButtons.length > 1 ) // If there are multiple follow buttons, keep only the first one and remove the rest
+                {
+                    console.log('here-4')
+    
+                    // Loop through follow buttons starting from the second one
+                    for (let i = 1; i < followButtons.length; i++)
+                    {
+                        // Remove the follow button
+                        followButtons[i].remove();
+                    }
+                }
+               
+    
+            });
+        });
+    </script>
+
+    <script>
+
+        function callAPI(followingId) 
+            {
+                document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+    
+                const requestBody = {
+                    followingId: followingId,
+                    followerId: '<%= id %>',
+                    uuid : '<%= uuid %>',
+                    userId : '<%= id %>'
+                };
+    
+                const options = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(requestData)
-                })
+                    body: JSON.stringify(requestBody)
+                };
+    
+                fetch('/follow/users/', options)
                     .then(response =>
                     {
-                        if (response.ok)
+                        if (!response.ok)
                         {
-                            return response.json();
+                            throw new Error('Network response was not ok');
                         }
-                        throw new Error('Network response was not ok.');
+                        return response.json();
                     })
                     .then(data =>
                     {
-                        // Populate input boxes with fetched data
-                        let user = data && data.userDetails ? data.userDetails : null;
-                        let image = user && user.image ? user.image : null;
-                        let galleryImages = user && user.gallerys ? user.gallerys : [];
-                        const modal = document.getElementById('imageModal');
-                        const modalImage = document.getElementById('modalImage');
-                        var text = document.getElementById('textInfo');
-                        let currentImageIndex = 0;
-                        let gallerys = [];
-
-                        document.getElementById('name').textContent = user.userName;
-
-                        document.getElementById('emailInfo').textContent = user.email;
-
-                        document.getElementById('phone').textContent = user.phone;
-
-                        document.getElementById('dob').textContent = user.dob;
-
-                        document.getElementById('country').textContent = user.country;
-
-                        document.getElementById('state').textContent = user.state;
-
-                        document.getElementById('gender').textContent = user.gender;
-
-                        if (image)
+                        if(data && data.status == 1)
                         {
-                            const uploadedImage = document.getElementById('myImage');
-                            uploadedImage.src = '../images/uploads/' + image.profilePicId + '/' + image.profilePicName;
-                            uploadedImage.style.display = 'block'; // Show the image element
+                            document.getElementById('followUsers').innerText = 'Remove';
+    
+                            alert('Request sent to the user!');
+                            location.reload();
                         }
                         else
                         {
-                            const uploadedImage = document.getElementById('myImage');
-                            uploadedImage.src = `../images/human.png`;
-                            uploadedImage.style.display = 'block'; // Show the image element
+                            alert(data.message)
                         }
-
-                        let userName = document.getElementById('userName');
-                        userName.textContent = user.userName;
-
-                        if (galleryImages && galleryImages.length > 0)
-                        {
-                            const container = document.getElementById('imageContainer');
-
-                            // Clear existing images in the container
-                            container.innerHTML = '';
-
-                            // Loop through the array and create img elements
-                            galleryImages.forEach((imageUrl, index) =>
-                            {
-
-                                gallerys.push('../gallery/' + imageUrl.imageId + '/' + imageUrl.fileName);
-
-                            });
-
-                            gallerys.forEach((imageUrl, index) =>
-                            {
-                                const img = document.createElement('img');
-                                img.src = imageUrl
-                                img.className = "img-fluid img-thumbnail";
-                                img.alt = 'Image';
-                                img.addEventListener('click', () => openModal(index));
-                                container.appendChild(img);
-
-                            });
-
-
-
-                            // Open the modal with the selected image
-                            function openModal(index) 
-                            {
-                                currentImageIndex = index;
-                                modalImage.src = gallerys[currentImageIndex];
-                                modal.style.display = 'block';
-
-                                // Close modal when close button or outside modal is clicked
-                                const closeBtn = document.querySelector('.close');
-                                closeBtn.onclick = closeModal;
-                                window.onclick = function (event) 
-                                {
-                                    if (event.target === modal) 
-                                    {
-                                        closeModal();
-                                    }
-                                };
-
-                                // Update navigation buttons visibility
-
-                                updateNavButtons();
-                            }
-
-                            // Function to close the modal
-                            function closeModal() 
-                            {
-                                modal.style.display = 'none';
-                            }
-                            // Function to update navigation buttons visibility
-                            function updateNavButtons() 
-                            {
-                                const prevBtn = document.getElementById('prevButton');
-                                const nextBtn = document.getElementById('nextButton');
-
-                                prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
-                                nextBtn.style.display = currentImageIndex < gallerys.length - 1 ? 'block' : 'none';
-                            }
-
-                            // Event listeners for navigation buttons
-                            document.getElementById('prevButton').addEventListener('click', () => 
-                            {
-                                if (currentImageIndex > 0) 
-                                {
-                                    currentImageIndex--;
-                                    modalImage.src = gallerys[currentImageIndex];
-                                    updateNavButtons();
-                                }
-                            });
-
-                            document.getElementById('nextButton').addEventListener('click', () => 
-                            {
-                                if (currentImageIndex < gallerys.length - 1) 
-                                {
-                                    currentImageIndex++;
-                                    modalImage.src = gallerys[currentImageIndex];
-                                    updateNavButtons();
-                                }
-                            });
-
-                        }
-                        else
-                        {
-                            text.style.display = 'block';
-                        }
-
+    
                     })
                     .catch(error =>
                     {
-                        console.error('Error fetching user data:', error);
-                    });
-
+                        console.error('There was a problem with the API request:', error);
+    
+                        alert('There was a problem with the API request:', error)
+                    })
+            }
+    
+            document.querySelectorAll('.followUsers').forEach(button =>
+            {
+                button.addEventListener('click', () =>
+                {
+                    const followingId = button.getAttribute('data-user-id');
+                    callAPI(followingId);
+                });
             });
-        </script>
+       
+    </script>
+    
+    <script>
+    
+        function requestedForUnfollowUsers(followingId) 
+        {
+            document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+    
+            const requestBody = {
+                followingId: followingId,
+                followerId: '<%= id %>',
+                userId : '<%= id %>',
+                uuid : '<%= uuid %>'
+            };
+    
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            };
+    
+            fetch('/update/unfollow/users/', options)
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data =>
+                {
+                    if(data && data.status == 1)
+                    {
+                        document.getElementById('requestedForUnfollowUsers').innerText = 'Follow';
+    
+                        alert('User has unfollowed the account!');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert(data.message)
+                    }
+    
+                })
+                .catch(error =>
+                {
+                    console.error('There was a problem with the API request:', error);
+    
+                    alert('There was a problem with the API request:', error)
+                })
+        }
+    
+        document.querySelectorAll('.requestedForUnfollowUsers').forEach(button =>
+        {
+            button.addEventListener('click', () =>
+            {
+                const followingId = button.getAttribute('data-user-id');
+                requestedForUnfollowUsers(followingId);
+            });
+        });
+       
+    </script>
+    
+    <script>
+    
+        function requestedForfollowUsers(followingId) 
+        {
+            document.querySelector(`button[data-user-id="${followingId}"]`).disabled = true;
+    
+            const requestBody = {
+                followingId: followingId,
+                followerId: '<%= id %>',
+                userId : '<%= id %>',
+                uuid : '<%= uuid %>'
+            };
+    
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            };
+    
+            fetch('/update/follow/users/', options)
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data =>
+                {
+                    if(data && data.status == 1)
+                    {
+                        document.getElementById('requestedForfollowUsers').innerText = 'UnFollow';
+    
+                        alert('User has followed the account!');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert(data.message)
+                    }
+    
+                })
+                .catch(error =>
+                {
+                    console.error('There was a problem with the API request:', error);
+    
+                    alert('There was a problem with the API request:', error)
+                })
+        }
+    
+        document.querySelectorAll('.requestedForfollowUsers').forEach(button =>
+        {
+            button.addEventListener('click', () =>
+            {
+                const followingId = button.getAttribute('data-user-id');
+                requestedForfollowUsers(followingId);
+            });
+        });
+       
+    </script>
            
 </body>
 

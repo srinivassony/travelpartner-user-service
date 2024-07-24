@@ -84,6 +84,15 @@ exports.createUser = async (req, res) =>
 
         let existingUserDetails = await db.getExsitingUserDetails(email);
 
+        if (existingUserDetails && existingUserDetails.status == 0)
+        {
+            req.flash('error', register.message);
+
+            res.redirect('/register');
+
+            return "";
+        }
+
         if (existingUserDetails) 
         {
             if (existingUserDetails.email == email) 
@@ -141,7 +150,7 @@ exports.createUser = async (req, res) =>
                 message: emailBody,
             };
 
-           let x=  await smtp.sendEmail(userEmailParams);
+            await smtp.sendEmail(userEmailParams);
 
         }
         catch (error)
@@ -208,9 +217,15 @@ exports.userLogin = async (req, res) =>
 
         let user = await db.getUserLoginDetails(email);
 
-        console.log('user',user)
+        if(user && user.status == 0)
+        {
+            req.flash('error', user.message);
 
-        if (!user) 
+            res.redirect('/login');
+
+            return "";
+        }
+        else if (!user) 
         {
             req.flash('error', 'User details not found.');
 
@@ -543,7 +558,7 @@ exports.changePassword = async (req, res) =>
     }
 }
 
-exports.getUserById = async (reqParams) =>
+exports.getUserById = async (reqParams, req, res) =>
 {
     try
     {
@@ -551,12 +566,23 @@ exports.getUserById = async (reqParams) =>
 
         if (!userId)
         {
-            req.flash('error', 'user id is required.');
+            req.flash('error', 'User id is required.');
 
             res.redirect('/user-profile');
+
+            return "";
         }
 
         let userDetails = await db.getUserDetailsById(userId);
+
+        if (!userDetails)
+        {
+            req.flash('error', 'User details not found!');
+
+            res.redirect('/user-profile');
+
+            return "";
+        }
 
         let NotificationView = await db.getNotificationDetails(userId);
 
