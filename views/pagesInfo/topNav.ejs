@@ -184,7 +184,7 @@
                         const divMedia = document.createElement('div');
                         divMedia.classList.add('media');
                         divMedia.innerHTML = `
-                            <img class="d-flex align-self-center img-radius" src="${image}" alt="Avatar">
+                           <a href="/userprofile/${item.id}" class="d-flex align-self-center img-radius"> <img class="d-flex align-self-center img-radius" src="${image}" alt="Avatar"> </a>
                             <div class="media-body">
                                 <h5 class="notification-user">${item.userName}</h5>
                                 <p class="notification-msg">${item.userName} sent to a friend request to you!</p>
