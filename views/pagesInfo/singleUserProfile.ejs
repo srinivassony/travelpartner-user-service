@@ -278,19 +278,22 @@
                                                                                             class=" cover-btn">
                                                                                             <% if(userInfo && userInfo.followUsers.length > 0) {
                                                                                                 userInfo.followUsers.forEach(function(followUser) {  %>
-                                                                                                    <% if(followUser.followerId == id && followUser.followingId == userId && followUser.userId == id && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                                                    <% if(followUser.followerId == id && followUser.followingId == userId && followUser.userId == id && followUser.requested == 1 && followUser.isFollow == 0 && userInfo.id != id) { %>
                                                                                                         <button type="button" id="requestedForUnfollowUsers"
                                                                                                         class="btn btn-primary m-r-10 m-b-5 requestedForUnfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-times"></i>Remove</button>
-                                                                                                    <% } else if (followUser.followerId == id && followUser.followingId == userId && followUser.userId != id && followUser.requested == 1 && followUser.isFollow == 0) { %>
+                                                                                                    <% } else if (followUser.followerId == id && followUser.followingId == userId && followUser.userId != id && followUser.requested == 1 && followUser.isFollow == 0 &&  userInfo.id != id) { %>
                                                                                                         <button type="button" id="requestedForfollowUsers"
                                                                                                         class="btn btn-primary m-r-10 m-b-5 requestedForfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-thumbs-up"></i>Requested</button>
-                                                                                                    <% } else if(followUser.followerId == id && followUser.isFollow == 1) { %>
+                                                                                                    <% } else if(followUser.followerId == id && followUser.isFollow == 1 && userInfo.id != id) { %>
                                                                                                         <button type="button" id="requestedForUnfollowUsers"
                                                                                                         class="btn btn-primary m-r-10 m-b-5 requestedForUnfollowUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-thumbs-down"></i>UnFollow</button>
-                                                                                                    <% } else { %>
+                                                                                                    <% } else if(userInfo.id == id){ %>
+                                                                                                        <button type="button" id="savedUsers"
+                                                                                                        class="btn btn-primary m-r-10 m-b-5 savedUsers buttonInfo"><i class="fa fa-bookmark" style="color: black;"></i><a href="/saved-posts" style="color: white;font-weight:bold;">Saved</a></button>
+                                                                                                    <% } else if(userInfo.id != id){%>
                                                                                                         <button type="button" id="followUsers"
                                                                                                         class="btn btn-primary m-r-10 m-b-5 followUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-user-plus"></i>Follow</button>
-                                                                                                    <% }%>
+                                                                                                    <% } %>
                                                                                             <%  }); } else { %>
                                                                                                 <button type="button" id="followUsers"
                                                                                                 class="btn btn-primary m-r-10 m-b-5 followUsers buttonInfo" data-user-id="<%= userId %>"><i class="fa fa-user-plus"></i>Follow</button>
@@ -712,9 +715,12 @@
                 const requestedButton = card.querySelector('.requestedForfollowUsers');
                 const unFollowButton = card.querySelector('.requestedForUnfollowUsers');
                 const followButtons = card.querySelectorAll('.followUsers');
+                const savedUsers = card.querySelectorAll('.savedUsers');
     
                 console.log('followButtons',followButtons)
                 console.log('followButtons-length',followButtons.length)
+                console.log('savedUsers-length',savedUsers.length)
+
     
     
                 // Check if both follow and profile buttons exist
@@ -764,8 +770,18 @@
                         followButtons[i].remove();
                     }
                 }
-               
+                else if(savedUsers && savedUsers.length > 1)
+                {
+                    console.log('here-5')
     
+                    // Loop through follow buttons starting from the second one
+                    for (let i = 1; i < savedUsers.length; i++)
+                    {
+                        // Remove the follow button
+                        savedUsers[i].remove();
+                    }
+                }
+               
             });
         });
     </script>
