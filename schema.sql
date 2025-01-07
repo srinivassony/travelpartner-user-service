@@ -513,3 +513,48 @@ WHERE
     userInfo."isRegistered" = 1 
     AND userInfo."isInvited" = 1 
     AND userInfo."inviteOn" IS NOT NULL;
+
+
+CREATE OR REPLACE FUNCTION "rp_function_fetch_users_posts_v1"(
+    userId IN VARCHAR2
+)
+RETURN SYS_REFCURSOR IS 
+    userPostList SYS_REFCURSOR;
+
+BEGIN
+    OPEN userPostList FOR
+        SELECT 
+            post."id" AS id,
+            us."userName" AS userName,
+            post."location" AS location,
+            post."description" AS description,
+            img."profilePicId" AS profilePicId,
+            img."profilePicName" AS profilePicName,
+            us."id" AS userId,
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'postFileName' VALUE imgs."postFileName",
+                        'postFieldId' VALUE imgs."postFieldId"
+                    )
+                )
+                FROM "tp_post_images" imgs 
+                WHERE imgs."postId" = post."id"
+                GROUP BY imgs."postId"
+            ) AS postImages,
+            (SELECT COUNT(plike."id") FROM "tp_post_like" plike WHERE post."id" = plike."postId" AND plike."isLike" = 1) AS likesCount,
+            (SELECT COUNT(pcomment."id") FROM "tp_post_comment" pcomment WHERE post."id" = pcomment."postId") AS commentsCount
+        FROM 
+            "tp_post" post
+        LEFT JOIN 
+            "tp_user" us ON us."id" = post."userId"
+        LEFT JOIN 
+            "tp_image" img ON img."userId" = us."id"
+        WHERE 
+            us."isRegistered" = 1 
+            AND us."isInvited" = 1 
+            AND us."inviteOn" IS NOT NULL 
+            AND post."userId" = userId; -- Correctly scoped
+    RETURN userPostList;
+END;
+GRANT EXECUTE ON "rp_function_fetch_users_posts_v1" TO travelpartner;
